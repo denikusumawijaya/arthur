@@ -1,0 +1,285 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Algebra 1 Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: exam-paper column on faint graph grid; sticky topic tabs; question cards with Edexcel-style mark tally in the margin */
+:root{
+  --paper:#f4f6fa; --sheet:#ffffff; --ink:#18213a; --muted:#5d6782; --rule:#dde2ee; --grid:#e8ecf4;
+  --accent:#7a2a63; --accent-soft:#f6e7f1; --good:#17804d; --good-soft:#e2f4ea; --bad:#b4322a; --bad-soft:#fbe7e5;
+  --f-display:"Bricolage Grotesque",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --f-math:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f131c; --sheet:#171d2a; --ink:#e7ebf5; --muted:#9aa4bf; --rule:#2a3245; --grid:#161c28;
+  --accent:#f0a0d6; --accent-soft:#3a2234; --good:#5fd39a; --good-soft:#163527; --bad:#ff8a80; --bad-soft:#3d1d1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f131c; --sheet:#171d2a; --ink:#e7ebf5; --muted:#9aa4bf; --rule:#2a3245; --grid:#161c28;
+  --accent:#f0a0d6; --accent-soft:#3a2234; --good:#5fd39a; --good-soft:#163527; --bad:#ff8a80; --bad-soft:#3d1d1b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--f-body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+.wrap{max-width:820px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+header .eyebrow{font:700 12px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(28px,6vw,40px)/1.1 var(--f-display);margin:.35em 0 .3em;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:62ch}
+.overall{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px;font-size:14px;color:var(--muted)}
+.overall b{color:var(--ink);font-variant-numeric:tabular-nums}
+.btn{font:700 14px var(--f-body);border:1px solid var(--rule);background:var(--sheet);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible,.tab:focus-visible,.opt:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);margin-top:22px;padding-block:10px;border-bottom:1px solid var(--rule)}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.tab{flex:0 0 auto;font:600 14px var(--f-body);border:1px solid var(--rule);background:var(--sheet);color:var(--muted);padding:8px 12px;border-radius:999px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.tab .sc{font-variant-numeric:tabular-nums;font-size:12px;opacity:.85}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--sheet)}
+.topic-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin:26px 0 14px}
+.topic-head h2{font:700 24px/1.2 var(--f-display);margin:0}
+.topic-head p{margin:4px 0 0;color:var(--muted);font-size:15px;max-width:60ch}
+.q{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:18px 18px 14px;margin-bottom:14px;display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px}
+.qn{font:700 15px var(--f-display);color:var(--accent);padding-top:2px}
+.qbody{min-width:0}
+.marks{font:400 14px var(--f-math);color:var(--muted);padding-top:2px;white-space:nowrap}
+.prompt{margin:0 0 12px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.opts{grid-template-columns:1fr}.q{grid-template-columns:auto 1fr}.marks{grid-column:2;grid-row:1;justify-self:end}}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;cursor:pointer;min-height:48px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .lt{font:700 13px var(--f-body);color:var(--muted);width:20px;flex:none}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--good-soft);border-color:var(--good)}
+.opt.correct .lt{color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.wrong .lt{color:var(--bad)}
+.verdict{font-weight:700;font-size:14px;margin:10px 0 0}
+.verdict.ok{color:var(--good)} .verdict.no{color:var(--bad)}
+details{margin-top:12px;border-top:1px dashed var(--rule);padding-top:10px}
+summary{cursor:pointer;font:700 14px var(--f-body);color:var(--accent);list-style:none;display:inline-flex;align-items:center;gap:6px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"";width:0;height:0;border-left:6px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent;transition:transform .15s}
+details[open] summary::before{transform:rotate(90deg)}
+ol.steps{margin:12px 0 0;padding:0;list-style:none;counter-reset:s;display:grid;gap:10px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px}
+ol.steps li::before{content:counter(s);font:700 12px/24px var(--f-body);text-align:center;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent)}
+ol.steps .tx{min-width:0}
+ol.steps .mline{display:block;margin-top:4px;padding:6px 10px;background:var(--paper);border-radius:6px;overflow-x:auto;font-size:18px}
+ol.steps li.final .mline{background:var(--good-soft);border:1px solid var(--good)}
+.m{font-family:var(--f-math);font-size:1.08em;white-space:nowrap}
+.mline .m{font-size:1em}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 2px;line-height:1.15}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 3px}
+.fr>span:last-child{padding:0 3px}
+sup{font-size:.7em;line-height:0}
+.foot{margin-top:28px;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){summary::before{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Edexcel International GCSE (9–1) Mathematics A · Unit 1 · Higher level</div>
+    <h1>Algebra 1 Challenge</h1>
+    <p>A harder set of 50 questions: multi-step problems, negative and fractional substitutions, brackets and index laws. Pick an answer to check it, then open the worked solution.</p>
+    <div class="overall">
+      <span>Total score: <b id="tot">0 / 50</b></span>
+      <span>Answered: <b id="ans">0</b></span>
+      <button class="btn" id="toggleAll" type="button">Open all solutions</button>
+      <button class="btn" id="reset" type="button">Reset this topic</button>
+    </div>
+  </header>
+  <nav><div class="tabs" role="tablist" id="tabs"></div></nav>
+  <main id="main"></main>
+  <p class="foot">Marks in brackets show how the question would be weighted on a written paper. Your answers stay in this browser only.</p>
+</div>
+
+<script>
+const T = [
+{ id:"t1", name:"Writing expressions", intro:"Multi-step word problems. Define each quantity first, build the expression in stages, then simplify.", qs:[
+ {q:"Ahmed is $x$ years old. His father is three times as old as Ahmed. Write an expression, in its simplest form, for the sum of their ages in 5 years' time.", o:["4x + 5","4x + 10","3x + 10","4x + 15"], c:1, m:3, s:[
+  ["Ages now.","Ahmed: x,   Father: 3x"],["In 5 years, each person is 5 years older. Both ages increase.","Ahmed: x + 5,   Father: 3x + 5"],["Add the two future ages.","(x + 5) + (3x + 5)"],["Collect like terms.","4x + 10"],["$4x + 5$ only adds 5 years once, for one person.",""]]},
+ {q:"The length of a rectangle is 3 cm more than twice its width, $w$ cm. Write an expression for its area. Expand your answer.", o:["2w^2 + 3","2w + 3","2w^2 + 3w","6w + 6"], c:2, m:3, s:[
+  ["“Twice the width” then “3 more”.","length = 2w + 3"],["Area = length × width.","A = w(2w + 3)"],["Expand the bracket: multiply $w$ by each term.","w × 2w = 2w^2,   w × 3 = 3w"],["Answer.","2w^2 + 3w"],["$6w + 6$ is the perimeter, not the area.",""]]},
+ {q:"The smallest of three consecutive integers is $n$. Write an expression, in its simplest form, for the sum of their squares.", o:["3n^2 + 6n + 5","3n^2 + 3","3n^2 + 6n + 3","(3n + 3)^2"], c:0, m:4, s:[
+  ["The three integers.","n,   n + 1,   n + 2"],["Square each one.","n^2 + (n + 1)^2 + (n + 2)^2"],["Expand the squared brackets. Remember $(a + b)^2 = a^2 + 2ab + b^2$.","(n + 1)^2 = n^2 + 2n + 1,   (n + 2)^2 = n^2 + 4n + 4"],["Add everything.","n^2 + n^2 + 2n + 1 + n^2 + 4n + 4"],["Collect like terms.","3n^2 + 6n + 5"],["Check with 1, 2, 3: $1 + 4 + 9 = 14$ and $3 + 6 + 5 = 14$.","3(1)^2 + 6(1) + 5 = 14 ✓"],["$3n^2 + 3$ comes from writing $(n + 1)^2$ as $n^2 + 1$, which is wrong.",""]]},
+ {q:"An adult ticket costs \\$$a$. A child ticket costs \\$5 less than an adult ticket. Write an expression for the cost, in dollars, of 3 adult tickets and 4 child tickets. Simplify your answer.", o:["7a − 5","7a + 20","12a − 20","7a − 20"], c:3, m:3, s:[
+  ["Child ticket price.","a − 5"],["Cost of each group. Keep brackets.","3a   and   4(a − 5)"],["Expand.","4(a − 5) = 4a − 20"],["Add.","3a + 4a − 20"],["Simplify.","7a − 20"],["$7a − 5$ forgets to multiply the 5 by 4.",""]]},
+ {q:"A car travels at $v$ km/h for $t$ hours, then at $(v + 10)$ km/h for 2 hours. Write an expression for the total distance travelled, in km.", o:["vt + 2v + 10","vt + 2v + 20","2vt + 20","v(t + 2) + 10"], c:1, m:3, s:[
+  ["Distance = speed × time.","d = s × t"],["First part of the journey.","v × t = vt"],["Second part. Multiply the whole speed by 2.","2(v + 10) = 2v + 20"],["Total distance.","vt + 2v + 20"]]},
+ {q:"Write an expression for the mean of $x$, $x + 4$ and $2x − 1$. Simplify the numerator.", o:["[[4x + 3|4]]","4x + 3","[[4x + 3|3]]","[[4x + 5|3]]"], c:2, m:2, s:[
+  ["Mean = total ÷ number of values.","[[sum|count]]"],["Add the three values.","x + (x + 4) + (2x − 1) = 4x + 3"],["There are 3 values.","[[4x + 3|3]]"],["Divide by 3, not 4. The 4 in $4x$ is not the number of values.",""]]},
+ {q:"A shirt costs \\$$p$. Its price is increased by 20%, then the new price is decreased by 10%. Write an expression for the final price.", o:["1.1p","1.08p","1.12p","0.98p"], c:1, m:3, s:[
+  ["An increase of 20% means multiplying by 1.2.","1.2p"],["A decrease of 10% means multiplying by 0.9. Apply it to the new price.","0.9 × 1.2p"],["Multiply the decimals.","0.9 × 1.2 = 1.08"],["Final price.","1.08p"],["$1.1p$ comes from doing $20% − 10% = 10%$. Percentage changes cannot be added like that because the second one acts on a different amount.",""]]},
+ {q:"$n$ is any integer. Write an expression, in expanded form, for the product of two consecutive even numbers, the smaller being $2n$.", o:["4n^2 + 4n","n(n + 2)","4n^2 + 2n","2n^2 + 2n"], c:0, m:3, s:[
+  ["Even numbers are multiples of 2. The next even number is 2 more.","2n   and   2n + 2"],["Product means multiply.","2n(2n + 2)"],["Expand.","2n × 2n = 4n^2,   2n × 2 = 4n"],["Answer.","4n^2 + 4n"],["Check with $n = 3$: $6 × 8 = 48$ and $4(9) + 4(3) = 48$.","48 ✓"]]},
+ {q:"A phone plan costs \\$15 per month, which includes 100 minutes. Every extra minute costs 8 cents. Write an expression for the monthly cost, in dollars, when $m$ minutes are used ($m > 100$). Simplify your answer.", o:["15 + 0.08m","0.08m + 7","15 + 8(m − 100)","0.08m − 85"], c:1, m:4, s:[
+  ["Extra minutes are those above 100.","m − 100"],["Convert 8 cents to dollars, since the answer must be in dollars.","8 cents = $0.08"],["Cost of extra minutes.","0.08(m − 100) = 0.08m − 8"],["Add the monthly fee.","15 + 0.08m − 8"],["Simplify.","0.08m + 7"],["$15 + 8(m − 100)$ mixes dollars and cents.",""]]},
+ {q:"A square has side $x$ cm. A smaller square of side $y$ cm is cut from one corner, leaving an L-shape. Write an expression for the perimeter of the L-shape.", o:["4x − 4y","4x − 2y","4x","4x + 2y"], c:2, m:3, s:[
+  ["Cutting the corner removes $y$ from two outer edges.","outer edges: x + x + (x − y) + (x − y) = 4x − 2y"],["But it creates two new inner edges, each of length $y$.","inner edges: y + y = 2y"],["Total perimeter.","4x − 2y + 2y"],["The $y$ terms cancel.","4x"],["The perimeter is unchanged, even though the area is now $x^2 − y^2$.",""]]}
+]},
+{ id:"t2", name:"Evaluating", intro:"Substitutions with negatives, decimals and fractions. Put every substituted value in brackets and work one operation at a time.", qs:[
+ {q:"Work out the value of $[[a^2 − 3b|2c]]$ when $a = −4$, $b = −2$ and $c = −0.5$.", o:["22","−10","11","−22"], c:3, m:3, s:[
+  ["Substitute with brackets.","[[(−4)^2 − 3(−2)|2(−0.5)]]"],["Numerator: square, then subtract a negative.","16 − (−6) = 16 + 6 = 22"],["Denominator.","2 × (−0.5) = −1"],["Divide: positive ÷ negative is negative.","[[22|−1]] = −22"],["−10 comes from $16 − 6$, treating $−3(−2)$ as $−6$.",""]]},
+ {q:"Use $s = ut + [[1|2]]at^2$ to find $s$ when $u = −3$, $t = 4$ and $a = 2.5$.", o:["32","8","−32","13"], c:1, m:3, s:[
+  ["Substitute.","s = (−3)(4) + [[1|2]](2.5)(4)^2"],["First term.","(−3)(4) = −12"],["Second term: square $t$ first.","4^2 = 16,   [[1|2]] × 2.5 × 16 = 20"],["Add.","s = −12 + 20 = 8"]]},
+ {q:"Work out the value of $√(x^2 + y^2)$ when $x = −5$ and $y = 12$.", o:["7","17","13","169"], c:2, m:2, s:[
+  ["Substitute.","√((−5)^2 + 12^2)"],["Square each value.","25 + 144 = 169"],["Square root.","√169 = 13"],["7 and 17 come from $√(x^2) + √(y^2)$ style shortcuts. You must add before taking the root.",""]]},
+ {q:"Work out the value of $(2x − 3y)^2 − xy$ when $x = −1$ and $y = [[2|3]]$.", o:["[[50|3]]","[[46|3]]","[[2|3]]","16"], c:0, m:4, s:[
+  ["Inside the bracket.","2(−1) − 3([[2|3]]) = −2 − 2 = −4"],["Square it.","(−4)^2 = 16"],["Find $xy$.","(−1) × [[2|3]] = −[[2|3]]"],["Subtract a negative.","16 − (−[[2|3]]) = 16 + [[2|3]]"],["Write as an improper fraction.","[[48|3]] + [[2|3]] = [[50|3]]  (= 16[[2|3]])"]]},
+ {q:"Power is given by $P = [[V^2|R]]$. Find $P$ when $V = −6$ and $R = 0.4$.", o:["−90","14.4","90","9"], c:2, m:2, s:[
+  ["Substitute.","P = [[(−6)^2|0.4]]"],["Square: the result is positive.","(−6)^2 = 36"],["Divide by a decimal. Multiply top and bottom by 10.","[[36|0.4]] = [[360|4]]"],["Answer.","90"],["14.4 comes from multiplying by 0.4 instead of dividing.",""]]},
+ {q:"Given $a = 2^3$ and $b = 3^2$, work out the value of $[[a − b|a + b]]$.", o:["[[1|17]]","−[[1|17]]","−17","[[5|13]]"], c:1, m:2, s:[
+  ["Evaluate the powers.","a = 2^3 = 8,   b = 3^2 = 9"],["Numerator.","8 − 9 = −1"],["Denominator.","8 + 9 = 17"],["Answer.","[[−1|17]] = −[[1|17]]"]]},
+ {q:"Work out the value of $3x^2 − 2x − 1$ when $x = −[[2|3]]$.", o:["−1","[[1|3]]","[[5|3]]","[[11|3]]"], c:2, m:3, s:[
+  ["Substitute.","3(−[[2|3]])^2 − 2(−[[2|3]]) − 1"],["Square the fraction.","(−[[2|3]])^2 = [[4|9]]"],["First term.","3 × [[4|9]] = [[4|3]]"],["Second term: minus times minus.","−2 × (−[[2|3]]) = +[[4|3]]"],["Combine.","[[4|3]] + [[4|3]] − 1 = [[8|3]] − [[3|3]] = [[5|3]]"],["−1 comes from treating $−2x$ as $−[[4|3]]$.",""]]},
+ {q:"The lens formula gives $f = [[uv|u + v]]$. Find $f$ when $u = 12$ and $v = −4$.", o:["6","−3","3","−6"], c:3, m:2, s:[
+  ["Numerator.","12 × (−4) = −48"],["Denominator.","12 + (−4) = 8"],["Divide.","[[−48|8]] = −6"],["−3 comes from using $12 + 4 = 16$ on the bottom.",""]]},
+ {q:"Given $p = −2$ and $q = 3$, work out the value of $p^3 − q^2 + (pq)^2$.", o:["19","35","−53","−1"], c:0, m:3, s:[
+  ["First term: an odd power of a negative stays negative.","(−2)^3 = −8"],["Second term.","3^2 = 9"],["Third term: evaluate the bracket, then square.","pq = −6,   (−6)^2 = 36"],["Combine.","−8 − 9 + 36 = 19"],["35 comes from writing $(−2)^3 = 8$.",""]]},
+ {q:"Work out the value of $[[x^2y − xy^2|x + y]]$ when $x = 3$ and $y = −2$.", o:["−6","30","−30","6"], c:2, m:3, s:[
+  ["First term of the numerator.","x^2y = 9 × (−2) = −18"],["Second term: $y^2$ is positive.","xy^2 = 3 × 4 = 12"],["Numerator.","−18 − 12 = −30"],["Denominator.","3 + (−2) = 1"],["Divide.","[[−30|1]] = −30"]]}
+]},
+{ id:"t3", name:"Collecting like terms", intro:"Expand any brackets first, take care with the sign in front of each bracket, then collect terms with the same letters and powers.", qs:[
+ {q:"Simplify $3(2x − 5) − 4(x − 3)$", o:["2x − 27","2x − 3","10x − 3","2x + 3"], c:1, m:2, s:[
+  ["Expand the first bracket.","3(2x − 5) = 6x − 15"],["Expand the second. The −4 multiplies both terms.","−4(x − 3) = −4x + 12"],["Combine.","6x − 15 − 4x + 12"],["Collect like terms.","2x − 3"],["$2x − 27$ comes from writing $−4 × −3 = −12$.",""]]},
+ {q:"Simplify $5a^2b − 3ab^2 + 2ba^2 − 4b^2a + ab$", o:["7a^2b − 7ab^2 + ab","7a^2b + ab^2 + ab","3a^2b − 7ab^2 + ab","ab(7a − 7b)"], c:0, m:2, s:[
+  ["Reorder letters so like terms are easy to spot.","2ba^2 = 2a^2b,   4b^2a = 4ab^2"],["$a^2b$ terms.","5a^2b + 2a^2b = 7a^2b"],["$ab^2$ terms.","−3ab^2 − 4ab^2 = −7ab^2"],["$ab$ has no like terms.","7a^2b − 7ab^2 + ab"]]},
+ {q:"Simplify $[[2|3]]x − [[1|4]]y + [[1|6]]x + [[5|8]]y$", o:["[[3|9]]x + [[4|12]]y","[[5|6]]x + [[3|8]]y","[[5|6]]x − [[3|8]]y","[[1|2]]x + [[3|8]]y"], c:1, m:3, s:[
+  ["$x$ terms: common denominator 6.","[[2|3]] = [[4|6]],   [[4|6]] + [[1|6]] = [[5|6]]"],["$y$ terms: common denominator 8.","−[[1|4]] = −[[2|8]],   −[[2|8]] + [[5|8]] = [[3|8]]"],["Answer.","[[5|6]]x + [[3|8]]y"]]},
+ {q:"Simplify $x(x + 4) − 2x(3 − x)$", o:["−x^2 − 2x","3x^2 + 10x","x^2 − 2x","3x^2 − 2x"], c:3, m:3, s:[
+  ["Expand the first bracket.","x(x + 4) = x^2 + 4x"],["Expand the second. $−2x × −x = +2x^2$.","−2x(3 − x) = −6x + 2x^2"],["Combine.","x^2 + 4x − 6x + 2x^2"],["Collect like terms.","3x^2 − 2x"],["$−x^2 − 2x$ comes from writing $−2x × −x = −2x^2$.",""]]},
+ {q:"Simplify $2(3p − q) − 3(p − 2q) + 4(q − p)$", o:["−p + 8q","−p − 4q","−7p + 8q","5p + 8q"], c:0, m:3, s:[
+  ["Expand each bracket.","6p − 2q,   −3p + 6q,   4q − 4p"],["Combine.","6p − 2q − 3p + 6q + 4q − 4p"],["$p$ terms.","6p − 3p − 4p = −p"],["$q$ terms.","−2q + 6q + 4q = 8q"],["Answer.","−p + 8q"]]},
+ {q:"Simplify $0.4(5m − 2) − 1.2(m − 3)$", o:["0.8m − 4.4","3.2m + 2.8","0.8m + 2.8","0.8m + 1.6"], c:2, m:3, s:[
+  ["Expand the first bracket.","0.4 × 5m = 2m,   0.4 × (−2) = −0.8"],["Expand the second bracket.","−1.2 × m = −1.2m,   −1.2 × (−3) = +3.6"],["Combine.","2m − 0.8 − 1.2m + 3.6"],["Collect like terms.","0.8m + 2.8"]]},
+ {q:"A triangle has sides $(x + 3)$ cm and $(2x − 1)$ cm. Its perimeter equals the perimeter of a square of side $(2x + 1)$ cm. Write a simplified expression for the third side of the triangle.", o:["5x + 6","5x + 2","11x + 6","5x − 2"], c:1, m:4, s:[
+  ["Perimeter of the square.","4(2x + 1) = 8x + 4"],["Sum of the two known sides.","(x + 3) + (2x − 1) = 3x + 2"],["Third side = perimeter − known sides. Use a bracket.","8x + 4 − (3x + 2)"],["The minus sign changes both terms.","8x + 4 − 3x − 2"],["Simplify.","5x + 2"],["$5x + 6$ comes from forgetting to subtract the +2.",""]]},
+ {q:"Simplify $4xy^2 − 2x^2y + 3y^2x − x^2y + 5xy$", o:["7xy^2 − 3x^2y + 5xy","7xy^2 − x^2y + 5xy","4x^2y^2 + 5xy","9xy^2 − 3x^2y"], c:0, m:2, s:[
+  ["$3y^2x$ is the same as $3xy^2$.","3y^2x = 3xy^2"],["$xy^2$ terms.","4xy^2 + 3xy^2 = 7xy^2"],["$x^2y$ terms.","−2x^2y − x^2y = −3x^2y"],["$xy$ term.","7xy^2 − 3x^2y + 5xy"]]},
+ {q:"Simplify $a(b − c) − b(c − a) + c(a − b)$", o:["0","2ab + 2bc − 2ac","2ab − 2bc","2ab − 2ac"], c:2, m:3, s:[
+  ["Expand each bracket.","ab − ac,   −bc + ab,   ac − bc"],["Combine.","ab − ac − bc + ab + ac − bc"],["$ab$ terms.","ab + ab = 2ab"],["$ac$ terms cancel.","−ac + ac = 0"],["$bc$ terms.","−bc − bc = −2bc"],["Answer.","2ab − 2bc"]]},
+ {q:"Simplify $(x^2 − 3x + 2) − (2x^2 + x − 5) + (x^2 − 4)$", o:["−2x − 7","−4x − 7","2x^2 − 4x + 3","−4x + 3"], c:3, m:3, s:[
+  ["Remove brackets. The minus before the second bracket changes every sign inside it.","x^2 − 3x + 2 − 2x^2 − x + 5 + x^2 − 4"],["$x^2$ terms.","x^2 − 2x^2 + x^2 = 0"],["$x$ terms.","−3x − x = −4x"],["Numbers.","2 + 5 − 4 = 3"],["Answer.","−4x + 3"],["$−2x − 7$ comes from only changing the first sign in the second bracket.",""]]}
+]},
+{ id:"t4", name:"Multiplication & division", intro:"Index laws in combination: brackets raised to powers, negative coefficients and fractions. Work on numbers, then each letter in turn.", qs:[
+ {q:"Simplify $(2a^3b)^4$", o:["8a^12b^4","16a^7b^4","2a^12b^4","16a^12b^4"], c:3, m:2, s:[
+  ["Every factor inside the bracket is raised to the power 4.","2^4 × (a^3)^4 × b^4"],["Number.","2^4 = 16"],["Power of a power: multiply.","(a^3)^4 = a^12"],["Answer.","16a^12b^4"],["$8a^12b^4$ comes from $2 × 4$ instead of $2^4$.",""]]},
+ {q:"Simplify $[[(3x^2y)^3|9x^4y^2]]$", o:["3x^2y","x^2y","3x^5y","18x^2y"], c:0, m:3, s:[
+  ["Expand the bracket.","(3x^2y)^3 = 27x^6y^3"],["Divide.","[[27x^6y^3|9x^4y^2]]"],["Numbers.","27 ÷ 9 = 3"],["Letters: subtract powers.","x^{6 − 4} = x^2,   y^{3 − 2} = y"],["Answer.","3x^2y"]]},
+ {q:"Simplify $5p^2q^3 × (−3pq)^2$", o:["−45p^4q^5","45p^4q^5","−30p^4q^5","45p^3q^5"], c:1, m:3, s:[
+  ["Square the bracket. A negative squared is positive.","(−3pq)^2 = 9p^2q^2"],["Multiply.","5p^2q^3 × 9p^2q^2"],["Numbers.","5 × 9 = 45"],["Letters: add powers.","p^{2 + 2} = p^4,   q^{3 + 2} = q^5"],["Answer.","45p^4q^5"]]},
+ {q:"Simplify $[[24a^7b^2c|−8a^3bc]]$", o:["3a^4b","−3a^4bc","−3a^4b","−16a^4b"], c:2, m:2, s:[
+  ["Numbers: positive ÷ negative.","24 ÷ (−8) = −3"],["$a$ terms.","a^{7 − 3} = a^4"],["$b$ terms.","b^{2 − 1} = b"],["$c$ terms cancel.","[[c|c]] = 1"],["Answer.","−3a^4b"]]},
+ {q:"Simplify $(2x^3)^2 × (3x)^3$", o:["36x^9","108x^9","18x^9","108x^18"], c:1, m:3, s:[
+  ["First bracket.","(2x^3)^2 = 4x^6"],["Second bracket.","(3x)^3 = 27x^3"],["Multiply numbers.","4 × 27 = 108"],["Multiply letters: add powers.","x^6 × x^3 = x^9"],["Answer.","108x^9"]]},
+ {q:"Simplify $[[4x^5y^3 × 6xy^2|12x^4y^4]]$", o:["2x^2y","2x^2y^2","10x^2y","2x^{10}y^{9}"], c:0, m:3, s:[
+  ["Numerator first.","4x^5y^3 × 6xy^2 = 24x^6y^5"],["Divide.","[[24x^6y^5|12x^4y^4]]"],["Numbers.","24 ÷ 12 = 2"],["Letters.","x^{6 − 4} = x^2,   y^{5 − 4} = y"],["Answer.","2x^2y"]]},
+ {q:"Find the value of $n$ when $x^n × x^4 = x^{11} ÷ x^2$.", o:["9","7","5","4.5"], c:2, m:2, s:[
+  ["Left side: add powers.","x^n × x^4 = x^{n + 4}"],["Right side: subtract powers.","x^{11} ÷ x^2 = x^9"],["The powers must be equal.","n + 4 = 9"],["Solve.","n = 5"]]},
+ {q:"Simplify $([[2a^2|b]])^3 × [[b^5|4a]]$", o:["2a^6b^2","2a^5b^8","6a^5b^2","2a^5b^2"], c:3, m:4, s:[
+  ["Cube the fraction: top and bottom.","([[2a^2|b]])^3 = [[8a^6|b^3]]"],["Multiply the fractions.","[[8a^6 × b^5|b^3 × 4a]] = [[8a^6b^5|4ab^3]]"],["Numbers.","8 ÷ 4 = 2"],["Letters.","a^{6 − 1} = a^5,   b^{5 − 3} = b^2"],["Answer.","2a^5b^2"]]},
+ {q:"Simplify $18m^4n ÷ (3m^2n)^2$", o:["2n","[[6|n]]","[[2|n]]","[[2|mn]]"], c:2, m:3, s:[
+  ["Square the bracket.","(3m^2n)^2 = 9m^4n^2"],["Write as a fraction.","[[18m^4n|9m^4n^2]]"],["Numbers.","18 ÷ 9 = 2"],["$m$ terms cancel completely.","[[m^4|m^4]] = 1"],["One $n$ is left on the bottom.","[[n|n^2]] = [[1|n]]"],["Answer.","[[2|n]]"],["$[[6|n]]$ comes from squaring only the letters and not the 3.",""]]},
+ {q:"A rectangle has area $12x^5y^3$ cm² and length $4x^2y$ cm. Find an expression for its width.", o:["8x^3y^2","3x^7y^4","3x^3y^2","3x^3y^3"], c:2, m:2, s:[
+  ["Width = area ÷ length.","[[12x^5y^3|4x^2y]]"],["Numbers.","12 ÷ 4 = 3"],["Letters.","x^{5 − 2} = x^3,   y^{3 − 1} = y^2"],["Answer.","3x^3y^2"],["Check: $4x^2y × 3x^3y^2 = 12x^5y^3$.","✓"]]}
+]},
+{ id:"t5", name:"Algebraic fractions", intro:"Three-term sums, letter denominators and factorising before cancelling. Always use brackets when multiplying a numerator.", qs:[
+ {q:"Write $[[3x + 2|4]] − [[2x − 5|6]]$ as a single fraction in its simplest form.", o:["[[5x − 4|12]]","[[5x + 16|12]]","[[x + 7|2]]","[[5x + 1|12]]"], c:1, m:3, s:[
+  ["Lowest common denominator of 4 and 6.","LCD = 12"],["Rewrite with brackets.","[[3(3x + 2) − 2(2x − 5)|12]]"],["Expand. $−2 × −5 = +10$.","[[9x + 6 − 4x + 10|12]]"],["Collect like terms.","[[5x + 16|12]]"],["$[[5x − 4|12]]$ comes from writing $−10$ instead of $+10$.",""]]},
+ {q:"Write $[[x|3]] + [[x + 1|4]] − [[x − 2|6]]$ as a single fraction in its simplest form.", o:["[[5x − 1|12]]","[[x − 1|13]]","[[9x + 7|12]]","[[5x + 7|12]]"], c:3, m:4, s:[
+  ["LCD of 3, 4 and 6.","LCD = 12"],["Rewrite each fraction over 12.","[[4x|12]] + [[3(x + 1)|12]] − [[2(x − 2)|12]]"],["Combine.","[[4x + 3(x + 1) − 2(x − 2)|12]]"],["Expand.","[[4x + 3x + 3 − 2x + 4|12]]"],["Collect like terms.","[[5x + 7|12]]"]]},
+ {q:"Write $[[2|x]] + [[3|x + 1]]$ as a single fraction.", o:["[[5|2x + 1]]","[[5x + 2|x(x + 1)]]","[[5x + 1|x(x + 1)]]","[[5|x(x + 1)]]"], c:1, m:3, s:[
+  ["The denominators share no factor, so multiply them.","LCD = x(x + 1)"],["Rewrite each fraction.","[[2(x + 1)|x(x + 1)]] + [[3x|x(x + 1)]]"],["Add numerators.","[[2x + 2 + 3x|x(x + 1)]]"],["Simplify.","[[5x + 2|x(x + 1)]]"],["Never add the denominators: $[[5|2x + 1]]$ is wrong.",""]]},
+ {q:"Write $[[3|x − 2]] − [[2|x + 1]]$ as a single fraction.", o:["[[x − 1|(x − 2)(x + 1)]]","[[1|2x − 1]]","[[x + 7|(x − 2)(x + 1)]]","[[x + 1|(x − 2)(x + 1)]]"], c:2, m:3, s:[
+  ["LCD.","(x − 2)(x + 1)"],["Rewrite with brackets.","[[3(x + 1) − 2(x − 2)|(x − 2)(x + 1)]]"],["Expand. $−2 × −2 = +4$.","[[3x + 3 − 2x + 4|(x − 2)(x + 1)]]"],["Simplify.","[[x + 7|(x − 2)(x + 1)]]"],["$x − 1$ on top comes from writing $−4$ instead of $+4$.",""]]},
+ {q:"Simplify $[[6x^2y|5z]] × [[10z^2|9xy^3]]$", o:["[[4x|3y^2z]]","[[4xz|3y^2]]","[[4xz|3y^3]]","[[3xz|4y^2]]"], c:1, m:3, s:[
+  ["Multiply tops and bottoms.","[[60x^2yz^2|45xy^3z]]"],["Numbers: HCF is 15.","[[60|45]] = [[4|3]]"],["$x$: one left on top.","[[x^2|x]] = x"],["$y$: two left on the bottom.","[[y|y^3]] = [[1|y^2]]"],["$z$: one left on top.","[[z^2|z]] = z"],["Answer.","[[4xz|3y^2]]"]]},
+ {q:"Simplify $[[8a^3|15b^2]] ÷ [[4a|5b^3]]$", o:["[[2a^2b|3]]","[[32a^4|75b^5]]","[[2a^2|3b]]","[[3a^2b|2]]"], c:0, m:3, s:[
+  ["Multiply by the reciprocal of the second fraction.","[[8a^3|15b^2]] × [[5b^3|4a]]"],["Multiply.","[[40a^3b^3|60ab^2]]"],["Numbers.","[[40|60]] = [[2|3]]"],["Letters.","a^{3 − 1} = a^2,   b^{3 − 2} = b"],["Answer.","[[2a^2b|3]]"],["$[[32a^4|75b^5]]$ comes from multiplying without flipping the second fraction.",""]]},
+ {q:"Simplify $[[6x^2 − 9x|3x]]$", o:["6x − 3","2x − 9","2x − 3","2x^2 − 3x"], c:2, m:2, s:[
+  ["Factorise the numerator. The HCF of $6x^2$ and $9x$ is $3x$.","6x^2 − 9x = 3x(2x − 3)"],["Rewrite.","[[3x(2x − 3)|3x]]"],["Cancel the common factor $3x$.","2x − 3"],["You cannot cancel part of a sum before factorising.",""]]},
+ {q:"Simplify $[[5x − 10|x^2 − 2x]]$", o:["[[5|x − 2]]","−5","[[1|x]]","[[5|x]]"], c:3, m:3, s:[
+  ["Factorise the numerator.","5x − 10 = 5(x − 2)"],["Factorise the denominator.","x^2 − 2x = x(x − 2)"],["Rewrite.","[[5(x − 2)|x(x − 2)]]"],["Cancel the common bracket $(x − 2)$.","[[5|x]]"]]},
+ {q:"Write $[[1|2x]] + [[1|3x]] − [[1|4x]]$ as a single fraction.", o:["[[1|x]]","[[7|12x]]","[[13|12x]]","[[1|9x]]"], c:1, m:3, s:[
+  ["LCD of $2x$, $3x$ and $4x$.","LCD = 12x"],["Rewrite each fraction.","[[6|12x]] + [[4|12x]] − [[3|12x]]"],["Combine numerators.","6 + 4 − 3 = 7"],["Answer.","[[7|12x]]"],["$[[13|12x]]$ comes from adding the last fraction instead of subtracting.",""]]},
+ {q:"Simplify $[[x + 2|3]] ÷ [[2x + 4|9]]$", o:["[[2|3]]","3","[[3|2]]","[[(x + 2)(2x + 4)|27]]"], c:2, m:3, s:[
+  ["Multiply by the reciprocal.","[[x + 2|3]] × [[9|2x + 4]]"],["Factorise $2x + 4$.","2x + 4 = 2(x + 2)"],["Rewrite.","[[(x + 2) × 9|3 × 2(x + 2)]]"],["Cancel $(x + 2)$.","[[9|6]]"],["Simplify.","[[3|2]]"]]}
+]}
+];
+
+const L = "ABCD";
+function fmt(s){
+  s = s.replace(/\^\{([^}]*)\}/g,"<sup>$1</sup>").replace(/\^(\d+)/g,"<sup>$1</sup>");
+  const re = /\[\[([^\[\]|]*)\|([^\[\]]*)\]\]/;
+  while(re.test(s)) s = s.replace(re,'<span class="fr"><span>$1</span><span>$2</span></span>');
+  return s;
+}
+function txt(s){
+  return s.replace(/\\\$/g,"\u0000").replace(/\$([^$]+)\$/g,(_,m)=>'<span class="m">'+fmt(m)+'</span>').replace(/\u0000/g,"$");
+}
+
+let state = {};
+try{ state = JSON.parse(localStorage.getItem("alg1h-state")||"{}"); }catch(e){ state = {}; }
+function save(){ try{ localStorage.setItem("alg1h-state",JSON.stringify(state)); }catch(e){} }
+
+const tabs = document.getElementById("tabs"), main = document.getElementById("main");
+let active = "t1";
+const h = location.hash.slice(1); if(T.some(t=>t.id===h)) active = h;
+
+function score(t){ let n=0; t.qs.forEach((q,i)=>{ if(state[t.id+"-"+i]===q.c) n++; }); return n; }
+
+function renderTabs(){
+  tabs.innerHTML = T.map(t=>`<button class="tab" role="tab" id="tab-${t.id}" aria-selected="${t.id===active}" data-id="${t.id}">${t.name}<span class="sc">${score(t)}/10</span></button>`).join("");
+}
+function renderTopic(){
+  const t = T.find(x=>x.id===active);
+  main.innerHTML = `<div class="topic-head"><div><h2>${t.name}</h2><p>${t.intro}</p></div></div>` +
+  t.qs.map((q,i)=>{
+    const key=t.id+"-"+i, pick=state[key], done=pick!==undefined;
+    const opts=q.o.map((o,j)=>{
+      let cls="opt"; if(done){ if(j===q.c) cls+=" correct"; else if(j===pick) cls+=" wrong"; }
+      return `<button class="${cls}" data-k="${key}" data-j="${j}" ${done?"disabled":""}><span class="lt">${L[j]}</span><span class="m">${fmt(o)}</span></button>`;
+    }).join("");
+    const verdict = done ? (pick===q.c ? `<p class="verdict ok">Correct.</p>` : `<p class="verdict no">Not quite. The answer is ${L[q.c]}. Check the worked solution.</p>`) : "";
+    const steps = q.s.map((st,k)=>{
+      const last = k===q.s.length-1 || (k===q.s.length-2 && q.s[q.s.length-1][1]==="");
+      const isFinal = last && st[1]!=="";
+      return `<li class="${isFinal?"final":""}"><div class="tx">${txt(st[0])}${st[1]?`<span class="mline m">${fmt(st[1])}</span>`:""}</div></li>`;
+    }).join("");
+    return `<article class="q"><div class="qn">Q${i+1}</div><div class="qbody"><p class="prompt">${txt(q.q)}</p><div class="opts">${opts}</div>${verdict}
+      <details id="sol-${key}"><summary>Worked solution</summary><ol class="steps">${steps}</ol></details></div><div class="marks">(${q.m})</div></article>`;
+  }).join("");
+  document.getElementById("toggleAll").textContent="Open all solutions";
+}
+function updateTotals(){
+  let tot=0, ans=0;
+  T.forEach(t=>{ tot+=score(t); t.qs.forEach((q,i)=>{ if(state[t.id+"-"+i]!==undefined) ans++; }); });
+  document.getElementById("tot").textContent = tot+" / 50";
+  document.getElementById("ans").textContent = ans+" of 50";
+}
+function renderAll(){ renderTabs(); renderTopic(); updateTotals(); }
+
+tabs.addEventListener("click",e=>{
+  const b=e.target.closest(".tab"); if(!b) return;
+  active=b.dataset.id; try{ history.replaceState(null,"","#"+active); }catch(_){}
+  renderAll();
+});
+main.addEventListener("click",e=>{
+  const b=e.target.closest(".opt"); if(!b||b.disabled) return;
+  const k=b.dataset.k; state[k]=+b.dataset.j; save();
+  const openIds=[...main.querySelectorAll("details[open]")].map(d=>d.id);
+  renderTopic(); renderTabs(); updateTotals();
+  openIds.forEach(id=>{ const d=document.getElementById(id); if(d) d.open=true; });
+});
+document.getElementById("toggleAll").addEventListener("click",function(){
+  const ds=[...main.querySelectorAll("details")], open=!ds.every(d=>d.open);
+  ds.forEach(d=>d.open=open); this.textContent=open?"Close all solutions":"Open all solutions";
+});
+document.getElementById("reset").addEventListener("click",()=>{
+  const t=T.find(x=>x.id===active); t.qs.forEach((q,i)=>delete state[t.id+"-"+i]); save(); renderAll();
+});
+renderAll();
+</script>
+
+</body></html>
