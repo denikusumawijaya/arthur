@@ -1,0 +1,735 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gradient of a Straight Line</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: graph-paper page, one reading column; rise is always amber, run is always teal, everywhere */
+:root{
+  --bg:#f3f6f5; --paper:#ffffff; --ink:#15212a; --muted:#56666e; --line:#d3ddda; --grid:#e2ebe8;
+  --rise:#c9661a; --run:#13777e; --accent:#2b44c4; --ok:#1d7f46; --okbg:#e5f4ea; --bad:#b8400f; --badbg:#fbeae2;
+  --soft:#eef3f2; --sel:#dfe5fb;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1519; --paper:#172027; --ink:#e4ecee; --muted:#93a3aa; --line:#2b3840; --grid:#1f2b32;
+  --rise:#f2a05a; --run:#4cc2c8; --accent:#8ea0ff; --ok:#5fd58f; --okbg:#173326; --bad:#ff8d5c; --badbg:#3a2117;
+  --soft:#1c262d; --sel:#27315c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1519; --paper:#172027; --ink:#e4ecee; --muted:#93a3aa; --line:#2b3840; --grid:#1f2b32;
+  --rise:#f2a05a; --run:#4cc2c8; --accent:#8ea0ff; --ok:#5fd58f; --okbg:#173326; --bad:#ff8d5c; --badbg:#3a2117;
+  --soft:#1c262d; --sel:#27315c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 60px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+p{margin:0}
+.tr{font-style:italic;font-size:.86em;color:var(--muted);margin-top:2px}
+.bi{display:flex;flex-direction:column;gap:0}
+.stack{display:flex;flex-direction:column;gap:12px}
+i.v{font-family:Georgia,"Times New Roman",serif;font-style:italic}
+.rise{color:var(--rise);font-weight:700}.run{color:var(--run);font-weight:700}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}
+.fr>span:last-child{padding:0 3px}
+.eq{font-family:var(--f-body);font-size:1.05em;padding:6px 0 2px;overflow-x:auto}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .in{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px;display:flex;flex-direction:column;gap:6px}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-family:var(--f-display);font-weight:800;font-size:14px;letter-spacing:.02em}
+.score{font-family:var(--f-mono);font-size:13px;color:var(--muted);white-space:nowrap}
+.score b{color:var(--ok)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:0 0 auto;font-size:12.5px;font-weight:700;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--soft);white-space:nowrap}
+.chip .c{font-family:var(--f-mono);font-weight:500;color:var(--muted);margin-left:4px}
+.chip.full{border-color:var(--ok)}.chip.full .c{color:var(--ok)}
+.bar{height:4px;background:var(--soft);border-radius:4px;overflow:hidden}.bar>div{height:100%;background:var(--ok);width:0;transition:width .4s}
+/* hero */
+.hero{padding-block:36px 20px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.hero h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-.02em}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--run);margin-bottom:10px}
+.hero .lead{margin-top:14px;max-width:56ch}
+.sign{width:120px}
+@media (max-width:560px){.hero{grid-template-columns:1fr}.sign{width:90px}}
+/* sections */
+section.sec{margin-top:40px;display:flex;flex-direction:column;gap:18px;scroll-margin-top:110px}
+.sechead{display:flex;gap:14px;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.secnum{font-family:var(--f-mono);font-weight:700;color:var(--run);font-size:15px}
+.sechead h2{font-size:clamp(24px,4vw,32px)}
+.sechead .tr{font-size:15px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;min-width:0}
+.theory{border-left:5px solid var(--run)}
+.label{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.label .tag{letter-spacing:.04em;text-transform:none;font-weight:700;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-family:var(--f-mono);font-size:11px}
+.formula{background:var(--soft);border-radius:8px;padding:12px 16px;font-size:1.15em;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;overflow-x:auto}
+.fig{display:flex;justify-content:center;padding:6px 0;overflow-x:auto}
+.fig svg{max-width:100%;height:auto}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+@media (max-width:640px){.twocol{grid-template-columns:1fr}}
+ul.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.note{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:.95em}
+/* svg */
+svg .gl{stroke:var(--grid);stroke-width:1}
+svg .ax{stroke:var(--muted);stroke-width:1.4}
+svg .gt{fill:var(--muted);font-size:11px;font-family:var(--f-body)}
+svg .gt.b{fill:var(--ink);font-weight:700;font-size:12px}
+svg .ln{stroke:var(--ink);stroke-width:2.2;fill:none}
+svg .ln2{stroke:var(--accent);stroke-width:2.2;fill:none}
+svg .rs{stroke:var(--rise);stroke-width:2.4;fill:none}
+svg .rn{stroke:var(--run);stroke-width:2.4;fill:none}
+svg .rt{fill:var(--rise);font-weight:800;font-size:13px;font-family:var(--f-body)}
+svg .nt{fill:var(--run);font-weight:800;font-size:13px;font-family:var(--f-body)}
+svg .pt{fill:var(--accent)}
+svg .tx{fill:var(--ink);font-size:13px;font-family:var(--f-body)}
+svg .txm{fill:var(--muted);font-size:12px;font-family:var(--f-body)}
+svg .dash{stroke:var(--muted);stroke-width:1.4;stroke-dasharray:5 4;fill:none}
+svg .solid{stroke:var(--ink);stroke-width:1.6;fill:none}
+svg .fillsoft{fill:var(--soft);stroke:var(--ink);stroke-width:1.4}
+svg .fillroof{fill:var(--rise);opacity:.85}
+svg .fillgnd{fill:var(--line)}
+/* worked example */
+.ex{border-left:5px solid var(--rise)}
+.steps{display:flex;flex-direction:column;gap:10px;margin-top:12px;counter-reset:st}
+.step{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.step .n{width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--f-mono);font-size:12px;display:grid;place-items:center;margin-top:2px}
+.step>div{min-width:0}
+.ref{display:inline-block;font-size:11px;font-weight:700;font-family:var(--f-mono);color:var(--run);border:1px solid var(--run);border-radius:4px;padding:0 5px;margin-left:6px;text-decoration:none;font-style:normal;vertical-align:1px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{font:inherit;cursor:pointer}
+.btn{font-weight:700;font-size:14px;border-radius:8px;padding:7px 14px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:focus-visible,.opt:focus-visible,.dcard:focus-visible,input:focus-visible,.bin:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn[disabled]{opacity:.4;cursor:default}
+/* practice */
+.q{border-top:4px solid var(--ink)}
+.q.done{border-top-color:var(--ok)}
+.qhead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.qnum{font-family:var(--f-mono);font-weight:700;font-size:13px}
+.qtype{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.blanks{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.blank{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.blank input{width:110px;font:inherit;font-family:var(--f-mono);font-size:15px;padding:6px 8px;border:1.5px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+.blank input.ok{border-color:var(--ok);background:var(--okbg)}.blank input.bad{border-color:var(--bad);background:var(--badbg)}
+.hint-in{font-size:12px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:12px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:9px 12px;display:flex;gap:10px;align-items:center;min-width:0}
+.opt .k{font-family:var(--f-mono);font-weight:700;font-size:12px;width:22px;height:22px;border:1.5px solid var(--muted);border-radius:50%;display:grid;place-items:center;flex:0 0 auto}
+.opts.ma .opt .k{border-radius:4px}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--sel)}
+.opt[aria-pressed="true"] .k{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.dd{margin-top:12px;display:flex;flex-direction:column;gap:12px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:1.5px dashed var(--line);border-radius:8px}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bin{border:1.5px solid var(--line);border-radius:8px;padding:8px;min-height:90px;background:var(--soft);display:flex;flex-direction:column;gap:6px;cursor:pointer}
+.bin .bt{font-weight:800;font-size:13px}
+.bin .bt .tr{font-weight:400}
+.bin .zone{display:flex;flex-wrap:wrap;gap:6px}
+.bin.over{border-color:var(--accent)}
+.dcard{border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:7px;padding:5px 9px;font-size:14px;display:flex;align-items:center;gap:6px;touch-action:manipulation}
+.dcard svg{display:block}
+.dcard.sel{border-color:var(--accent);background:var(--sel)}
+.dcard.ok{border-color:var(--ok);background:var(--okbg)}.dcard.bad{border-color:var(--bad);background:var(--badbg)}
+.fb{margin-top:10px;font-weight:700;border-radius:8px;padding:8px 12px}
+.fb.ok{background:var(--okbg);color:var(--ok)}.fb.bad{background:var(--badbg);color:var(--bad)}
+.fb .tr{color:inherit;font-weight:400}
+.sol{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.sol h4{margin:0 0 4px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+/* interactive tools */
+.tool svg{touch-action:none;user-select:none}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px}
+.readout div{background:var(--soft);border-radius:8px;padding:8px 10px}
+.readout small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+.readout b{font-family:var(--f-mono);font-size:17px}
+.slider{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.slider input{width:100%}
+table.t{border-collapse:collapse;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:13.5px;width:100%}
+table.t th,table.t td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+table.t th{background:var(--soft);font-family:var(--f-body)}
+.tablewrap{overflow-x:auto;margin-top:10px}
+.final{border:2px solid var(--ink)}
+.bigscore{font-family:var(--f-display);font-size:44px;font-weight:800}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="top"><div class="in">
+  <div class="toprow"><span class="brand">Math Tutoring by Deni</span><span class="score" id="score">Correct: <b>0</b> / 0</span></div>
+  <div class="bar"><div id="bar"></div></div>
+  <nav class="chips" id="chips" aria-label="Sections"></nav>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Grade 7 · Pearson · Graphs</div>
+      <h1>Gradient of a Straight Line</h1>
+      <div class="lead bi">
+        <p>Funicular railways, bridges and roller coasters all have steep slopes. In this lesson you will learn to measure how steep a line is, step by step.</p>
+        <p class="tr">Kereta gantung, jembatan, dan roller coaster semuanya memiliki lereng yang curam. Dalam pelajaran ini kamu akan belajar mengukur seberapa curam sebuah garis, langkah demi langkah.</p>
+      </div>
+    </div>
+    <svg class="sign" viewBox="0 0 120 108" aria-label="Road sign showing a 10% slope">
+      <polygon points="60,6 114,100 6,100" fill="var(--paper)" stroke="var(--bad)" stroke-width="9" stroke-linejoin="round"/>
+      <polygon points="30,86 90,86 90,58" fill="var(--ink)"/>
+      <text x="56" y="80" text-anchor="middle" font-family="var(--f-mono)" font-weight="700" font-size="15" fill="var(--paper)">10%</text>
+    </svg>
+  </header>
+  <div id="lesson"></div>
+  <section class="sec" id="finish">
+    <div class="sechead"><span class="secnum">✓</span><div><h2>Key points and your result</h2><p class="tr">Poin penting dan hasilmu</p></div></div>
+    <div class="card final stack">
+      <div class="bigscore" id="final">0 / 0</div>
+      <ul class="pts">
+        <li><div class="bi"><p>Gradient <i class="v">m</i> = <span class="fr"><span class="rise">rise</span><span class="run">run</span></span> = <span class="fr"><span><i class="v">y</i>₂ − <i class="v">y</i>₁</span><span><i class="v">x</i>₂ − <i class="v">x</i>₁</span></span></p><p class="tr">Gradien m = naik ÷ mendatar.</p></div></li>
+        <li><div class="bi"><p>Uphill from left to right: positive gradient. Downhill: negative gradient.</p><p class="tr">Naik dari kiri ke kanan: gradien positif. Turun: gradien negatif.</p></div></li>
+        <li><div class="bi"><p>Horizontal lines have gradient 0. Vertical lines have an undefined gradient.</p><p class="tr">Garis mendatar bergradien 0. Garis tegak gradiennya tidak terdefinisi.</p></div></li>
+        <li><div class="bi"><p>Parallel lines have the same gradient.</p><p class="tr">Garis-garis sejajar memiliki gradien yang sama.</p></div></li>
+        <li><div class="bi"><p>In real-life problems: rise = <i class="v">m</i> × run and run = rise ÷ <i class="v">m</i>. Always draw a diagram.</p><p class="tr">Dalam soal kehidupan nyata: naik = m × mendatar dan mendatar = naik ÷ m. Selalu gambar diagram.</p></div></li>
+      </ul>
+      <div class="btns"><button class="btn ghost" id="resetAll" type="button">Reset all answers · Ulangi semua</button></div>
+    </div>
+  </section>
+  <footer>Math Tutoring by Deni · Gradient of a Straight Line</footer>
+</main>
+
+<script>
+/* ---------- helpers ---------- */
+const f=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const v=x=>`<i class="v">${x}</i>`;
+const RI=t=>`<span class="rise">${t}</span>`, RU=t=>`<span class="run">${t}</span>`;
+const B=(en,id)=>`<div class="bi"><p>${en}</p><p class="tr">${id}</p></div>`;
+const S=(en,id,eq,ref)=>({en,id,eq,ref});
+const M=v('m'), X1=v('x')+'₁',X2=v('x')+'₂',Y1=v('y')+'₁',Y2=v('y')+'₂';
+const FORM=`${M} = ${f(Y2+' − '+Y1, X2+' − '+X1)}`;
+const neg=n=>n<0?'('+String(n).replace('-','−')+')':String(n);
+const mn=s=>String(s).replace(/-/g,'−');
+
+let gid=0;
+function graph(o){
+  const u=o.u||30,sx=o.sx||1,sy=o.sy||1,pad=o.pad??26;
+  const {xmin,xmax,ymin,ymax}=o, nx=(xmax-xmin)/sx, ny=(ymax-ymin)/sy;
+  const W=nx*u+pad*2,H=ny*u+pad*2;
+  const X=x=>pad+(x-xmin)/sx*u, Y=y=>pad+(ymax-y)/sy*u;
+  const id='clip'+(gid++);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="${o.alt||'Graph of a straight line'}"><defs><clipPath id="${id}"><rect x="${pad}" y="${pad}" width="${nx*u}" height="${ny*u}"/></clipPath></defs>`;
+  for(let i=0;i<=nx;i++)s+=`<line class="gl" x1="${pad+i*u}" y1="${pad}" x2="${pad+i*u}" y2="${H-pad}"/>`;
+  for(let j=0;j<=ny;j++)s+=`<line class="gl" x1="${pad}" y1="${pad+j*u}" x2="${W-pad}" y2="${pad+j*u}"/>`;
+  const hasX=ymin<=0&&ymax>=0, hasY=xmin<=0&&xmax>=0;
+  const ax0=hasX?Y(0):H-pad, ay0=hasY?X(0):pad;
+  s+=`<line class="ax" x1="${pad-4}" y1="${ax0}" x2="${W-pad+8}" y2="${ax0}"/><line class="ax" x1="${ay0}" y1="${H-pad+4}" x2="${ay0}" y2="${pad-8}"/>`;
+  if(!o.nolabels){
+    for(let i=0;i<=nx;i++){const val=xmin+i*sx; if(val===0&&hasY)continue; s+=`<text class="gt" x="${X(val)}" y="${ax0+14}" text-anchor="middle">${mn(val)}</text>`;}
+    for(let j=0;j<=ny;j++){const val=ymin+j*sy; if(val===0&&hasX)continue; s+=`<text class="gt" x="${ay0-6}" y="${Y(val)+4}" text-anchor="end">${mn(val)}</text>`;}
+    if(hasX&&hasY)s+=`<text class="gt" x="${X(0)-5}" y="${Y(0)+13}" text-anchor="end">0</text>`;
+    s+=`<text class="gt b" x="${W-pad+12}" y="${ax0+4}" font-style="italic">x</text><text class="gt b" x="${ay0+5}" y="${pad-10}" font-style="italic">y</text>`;
+  }
+  (o.lines||[]).forEach(l=>{const [a,b]=l.p,dx=b[0]-a[0],dy=b[1]-a[1],k=60;
+    s+=`<line clip-path="url(#${id})" class="${l.cls||'ln'}" x1="${X(a[0]-k*dx)}" y1="${Y(a[1]-k*dy)}" x2="${X(a[0]+k*dx)}" y2="${Y(a[1]+k*dy)}"/>`;});
+  if(o.tri){const t=o.tri,[a,b]=[t.a,t.b];
+    if(t.order==='vh'){s+=`<line class="rs" x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(a[0])}" y2="${Y(b[1])}"/><line class="rn" x1="${X(a[0])}" y1="${Y(b[1])}" x2="${X(b[0])}" y2="${Y(b[1])}"/>`;
+      s+=`<text class="rt" x="${X(a[0])+6}" y="${(Y(a[1])+Y(b[1]))/2+4}">${t.rise}</text><text class="nt" x="${(X(a[0])+X(b[0]))/2}" y="${Y(b[1])-6}" text-anchor="middle">${t.run}</text>`;}
+    else{s+=`<line class="rn" x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(a[1])}"/><line class="rs" x1="${X(b[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}"/>`;
+      s+=`<text class="nt" x="${(X(a[0])+X(b[0]))/2}" y="${Y(a[1])+15}" text-anchor="middle">${t.run}</text><text class="rt" x="${X(b[0])+6}" y="${(Y(a[1])+Y(b[1]))/2+4}">${t.rise}</text>`;}
+  }
+  (o.pts||[]).forEach(p=>{s+=`<circle class="pt" cx="${X(p[0])}" cy="${Y(p[1])}" r="4.5"/>`; if(p[2])s+=`<text class="tx" font-weight="700" x="${X(p[0])+(p[3]||-8)}" y="${Y(p[1])-8}" text-anchor="${(p[3]||-8)<0?'end':'start'}">${p[2]}</text>`;});
+  return s+'</svg>';
+}
+const mini=(a,b)=>graph({xmin:-3,xmax:3,ymin:-3,ymax:3,u:12,pad:5,nolabels:true,lines:[{p:[a,b]}],alt:'small line graph'});
+
+/* fixed figures */
+const FIG={
+ riseRun:(coords)=>`<svg viewBox="0 0 340 200" width="340" role="img" aria-label="Sloping line with rise and run marked">
+  <line class="ln" x1="40" y1="160" x2="280" y2="40"/>
+  <line class="rn" x1="40" y1="178" x2="280" y2="178"/><text class="nt" x="160" y="194" text-anchor="middle">run</text>
+  <line class="rs" x1="300" y1="40" x2="300" y2="160"/><text class="rt" x="308" y="104">rise</text>
+  <line class="dash" x1="40" y1="160" x2="280" y2="160"/><line class="dash" x1="280" y1="40" x2="280" y2="160"/>
+  <circle class="pt" cx="40" cy="160" r="5"/><circle class="pt" cx="280" cy="40" r="5"/>
+  ${coords?`<text class="tx" x="32" y="148" text-anchor="end">(${X1}, ${Y1})</text><text class="tx" x="272" y="30" text-anchor="end">(${X2}, ${Y2})</text>`:''}</svg>`,
+ triUp:(r,n,la,lb)=>`<svg viewBox="0 0 240 170" width="240" role="img" aria-label="Right-angled triangle from A up to B">
+  <polygon points="30,140 200,140 200,30" fill="none" stroke="var(--ink)" stroke-width="2"/><rect x="190" y="130" width="10" height="10" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
+  <line class="rn" x1="30" y1="140" x2="200" y2="140"/><line class="rs" x1="200" y1="140" x2="200" y2="30"/>
+  <text class="nt" x="115" y="158" text-anchor="middle">${n}</text><text class="rt" x="208" y="90">${r}</text>
+  <text class="tx" font-weight="700" x="22" y="146" text-anchor="end">${la||'A'}</text><text class="tx" font-weight="700" x="200" y="22" text-anchor="middle">${lb||'B'}</text></svg>`,
+ triDown:`<svg viewBox="0 0 280 150" width="280" role="img" aria-label="Right-angled triangle from A at top-left down to B">
+  <polygon points="40,30 40,120 250,120" fill="none" stroke="var(--ink)" stroke-width="2"/><rect x="40" y="110" width="10" height="10" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
+  <line class="rs" x1="40" y1="30" x2="40" y2="120"/><line class="rn" x1="40" y1="120" x2="250" y2="120"/>
+  <text class="rt" x="30" y="80" text-anchor="end">2</text><text class="nt" x="145" y="138" text-anchor="middle">4</text>
+  <text class="tx" font-weight="700" x="40" y="22" text-anchor="middle">A</text><text class="tx" font-weight="700" x="258" y="125">B</text></svg>`,
+ ramp:`<svg viewBox="0 0 320 120" width="320" role="img" aria-label="Wheelchair ramp">
+  <polygon points="20,100 290,100 290,55" class="fillsoft"/><line class="rn" x1="20" y1="108" x2="290" y2="108"/><line class="rs" x1="300" y1="100" x2="300" y2="55"/>
+  <text class="nt" x="155" y="118" text-anchor="middle">6 m</text><text class="rt" x="306" y="82">0.5 m</text></svg>`,
+ ladder:`<svg viewBox="0 0 270 230" width="270" role="img" aria-label="Ladder leaning on a wall">
+  <rect x="20" y="200" width="230" height="8" class="fillgnd"/><rect x="200" y="20" width="16" height="180" class="fillsoft"/>
+  <line class="solid" x1="150" y1="200" x2="200" y2="40" stroke-width="3"/><line class="solid" x1="160" y1="200" x2="200" y2="72" stroke-width="3"/>
+  ${[0.2,0.35,0.5,0.65,0.8].map(t=>`<line class="solid" x1="${150+50*t}" y1="${200-160*t}" x2="${160+40*t}" y2="${200-128*t}"/>`).join('')}
+  <line class="rs" x1="232" y1="40" x2="232" y2="200"/><text class="rt" x="238" y="125">12 m</text>
+  <line class="rn" x1="150" y1="216" x2="200" y2="216"/><text class="nt" x="175" y="229" text-anchor="middle">?</text></svg>`,
+ shed:`<svg viewBox="0 0 280 210" width="280" role="img" aria-label="Side view of the garden shed">
+  <rect x="20" y="180" width="240" height="6" class="fillgnd"/>
+  <polygon points="70,50 210,99 210,180 70,180" class="fillsoft"/><polygon points="62,44 218,98 218,106 62,52" class="fillroof"/>
+  <rect x="100" y="110" width="36" height="70" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+  <line class="rs" x1="50" y1="50" x2="50" y2="180"/><text class="rt" x="44" y="118" text-anchor="end">h = ?</text>
+  <line class="dash" x1="230" y1="99" x2="230" y2="180"/><text class="tx" x="236" y="144">1.8 m</text>
+  <line class="rn" x1="70" y1="196" x2="210" y2="196"/><text class="nt" x="140" y="208" text-anchor="middle">1.5 m</text>
+  <text class="txm" x="150" y="62" text-anchor="middle">roof gradient 0.35</text></svg>`,
+ stadium:`<svg viewBox="0 0 310 200" width="310" role="img" aria-label="Stadium seats on a slope">
+  <polygon points="40,150 260,40 260,170 40,170" class="fillsoft"/>
+  <line class="ln" x1="40" y1="150" x2="260" y2="40"/>
+  ${[0,1,2,3,4,5,6,7,8].map(k=>{const x=52+k*25,y=150-(x-40)/2;return `<line class="solid" x1="${x}" y1="${y}" x2="${x}" y2="${y-12}"/>`}).join('')}
+  <line class="rs" x1="276" y1="40" x2="276" y2="170"/><text class="rt" x="282" y="110">12 m</text>
+  <line class="rn" x1="40" y1="186" x2="260" y2="186"/><text class="nt" x="150" y="198" text-anchor="middle">20 m</text>
+  <text class="tx" font-weight="700" x="32" y="166" text-anchor="end">h</text><text class="txm" x="130" y="88" text-anchor="middle">gradient ½</text></svg>`,
+ road:`<svg viewBox="0 0 530 170" width="530" role="img" aria-label="Road profile with three sections (heights exaggerated)">
+  <polygon points="20,130 123,100 272,100 500,60 500,140 20,140" class="fillsoft"/>
+  <polyline class="ln" points="20,130 123,100 272,100 500,60"/>
+  <text class="rt" x="70" y="104" text-anchor="middle">1/15</text><text class="txm" x="197" y="92" text-anchor="middle">flat (0)</text><text class="rt" x="385" y="70" text-anchor="middle">1/25</text>
+  <line class="rn" x1="20" y1="154" x2="123" y2="154"/><line class="rn" x1="127" y1="154" x2="272" y2="154"/><line class="rn" x1="276" y1="154" x2="500" y2="154"/>
+  <text class="nt" x="71" y="168" text-anchor="middle">90 m</text><text class="nt" x="199" y="168" text-anchor="middle">130 m</text><text class="nt" x="388" y="168" text-anchor="middle">200 m</text></svg>`,
+ masts:`<svg viewBox="0 0 320 220" width="320" role="img" aria-label="Mast with wire ropes AB and AD">
+  <line class="solid" x1="30" y1="190" x2="300" y2="190"/>
+  <line class="ln" x1="200" y1="30" x2="40" y2="190"/><line class="ln" x1="200" y1="30" x2="280" y2="190"/>
+  <line class="dash" x1="200" y1="30" x2="200" y2="190"/><polygon points="194,190 206,190 202,40 198,40" fill="var(--muted)"/>
+  <text class="tx" font-weight="700" x="200" y="22" text-anchor="middle">A</text><text class="tx" font-weight="700" x="36" y="208">B</text><text class="tx" font-weight="700" x="196" y="208">C</text><text class="tx" font-weight="700" x="278" y="208">D</text>
+  <text class="rt" x="210" y="120">106 m</text><line class="rn" x1="200" y1="198" x2="280" y2="198"/><text class="nt" x="240" y="216" text-anchor="middle">53 m</text></svg>`,
+ crane:`<svg viewBox="0 0 280 210" width="280" role="img" aria-label="Boat hanging from wire ropes AB and AD">
+  <polygon points="20,160 260,160 232,192 48,192" class="fillsoft"/><rect x="110" y="134" width="60" height="26" class="fillsoft"/><rect x="126" y="118" width="16" height="16" class="fillsoft"/>
+  <line class="ln" x1="155" y1="40" x2="22" y2="160"/><line class="ln" x1="155" y1="40" x2="235" y2="160"/>
+  <line class="dash" x1="155" y1="40" x2="155" y2="160"/>
+  <text class="tx" font-weight="700" x="155" y="32" text-anchor="middle">A</text><text class="tx" font-weight="700" x="12" y="164" text-anchor="end">B</text><text class="tx" font-weight="700" x="160" y="156">C</text><text class="tx" font-weight="700" x="244" y="164">D</text>
+  <line class="rn" x1="22" y1="204" x2="155" y2="204"/><text class="nt" x="88" y="200" text-anchor="middle">5 m</text></svg>`,
+ coaster:`<svg viewBox="0 0 300 230" width="300" role="img" aria-label="Roller coaster drop in two sections">
+  <line class="solid" x1="30" y1="210" x2="225" y2="210"/><line class="dash" x1="225" y1="210" x2="225" y2="15"/>
+  <polyline class="ln" points="30,210 186,132 225,15"/><circle class="pt" cx="186" cy="132" r="5"/>
+  <text class="tx" font-weight="700" x="176" y="128" text-anchor="end">A</text>
+  <text class="rt" x="90" y="160" text-anchor="middle">gradient ½</text><text class="rt" x="200" y="62" text-anchor="end">gradient 3</text>
+  <text class="tx" x="232" y="118">65 m</text><text class="nt" x="128" y="226" text-anchor="middle">65 m</text></svg>`
+};
+
+/* ---------- lesson content ---------- */
+const SECTIONS=[
+{ id:'s1', title:['What is gradient?','Apa itu gradien?'],
+  theory:`<div class="label">Theory 1 · Teori 1</div><div class="stack">
+   ${B(`The slope of a line is its <b>gradient</b>. The larger the gradient, the steeper the slope. The letter ${M} is usually used for the gradient.`,`Kemiringan sebuah garis disebut <b>gradien</b>. Semakin besar gradiennya, semakin curam kemiringannya. Huruf m biasanya dipakai untuk menyatakan gradien.`)}
+   <div class="twocol"><div class="fig">${FIG.riseRun(false)}</div>
+   <div class="stack">${B(`${RI('Rise')} is the vertical change (how far up).`,`Naik (rise) adalah perubahan tegak (seberapa jauh ke atas).`)}${B(`${RU('Run')} is the horizontal change (how far across).`,`Mendatar (run) adalah perubahan mendatar (seberapa jauh ke samping).`)}</div></div>
+   <div class="formula">${M} = ${f('change in '+v('y'),'change in '+v('x'))} = ${f(RI('rise'),RU('run'))}</div>
+   <div class="note">${B(`Road signs show gradient as a percentage. A sign showing <b>10%</b> means the road rises 10 m for every 100 m across, so ${M} = ${f(10,100)} = 0.1.`,`Rambu jalan menunjukkan gradien dalam persen. Rambu <b>10%</b> berarti jalan naik 10 m setiap 100 m mendatar, jadi m = 10/100 = 0,1.`)}</div></div>`,
+  examples:[{t:['A wheelchair ramp','Jalur landai kursi roda'],
+    q:B('A wheelchair ramp rises 0.5 m over a horizontal distance of 6 m. Find its gradient.','Jalur landai kursi roda naik 0,5 m sepanjang jarak mendatar 6 m. Tentukan gradiennya.'),fig:FIG.ramp,
+    steps:[S('Identify the rise and the run from the diagram.','Tentukan naik dan mendatar dari diagram.',`${RI('rise')} = 0.5 m, &nbsp; ${RU('run')} = 6 m`,1),
+      S('Divide rise by run.','Bagi naik dengan mendatar.',`${M} = ${f(RI('0.5'),RU('6'))} = ${f(1,12)} ≈ 0.083`,1),
+      S('Interpret: a small gradient means a gentle slope, which is safe for wheelchairs.','Artinya: gradien kecil berarti kemiringan landai, aman untuk kursi roda.')]}],
+  qs:[
+   {type:'fill',src:'Ex 1 · Q1',q:B('Find the gradient of the straight line joining A to B.','Tentukan gradien garis lurus yang menghubungkan A ke B.'),fig:FIG.triUp(3,3),
+    blanks:[{pre:M+' =',ans:1}],
+    steps:[S('Read the rise (vertical side) and the run (horizontal side).','Baca naik (sisi tegak) dan mendatar (sisi datar).',`${RI('rise')} = 3, &nbsp; ${RU('run')} = 3`,1),S('Divide.','Bagi.',`${M} = ${f(RI(3),RU(3))} = 1`,1)]},
+   {type:'fill',q:B('Find the gradient of the line from P to Q. Write your answer as a fraction or decimal.','Tentukan gradien garis dari P ke Q. Tulis jawaban dalam bentuk pecahan atau desimal.'),fig:FIG.triUp(5,2,'P','Q'),
+    blanks:[{pre:M+' =',ans:2.5}],
+    steps:[S('Rise = 5 (up), run = 2 (across).','Naik = 5, mendatar = 2.',`${M} = ${f(RI(5),RU(2))} = 2.5`,1),S('A gradient bigger than 1 means the line rises faster than it moves across, so it is steep.','Gradien lebih dari 1 berarti garis naik lebih cepat daripada bergeser ke samping, jadi curam.')]},
+   {type:'mc',q:B('Four ramps are described below. Which ramp is the <b>steepest</b>?','Empat jalur landai dijelaskan di bawah. Jalur mana yang <b>paling curam</b>?'),
+    opts:['Ramp A: rise 3 m, run 4 m','Ramp B: rise 5 m, run 2 m','Ramp C: rise 4 m, run 4 m','Ramp D: rise 2 m, run 3 m'],ans:1,
+    steps:[S('Work out each gradient = rise ÷ run.','Hitung setiap gradien = naik ÷ mendatar.','A: 0.75 &nbsp; B: 2.5 &nbsp; C: 1 &nbsp; D: 0.67',1),S('The larger the gradient, the steeper the slope, so Ramp B is the steepest.','Semakin besar gradien, semakin curam, jadi Jalur B paling curam.',null,1)]},
+   {type:'dd',q:B('Drag each slope into the correct group. Tip: work out rise ÷ run first.','Seret setiap lereng ke kelompok yang benar. Tips: hitung dulu naik ÷ mendatar.'),
+    bins:[['steep','Steeper than '+M+' = 1','Lebih curam dari m = 1'],['gentle','Less steep than '+M+' = 1','Kurang curam dari m = 1']],
+    items:[['rise 6, run 2','steep'],['rise 2, run 8','gentle'],['rise 9, run 4','steep'],['rise 3, run 5','gentle'],['road sign 12%','gentle'],['stair: rise 18 cm, run 15 cm','steep']],
+    steps:[S('Gradients: 6÷2 = 3, 2÷8 = 0.25, 9÷4 = 2.25, 3÷5 = 0.6, 12% = 0.12, 18÷15 = 1.2.','Gradien: 3; 0,25; 2,25; 0,6; 0,12; 1,2.',null,1),S('Gradients greater than 1 are steeper than a 45° slope; those less than 1 are gentler.','Gradien lebih dari 1 lebih curam; gradien kurang dari 1 lebih landai.')]}
+  ]},
+
+{ id:'s2', title:['Gradient from two points','Gradien dari dua titik'],
+  theory:`<div class="label">Theory 2 · Teori 2</div><div class="stack">
+   ${B(`If a straight line joins the points (${X1}, ${Y1}) and (${X2}, ${Y2}), then`,`Jika garis lurus menghubungkan titik (x₁, y₁) dan (x₂, y₂), maka`)}
+   <div class="twocol"><div class="fig">${FIG.riseRun(true)}</div>
+   <div class="stack"><div class="formula">${RI('rise')} = ${Y2} − ${Y1}</div><div class="formula">${RU('run')} = ${X2} − ${X1}</div><div class="formula">${FORM}</div></div></div>
+   ${B(`<b>Keep the same order on top and bottom.</b> If you start with B on top, start with B on the bottom too.`,`<b>Jaga urutan yang sama di pembilang dan penyebut.</b> Jika di atas dimulai dari B, di bawah juga dimulai dari B.`)}
+   ${B(`Be careful with negative numbers: subtracting a negative is the same as adding, e.g. 4 − (−3) = 7.`,`Hati-hati dengan bilangan negatif: mengurangi bilangan negatif sama dengan menambah, misalnya 4 − (−3) = 7.`)}</div>`,
+  tool:'explorer',
+  examples:[{t:['Example 1 (two methods)','Contoh 1 (dua cara)'],src:'Example 1',
+     q:B('Find the gradient of the straight line joining A(1, 2) to B(3, 6).','Tentukan gradien garis lurus yang menghubungkan A(1, 2) ke B(3, 6).'),
+     fig:graph({xmin:0,xmax:4,ymin:0,ymax:7,u:28,lines:[{p:[[1,2],[3,6]]}],tri:{a:[1,2],b:[3,6],rise:'4',run:'2'},pts:[[1,2,'A(1, 2)'],[3,6,'B(3, 6)']]}),
+     steps:[S('Method 1: draw a diagram. Go across from A, then up to B.','Cara 1: gambar diagram. Bergerak mendatar dari A, lalu naik ke B.',`${RU('run')} = 3 − 1 = 2, &nbsp; ${RI('rise')} = 6 − 2 = 4`,2),
+       S('Gradient = rise ÷ run.','Gradien = naik ÷ mendatar.',`${M} = ${f(RI(4),RU(2))} = 2 &nbsp;(a positive gradient)`,1),
+       S(`Method 2: use the formula with ${X1} = 1, ${Y1} = 2, ${X2} = 3, ${Y2} = 6.`,'Cara 2: gunakan rumus dengan x₁ = 1, y₁ = 2, x₂ = 3, y₂ = 6.',`${M} = ${f('6 − 2','3 − 1')} = ${f(4,2)} = 2`,2),
+       S('Both methods give the same answer.','Kedua cara memberikan jawaban yang sama.')]},
+   {t:['Working with negative coordinates','Bekerja dengan koordinat negatif'],
+     q:B('Find the gradient of the line joining A(−3, 4) and B(5, −2).','Tentukan gradien garis yang menghubungkan A(−3, 4) dan B(5, −2).'),
+     steps:[S('Label the points.','Beri label pada titik.',`${X1} = −3, ${Y1} = 4, ${X2} = 5, ${Y2} = −2`,2),
+       S('Rise: subtract the y-values in order.','Naik: kurangkan nilai y sesuai urutan.',`${RI('rise')} = −2 − 4 = −6`,2),
+       S('Run: subtracting −3 means adding 3.','Mendatar: mengurangi −3 berarti menambah 3.',`${RU('run')} = 5 − (−3) = 8`,2),
+       S('Divide and simplify.','Bagi lalu sederhanakan.',`${M} = ${f('−6','8')} = −${f(3,4)}`,2)]}],
+  qs:[
+   {type:'fill',src:'Ex 1 · Q3',q:B('A is (1, 3) and B is (2, 6). Find the gradient of AB.','A(1, 3) dan B(2, 6). Tentukan gradien AB.'),blanks:[{pre:M+' =',ans:3}],
+    steps:[S('Use the formula.','Gunakan rumus.',`${M} = ${f('6 − 3','2 − 1')} = ${f(3,1)} = 3`,2)]},
+   {type:'fill',src:'Ex 1 · Q4',q:B('A is (−4, −1) and B is (4, 1). Find the gradient of AB.','A(−4, −1) dan B(4, 1). Tentukan gradien AB.'),blanks:[{pre:M+' =',ans:0.25}],
+    steps:[S('Rise: 1 − (−1) = 2. Run: 4 − (−4) = 8.','Naik: 1 − (−1) = 2. Mendatar: 4 − (−4) = 8.',null,2),S('Divide and simplify.','Bagi dan sederhanakan.',`${M} = ${f(2,8)} = ${f(1,4)}`,2)]},
+   {type:'fill',q:B('A is (−1, 4) and B is (3, −2). Fill in each step.','A(−1, 4) dan B(3, −2). Isi setiap langkah.'),
+    blanks:[{pre:RI('rise')+' = '+Y2+' − '+Y1+' =',ans:-6},{pre:RU('run')+' = '+X2+' − '+X1+' =',ans:4},{pre:M+' =',ans:-1.5,hint:'fraction or decimal'}],
+    steps:[S('Rise = −2 − 4 = −6.','Naik = −2 − 4 = −6.',null,2),S('Run = 3 − (−1) = 4.','Mendatar = 3 − (−1) = 4.',null,2),S('Gradient.','Gradien.',`${M} = ${f('−6','4')} = −${f(3,2)} = −1.5`,2)]},
+   {type:'ma',q:B('A(2, 7) and B(5, 1). Select <b>all</b> the calculations that give the correct gradient of AB.','A(2, 7) dan B(5, 1). Pilih <b>semua</b> perhitungan yang memberikan gradien AB yang benar.'),
+    opts:[f('1 − 7','5 − 2'),f('7 − 1','2 − 5'),f('7 − 1','5 − 2'),f('5 − 2','1 − 7')],ans:[0,1],
+    steps:[S('Both the top and the bottom must start with the same point.','Pembilang dan penyebut harus dimulai dari titik yang sama.',`${f('1 − 7','5 − 2')} = ${f('−6','3')} = −2 &nbsp; and &nbsp; ${f('7 − 1','2 − 5')} = ${f('6','−3')} = −2`,2),
+      S('Option C mixes the order (gives +2, wrong sign). Option D puts run over rise.','Pilihan C mencampur urutan (hasil +2, tandanya salah). Pilihan D membalik mendatar di atas naik.')]},
+   {type:'fill',src:'Ex 1* · Q1',q:B('Find the gradient of the straight line joining A(−4, −1) to B(4, 2).','Tentukan gradien garis lurus yang menghubungkan A(−4, −1) ke B(4, 2).'),blanks:[{pre:M+' =',ans:0.375}],
+    steps:[S('Rise = 2 − (−1) = 3, run = 4 − (−4) = 8.','Naik = 3, mendatar = 8.',`${M} = ${f(3,8)}`,2)]}
+  ]},
+
+{ id:'s3', title:['Positive and negative gradients','Gradien positif dan negatif'],
+  theory:`<div class="label">Theory 3 · Teori 3</div><div class="stack">
+   <div class="twocol"><div class="stack" style="align-items:center">${mini([-2,-2],[2,1])}${B('Uphill from left to right: <b>positive</b> gradient.','Naik dari kiri ke kanan: gradien <b>positif</b>.')}</div>
+   <div class="stack" style="align-items:center">${mini([-2,2],[2,-1])}${B('Downhill from left to right: <b>negative</b> gradient.','Turun dari kiri ke kanan: gradien <b>negatif</b>.')}</div></div>
+   ${B('<b>Reading the gradient from a graph:</b> choose two points where the line crosses grid lines exactly. Count the run (to the right) and the rise (up is +, down is −). Then divide.','<b>Membaca gradien dari grafik:</b> pilih dua titik di mana garis tepat melewati perpotongan garis kotak. Hitung mendatar (ke kanan) dan naik (ke atas +, ke bawah −). Lalu bagi.')}
+   <div class="note">${B('<b>Hint:</b> do not just count squares or use a ruler if the <i>x</i> and <i>y</i> scales are different. Always use the numbers on the axes.','<b>Petunjuk:</b> jangan hanya menghitung kotak atau memakai penggaris jika skala sumbu x dan y berbeda. Selalu gunakan angka pada sumbu.')}</div></div>`,
+  examples:[{t:['Example 2: reading a graph','Contoh 2: membaca grafik'],src:'Example 2',
+    q:B('Find the gradient of the graph.','Tentukan gradien grafik tersebut.'),
+    fig:graph({xmin:0,xmax:8,ymin:0,ymax:6,u:30,lines:[{p:[[0,4],[8,0]]}],tri:{a:[2,3],b:[6,1],order:'vh',rise:'−2',run:'4'},pts:[[2,3,'(2, 3)',8],[6,1,'(6, 1)',8]]}),
+    steps:[S('Choose two points exactly on grid corners: (2, 3) and (6, 1).','Pilih dua titik tepat pada sudut kotak: (2, 3) dan (6, 1).',null,3),
+      S('From (2, 3) the line goes DOWN 2 and ACROSS 4.','Dari (2, 3) garis TURUN 2 dan MENDATAR 4.',`${RI('rise')} = −2, &nbsp; ${RU('run')} = 4`,3),
+      S('Gradient = rise ÷ run.','Gradien = naik ÷ mendatar.',`${M} = ${f('−2','4')} = −${f(1,2)} &nbsp;(a negative gradient)`,1),
+      S('Check with the formula.','Periksa dengan rumus.',`${M} = ${f('1 − 3','6 − 2')} = ${f('−2','4')} = −${f(1,2)}`,2)]}],
+  qs:[
+   {type:'fill',src:'Ex 1 · Q2',q:B('Find the gradient of the straight line joining A to B.','Tentukan gradien garis lurus yang menghubungkan A ke B.'),fig:FIG.triDown,blanks:[{pre:M+' =',ans:-0.5}],
+    steps:[S('Going from A to B the line goes DOWN, so the gradient is negative.','Dari A ke B garis TURUN, jadi gradiennya negatif.',null,3),S('Rise = −2, run = 4.','Naik = −2, mendatar = 4.',`${M} = ${f('−2','4')} = −${f(1,2)}`,1)]},
+   {type:'fill',src:'Ex 1 · Q5',q:B('A is (−2, 2) and B is (2, 1). Find the gradient of AB.','A(−2, 2) dan B(2, 1). Tentukan gradien AB.'),blanks:[{pre:M+' =',ans:-0.25}],
+    steps:[S('Formula.','Rumus.',`${M} = ${f('1 − 2','2 − (−2)')} = ${f('−1','4')} = −${f(1,4)}`,2),S('Negative: the line goes down from left to right.','Negatif: garis turun dari kiri ke kanan.',null,3)]},
+   {type:'fill',src:'Ex 1 · Q6',q:B('Find the gradient of the graph.','Tentukan gradien grafik tersebut.'),fig:graph({xmin:-2,xmax:3,ymin:-2,ymax:4,u:30,lines:[{p:[[0,1],[1,3]]}]}),blanks:[{pre:M+' =',ans:2}],
+    steps:[S('The line passes exactly through (0, 1) and (1, 3).','Garis tepat melewati (0, 1) dan (1, 3).',null,3),S('Across 1, up 2.','Mendatar 1, naik 2.',`${M} = ${f(RI(2),RU(1))} = 2`,1)]},
+   {type:'fill',src:'Ex 1 · Q7',q:B('Find the gradient of the graph.','Tentukan gradien grafik tersebut.'),fig:graph({xmin:-1,xmax:4,ymin:-1,ymax:4,u:30,lines:[{p:[[0,3],[3,0]]}]}),blanks:[{pre:M+' =',ans:-1}],
+    steps:[S('The line passes through (0, 3) and (3, 0).','Garis melewati (0, 3) dan (3, 0).',null,3),S('Down 3, across 3.','Turun 3, mendatar 3.',`${M} = ${f('−3','3')} = −1`,1)]},
+   {type:'fill',src:'Ex 1* · Q2',q:B('Find the gradient of the straight line joining A(−3, 2) to B(4, −4).','Tentukan gradien garis lurus yang menghubungkan A(−3, 2) ke B(4, −4).'),blanks:[{pre:M+' =',ans:-6/7,hint:'e.g. -6/7'}],
+    steps:[S('Formula.','Rumus.',`${M} = ${f('−4 − 2','4 − (−3)')} = ${f('−6','7')} = −${f(6,7)}`,2)]},
+   {type:'fill',src:'Ex 1* · Q3',q:B('Find the gradient of the graph.','Tentukan gradien grafik tersebut.'),fig:graph({xmin:-2,xmax:4,ymin:-2,ymax:2,u:30,lines:[{p:[[1,0],[3,1]]}]}),blanks:[{pre:M+' =',ans:0.5}],
+    steps:[S('Exact points: (1, 0) and (3, 1).','Titik tepat: (1, 0) dan (3, 1).',null,3),S('Across 2, up 1.','Mendatar 2, naik 1.',`${M} = ${f(RI(1),RU(2))} = ${f(1,2)}`,1)]},
+   {type:'fill',src:'Ex 1* · Q4',q:B('Find the gradient of the graph.','Tentukan gradien grafik tersebut.'),fig:graph({xmin:-2,xmax:2,ymin:-2,ymax:3,u:30,lines:[{p:[[0,1],[1,-2]]}]}),blanks:[{pre:M+' =',ans:-3}],
+    steps:[S('Exact points: (0, 1) and (1, −2).','Titik tepat: (0, 1) dan (1, −2).',null,3),S('Across 1, down 3.','Mendatar 1, turun 3.',`${M} = ${f('−3','1')} = −3`,1)]},
+   {type:'mc',q:B('Look carefully at the scales. What is the gradient of this line?','Perhatikan skalanya baik-baik. Berapa gradien garis ini?'),
+    fig:graph({xmin:0,xmax:8,ymin:0,ymax:4,sx:2,sy:1,u:34,lines:[{p:[[0,0],[8,4]]}]}),
+    opts:['1',f(1,2),'2','4'],ans:1,
+    steps:[S('Counting squares gives 4 across and 4 up, but each square on the x-axis is worth 2.','Menghitung kotak memberi 4 mendatar dan 4 naik, tetapi tiap kotak di sumbu x bernilai 2.',null,3),
+      S('Use the axis numbers: the line goes from (0, 0) to (8, 4).','Gunakan angka sumbu: garis dari (0, 0) ke (8, 4).',`${M} = ${f(4,8)} = ${f(1,2)}`,2)]},
+   {type:'dd',q:B('Drag each graph into the correct group.','Seret setiap grafik ke kelompok yang benar.'),
+    bins:[['pos','Positive gradient','Gradien positif'],['neg','Negative gradient','Gradien negatif']],
+    items:[[mini([-2,-2],[2,1]),'pos'],[mini([-2,2],[2,-1]),'neg'],[mini([-3,-1],[1,3]),'pos'],[mini([-1,3],[1,-3]),'neg'],[mini([-3,0],[3,2]),'pos'],[mini([-2,3],[3,-2]),'neg']],
+    steps:[S('Read each graph from left to right. Going up means positive; going down means negative.','Baca setiap grafik dari kiri ke kanan. Naik berarti positif; turun berarti negatif.',null,3)]}
+  ]},
+
+{ id:'s4', title:['Horizontal and vertical lines','Garis mendatar dan garis tegak'],
+  theory:`<div class="label">Theory 4 · Teori 4</div><div class="stack">
+   <div class="twocol"><div class="stack">${B(`<b>Horizontal line:</b> the y-values are equal, so the rise is 0.`,`<b>Garis mendatar:</b> nilai y sama, jadi naiknya 0.`)}<div class="formula">${M} = ${f('0','run')} = 0</div></div>
+   <div class="stack">${B(`<b>Vertical line:</b> the x-values are equal, so the run is 0. We cannot divide by 0.`,`<b>Garis tegak:</b> nilai x sama, jadi mendatarnya 0. Kita tidak bisa membagi dengan 0.`)}<div class="formula">${M} = ${f('rise','0')} → undefined</div></div></div>
+   ${B('A vertical line is "infinitely steep", so its gradient is <b>undefined</b> (not defined).','Garis tegak "sangat curam tak terhingga", sehingga gradiennya <b>tidak terdefinisi</b>.')}</div>`,
+  tool:'activity',
+  examples:[{t:['Horizontal and vertical','Mendatar dan tegak'],
+    q:B('Find the gradient of (a) the line through (−2, 3) and (4, 3); (b) the line through (5, −1) and (5, 4).','Tentukan gradien (a) garis melalui (−2, 3) dan (4, 3); (b) garis melalui (5, −1) dan (5, 4).'),
+    steps:[S('(a) The y-values are both 3, so the line is horizontal.','(a) Nilai y keduanya 3, jadi garis mendatar.',`${M} = ${f('3 − 3','4 − (−2)')} = ${f(0,6)} = 0`,4),
+      S('(b) The x-values are both 5, so the line is vertical.','(b) Nilai x keduanya 5, jadi garis tegak.',`${M} = ${f('4 − (−1)','5 − 5')} = ${f(5,0)} → undefined`,4)]}],
+  qs:[
+   {type:'fill',src:'Activity 1',q:B('Find the gradient of the line AB, where A(1, 1), B(11, 2) and C(11, 1).','Tentukan gradien garis AB, dengan A(1, 1), B(11, 2) dan C(11, 1).'),blanks:[{pre:M+' =',ans:0.1}],
+    steps:[S('Rise = BC = 2 − 1 = 1. Run = AC = 11 − 1 = 10.','Naik = BC = 1. Mendatar = AC = 10.',`${M} = ${f(1,10)} = 0.1`,2)]},
+   {type:'mc',q:B('Use the Activity tool above. As point B moves down closer to C, what happens to the gradient of AB?','Gunakan alat Aktivitas di atas. Saat titik B bergerak turun mendekati C, apa yang terjadi pada gradien AB?'),
+    opts:['It gets closer to 0','It gets larger and larger','It stays the same','It becomes negative'],ans:0,
+    steps:[S('The run stays 10 but the rise shrinks towards 0, so the gradient approaches 0 ÷ 10 = 0. AB becomes the horizontal line AC.','Mendatar tetap 10 tetapi naik mengecil menuju 0, jadi gradien mendekati 0. AB menjadi garis mendatar AC.',null,4)]},
+   {type:'mc',q:B('As point A moves closer to C, what happens to the gradient of AB?','Saat titik A bergerak mendekati C, apa yang terjadi pada gradien AB?'),
+    opts:['It gets closer to 0','It gets larger without limit','It stays 0.1','It becomes −1'],ans:1,
+    steps:[S('The rise stays 1 but the run shrinks: 1 ÷ 5 = 0.2, 1 ÷ 1 = 1, 1 ÷ 0.1 = 10, 1 ÷ 0.01 = 100 ...','Naik tetap 1 tetapi mendatar mengecil: 0,2; 1; 10; 100 ...',null,4),S('When A reaches C the line is vertical, and the gradient is undefined.','Saat A sampai di C, garis menjadi tegak dan gradiennya tidak terdefinisi.',null,4)]},
+   {type:'mc',q:B('What is the gradient of the line through (−3, 4) and (5, 4)?','Berapa gradien garis yang melalui (−3, 4) dan (5, 4)?'),opts:['0','1','8','undefined'],ans:0,
+    steps:[S('Same y-values, so rise = 0: horizontal line.','Nilai y sama, jadi naik = 0: garis mendatar.',`${M} = ${f(0,8)} = 0`,4)]},
+   {type:'mc',q:B('What is the gradient of the line through (2, −1) and (2, 6)?','Berapa gradien garis yang melalui (2, −1) dan (2, 6)?'),opts:['0','7','−7','undefined'],ans:3,
+    steps:[S('Same x-values, so run = 0: vertical line.','Nilai x sama, jadi mendatar = 0: garis tegak.',`${M} = ${f(7,0)} → undefined`,4)]},
+   {type:'dd',q:B('Drag each pair of points into the group that describes the line through them.','Seret setiap pasangan titik ke kelompok yang sesuai dengan garis yang melaluinya.'),
+    bins:[['pos','Positive','Positif'],['neg','Negative','Negatif'],['zero','Zero (horizontal)','Nol (mendatar)'],['und','Undefined (vertical)','Tidak terdefinisi (tegak)']],
+    items:[['(1, 5) & (4, 5)','zero'],['(−2, 0) & (−2, 7)','und'],['(0, 0) & (3, 4)','pos'],['(−1, 6) & (2, 0)','neg'],['(3, −2) & (3, 4)','und'],['(−4, −1) & (6, −1)','zero'],['(2, 3) & (5, 1)','neg'],['(−3, −5) & (0, 1)','pos']],
+    steps:[S('Same y → horizontal (0). Same x → vertical (undefined).','y sama → mendatar (0). x sama → tegak (tidak terdefinisi).',null,4),S('Otherwise, use the sign of rise ÷ run.','Selain itu, lihat tanda dari naik ÷ mendatar.',null,3)]}
+  ]},
+
+{ id:'s5', title:['Parallel lines and points on a line','Garis sejajar dan titik segaris'],
+  theory:`<div class="label">Theory 5 · Teori 5</div><div class="stack">
+   <div class="twocol"><div class="fig">${graph({xmin:-1,xmax:5,ymin:-1,ymax:5,u:26,lines:[{p:[[0,1],[2,5]]},{p:[[1,-1],[3,3]],cls:'ln2'}],alt:'Two parallel lines'})}</div>
+   <div class="stack">${B('<b>Parallel lines have the same gradient.</b> Both lines here go 1 across and 2 up, so both have gradient 2.','<b>Garis-garis sejajar memiliki gradien yang sama.</b> Kedua garis ini bergeser 1 mendatar dan 2 naik, jadi keduanya bergradien 2.')}
+   ${B('<b>Points on one straight line (collinear):</b> A, B and C lie on a straight line if gradient AB = gradient BC.','<b>Titik-titik segaris (kolinear):</b> A, B, dan C terletak pada satu garis lurus jika gradien AB = gradien BC.')}</div></div></div>`,
+  examples:[{t:['Do the points lie on a straight line?','Apakah titik-titik itu segaris?'],src:'Ex 1* · Q9',
+    q:B('Do the points (1, 2), (51, 27) and (91, 48) lie on a straight line? Give reasons for your answer.','Apakah titik (1, 2), (51, 27), dan (91, 48) terletak pada satu garis lurus? Berikan alasan.'),
+    steps:[S('Gradient of the first two points.','Gradien dua titik pertama.',`${f('27 − 2','51 − 1')} = ${f(25,50)} = ${f(1,2)} = 0.5`,2),
+      S('Gradient of the last two points.','Gradien dua titik terakhir.',`${f('48 − 27','91 − 51')} = ${f(21,40)} = 0.525`,2),
+      S('The gradients are different, so the points do <b>not</b> lie on a straight line.','Gradiennya berbeda, jadi titik-titik itu <b>tidak</b> segaris.',null,5)]},
+   {t:['Checking for parallel lines','Memeriksa garis sejajar'],
+    q:B('Is the line through (0, 1) and (2, 5) parallel to the line through (−1, −3) and (3, 5)?','Apakah garis melalui (0, 1) dan (2, 5) sejajar dengan garis melalui (−1, −3) dan (3, 5)?'),
+    steps:[S('First gradient.','Gradien pertama.',`${f('5 − 1','2 − 0')} = ${f(4,2)} = 2`,2),S('Second gradient.','Gradien kedua.',`${f('5 − (−3)','3 − (−1)')} = ${f(8,4)} = 2`,2),S('Same gradient, so the lines are parallel.','Gradien sama, jadi garis-garis itu sejajar.',null,5)]}],
+  qs:[
+   {type:'mc',q:B('Which line is parallel to the line through (1, 2) and (4, 8)?','Garis mana yang sejajar dengan garis melalui (1, 2) dan (4, 8)?'),
+    opts:['(0, 0) and (3, 6)','(0, 0) and (6, 3)','(2, 1) and (4, −3)','(−1, 0) and (1, 3)'],ans:0,
+    steps:[S('Gradient of the given line.','Gradien garis yang diberikan.',`${f('8 − 2','4 − 1')} = ${f(6,3)} = 2`,2),S('Options: 6/3 = 2 ✓, 3/6 = 0.5, −4/2 = −2, 3/2 = 1.5.','Pilihan: 2 ✓; 0,5; −2; 1,5.',null,5)]},
+   {type:'ma',q:B(`Select <b>all</b> the lines that are parallel to a line with gradient −${f(1,2)}.`,'Pilih <b>semua</b> garis yang sejajar dengan garis bergradien −1/2.'),
+    opts:['(0, 4) and (4, 2)','(−2, 1) and (2, −1)','(0, 0) and (2, 1)','(1, 5) and (7, 2)','(3, 3) and (5, −1)'],ans:[0,1,3],
+    steps:[S('Work out each gradient.','Hitung setiap gradien.',`${f('−2','4')} ✓, &nbsp;${f('−2','4')} ✓, &nbsp;${f(1,2)} ✗, &nbsp;${f('−3','6')} ✓, &nbsp;${f('−4','2')} = −2 ✗`,2),S('Parallel lines need exactly the same gradient, including the sign.','Garis sejajar harus bergradien sama persis, termasuk tandanya.',null,5)]},
+   {type:'mc',q:B('Do the points (1, 1), (3, 5) and (6, 11) lie on a straight line?','Apakah titik (1, 1), (3, 5), dan (6, 11) segaris?'),
+    opts:['Yes, both gradients are 2','No, the gradients are 2 and 3','Yes, because all coordinates are positive','No, the gradients are 4 and 6'],ans:0,
+    steps:[S('First pair: 4 ÷ 2 = 2. Second pair: 6 ÷ 3 = 2.','Pasangan pertama: 4 ÷ 2 = 2. Pasangan kedua: 6 ÷ 3 = 2.',null,2),S('Equal gradients with a shared point, so they are collinear.','Gradien sama dan berbagi satu titik, jadi segaris.',null,5)]},
+   {type:'mc',q:B('Do the points (0, 2), (4, 4) and (10, 8) lie on a straight line?','Apakah titik (0, 2), (4, 4), dan (10, 8) segaris?'),
+    opts:[`Yes, both gradients are ${f(1,2)}`,`No, the gradients are ${f(1,2)} and ${f(2,3)}`,'Yes, the gradients are 2 and 2',`No, the gradients are 2 and ${f(3,2)}`],ans:1,
+    steps:[S('First pair: 2 ÷ 4 = 1/2. Second pair: 4 ÷ 6 = 2/3.','Pasangan pertama: 1/2. Pasangan kedua: 2/3.',null,2),S('Different gradients, so they are not on one line.','Gradien berbeda, jadi tidak segaris.',null,5)]},
+   {type:'fill',q:B('A is (2, 1) and B is (6, 9). Line L is parallel to AB. What is the gradient of L?','A(2, 1) dan B(6, 9). Garis L sejajar dengan AB. Berapa gradien L?'),blanks:[{pre:'gradient of AB =',ans:2},{pre:'gradient of L =',ans:2}],
+    steps:[S('Gradient of AB.','Gradien AB.',`${f('9 − 1','6 − 2')} = ${f(8,4)} = 2`,2),S('Parallel lines have the same gradient, so L also has gradient 2.','Garis sejajar bergradien sama, jadi L juga bergradien 2.',null,5)]}
+  ]},
+
+{ id:'s6', title:['Finding unknown values','Mencari nilai yang belum diketahui'],
+  theory:`<div class="label">Theory 6 · Teori 6</div><div class="stack">
+   ${B('When the gradient is given but a coordinate is unknown:','Jika gradien diketahui tetapi ada koordinat yang belum diketahui:')}
+   <ul class="pts"><li>${B('Substitute everything you know into the gradient formula.','Substitusikan semua yang diketahui ke rumus gradien.')}</li>
+   <li>${B('Set it equal to the given gradient to make an equation.','Samakan dengan gradien yang diberikan sehingga menjadi persamaan.')}</li>
+   <li>${B('Solve the equation (cross-multiply if there are fractions).','Selesaikan persamaannya (kali silang jika ada pecahan).')}</li></ul>
+   <div class="formula">${FORM} = given value</div>
+   ${B('With letters instead of numbers, the gradient formula gives an algebraic expression.','Jika koordinat berupa huruf, rumus gradien menghasilkan bentuk aljabar.')}</div>`,
+  examples:[{t:['Find p','Tentukan p'],src:'Ex 1* · Q5',
+    q:B(`The line joining A(1, 4) to B(5, ${v('p')}) has a gradient of ${f(1,2)}. Find the value of ${v('p')}.`,'Garis yang menghubungkan A(1, 4) ke B(5, p) bergradien 1/2. Tentukan nilai p.'),
+    steps:[S('Substitute into the formula.','Substitusikan ke rumus.',`${f(v('p')+' − 4','5 − 1')} = ${f(1,2)}`,6),
+      S('Simplify the bottom.','Sederhanakan penyebut.',`${f(v('p')+' − 4','4')} = ${f(1,2)}`,6),
+      S('Multiply both sides by 4.','Kalikan kedua ruas dengan 4.',`${v('p')} − 4 = 2`,6),S('Add 4.','Tambahkan 4.',`${v('p')} = 6`,6)]},
+   {t:['Find k','Tentukan k'],
+    q:B(`A(${v('k')}, 3) and B(5, 9). The gradient of AB is 3. Find ${v('k')}.`,'A(k, 3) dan B(5, 9). Gradien AB adalah 3. Tentukan k.'),
+    steps:[S('Substitute.','Substitusi.',`${f('9 − 3','5 − '+v('k'))} = 3 &nbsp;⇒&nbsp; ${f(6,'5 − '+v('k'))} = 3`,6),
+      S('Multiply both sides by (5 − k).','Kalikan kedua ruas dengan (5 − k).',`6 = 3(5 − ${v('k')}) = 15 − 3${v('k')}`,6),S('Solve.','Selesaikan.',`3${v('k')} = 9 &nbsp;⇒&nbsp; ${v('k')} = 3`,6)]}],
+  qs:[
+   {type:'mc',src:'Ex 1* · Q10',q:B(`Find an algebraic expression for the gradient of the straight line joining A(${v('p')}, ${v('q')}) to B(${v('r')}, ${v('s')}).`,'Tentukan bentuk aljabar gradien garis lurus yang menghubungkan A(p, q) ke B(r, s).'),
+    opts:[f(v('s')+' − '+v('q'),v('r')+' − '+v('p')),f(v('r')+' − '+v('p'),v('s')+' − '+v('q')),f(v('q')+' − '+v('s'),v('r')+' − '+v('p')),f(v('s')+' − '+v('r'),v('q')+' − '+v('p'))],ans:0,
+    steps:[S(`Here ${X1} = p, ${Y1} = q, ${X2} = r, ${Y2} = s.`,'Di sini x₁ = p, y₁ = q, x₂ = r, y₂ = s.',`${M} = ${f(v('s')+' − '+v('q'),v('r')+' − '+v('p'))}`,6)]},
+   {type:'fill',q:B(`A(2, ${v('k')}) and B(6, 11). The gradient of AB is 2. Find ${v('k')}.`,'A(2, k) dan B(6, 11). Gradien AB adalah 2. Tentukan k.'),blanks:[{pre:v('k')+' =',ans:3}],
+    steps:[S('Substitute.','Substitusi.',`${f('11 − '+v('k'),'6 − 2')} = 2 &nbsp;⇒&nbsp; ${f('11 − '+v('k'),4)} = 2`,6),S('Multiply by 4, then solve.','Kalikan 4, lalu selesaikan.',`11 − ${v('k')} = 8 &nbsp;⇒&nbsp; ${v('k')} = 3`,6)]},
+   {type:'fill',src:'Ex 1* · Q11',q:B(`The line joining (3, ${v('p')}) to (7, −4${v('p')}) is parallel to the line joining (−1, −3) to (3, 7). Find ${v('p')}.`,'Garis yang menghubungkan (3, p) ke (7, −4p) sejajar dengan garis yang menghubungkan (−1, −3) ke (3, 7). Tentukan p.'),
+    blanks:[{pre:'gradient of the 2nd line =',ans:2.5},{pre:v('p')+' =',ans:-2}],
+    steps:[S('Gradient of the second line.','Gradien garis kedua.',`${f('7 − (−3)','3 − (−1)')} = ${f(10,4)} = ${f(5,2)}`,2),
+      S('Gradient of the first line.','Gradien garis pertama.',`${f('−4'+v('p')+' − '+v('p'),'7 − 3')} = ${f('−5'+v('p'),4)}`,6),
+      S('Parallel, so the gradients are equal.','Sejajar, jadi gradiennya sama.',`${f('−5'+v('p'),4)} = ${f(5,2)} &nbsp;⇒&nbsp; −5${v('p')} = 10 &nbsp;⇒&nbsp; ${v('p')} = −2`,5)]},
+   {type:'fill',src:'Ex 1* · Q12',q:B(`The gradient of the line joining (4, ${v('q')}) to (6, 5) is twice the gradient of the line joining (0, 0) to (4, ${v('q')}). Find ${v('q')}.`,'Gradien garis yang menghubungkan (4, q) ke (6, 5) adalah dua kali gradien garis yang menghubungkan (0, 0) ke (4, q). Tentukan q.'),
+    blanks:[{pre:v('q')+' =',ans:2.5}],
+    steps:[S('First gradient.','Gradien pertama.',`${f('5 − '+v('q'),'6 − 4')} = ${f('5 − '+v('q'),2)}`,2),S('Second gradient.','Gradien kedua.',`${f(v('q')+' − 0','4 − 0')} = ${f(v('q'),4)}`,2),
+      S('First = 2 × second.','Pertama = 2 × kedua.',`${f('5 − '+v('q'),2)} = 2 × ${f(v('q'),4)} = ${f(v('q'),2)}`,6),S('Multiply both sides by 2.','Kalikan kedua ruas dengan 2.',`5 − ${v('q')} = ${v('q')} &nbsp;⇒&nbsp; 2${v('q')} = 5 &nbsp;⇒&nbsp; ${v('q')} = 2.5`,6)]},
+   {type:'fill',q:B(`A(−1, ${v('t')}) and B(3, 2${v('t')}). The gradient of AB is ${f(1,2)}. Find ${v('t')}.`,'A(−1, t) dan B(3, 2t). Gradien AB adalah 1/2. Tentukan t.'),blanks:[{pre:v('t')+' =',ans:2}],
+    steps:[S('Substitute.','Substitusi.',`${f('2'+v('t')+' − '+v('t'),'3 − (−1)')} = ${f(v('t'),4)} = ${f(1,2)}`,6),S('Multiply by 4.','Kalikan 4.',`${v('t')} = 2`,6)]}
+  ]},
+
+{ id:'s7', title:['Gradient in real life','Gradien dalam kehidupan nyata'],
+  theory:`<div class="label">Theory 7 · Teori 7</div><div class="stack">
+   ${B('Rearrange the gradient formula to find a missing rise or run:','Ubah rumus gradien untuk mencari naik atau mendatar yang belum diketahui:')}
+   <div class="formula">${M} = ${f(RI('rise'),RU('run'))} &nbsp; ⇒ &nbsp; ${RI('rise')} = ${M} × ${RU('run')} &nbsp; and &nbsp; ${RU('run')} = ${RI('rise')} ÷ ${M}</div>
+   <ul class="pts"><li>${B('Always draw a diagram and label the rise and the run.','Selalu gambar diagram dan beri label naik dan mendatar.')}</li>
+   <li>${B('In real life, "a gradient of 1 in 15" means '+M+' = '+f(1,15)+': up 1 m for every 15 m across.','Dalam kehidupan nyata, "gradien 1 banding 15" berarti m = 1/15: naik 1 m setiap 15 m mendatar.')}</li>
+   <li>${B('Average gradient = total rise ÷ total run.','Gradien rata-rata = total naik ÷ total mendatar.')}</li></ul></div>`,
+  examples:[{t:['The ladder','Tangga'],src:'Ex 1 · Q8',q:B('A ladder reaches 12 m up a vertical wall and has a gradient of 4. How far is the bottom of the ladder from the wall?','Sebuah tangga mencapai ketinggian 12 m pada dinding tegak dan bergradien 4. Berapa jarak kaki tangga dari dinding?'),fig:FIG.ladder,
+    steps:[S('Rise = 12 m (up the wall), run = distance from the wall (unknown).','Naik = 12 m, mendatar = jarak dari dinding (belum diketahui).',null,7),
+      S('Use run = rise ÷ m.','Gunakan mendatar = naik ÷ m.',`${RU('run')} = 12 ÷ 4 = 3 m`,7),S('Check: 12 ÷ 3 = 4 ✓','Cek: 12 ÷ 3 = 4 ✓')]},
+   {t:['The road','Jalan'],src:'Ex 1 · Q12',q:B(`A road has a gradient of ${f(1,15)} for 90 m. Then there is a horizontal section 130 m long. The final section has a gradient of ${f(1,25)} for 200 m. (a) Find the total height gained. (b) What is the average gradient from start to finish?`,'Sebuah jalan bergradien 1/15 sepanjang 90 m, lalu bagian mendatar 130 m, dan bagian akhir bergradien 1/25 sepanjang 200 m. (a) Tentukan total ketinggian yang dicapai. (b) Berapa gradien rata-rata dari awal sampai akhir?'),fig:FIG.road,
+    steps:[S('Section 1: rise = m × run.','Bagian 1: naik = m × mendatar.',`${f(1,15)} × 90 = 6 m`,7),S('Section 2 is flat: rise = 0 m.','Bagian 2 datar: naik = 0 m.',null,4),
+      S('Section 3.','Bagian 3.',`${f(1,25)} × 200 = 8 m`,7),S('(a) Total height = 6 + 0 + 8 = 14 m.','(a) Total ketinggian = 14 m.'),
+      S('(b) Total run = 90 + 130 + 200 = 420 m.','(b) Total mendatar = 420 m.',`average ${M} = ${f(14,420)} = ${f(1,30)}`,7)]}],
+  qs:[
+   {type:'fill',src:'Ex 1 · Q9',q:B(`After take-off, an aeroplane climbs in a straight line with a gradient of ${f(1,5)}. When it has reached a height of 2000 m, how far has it gone horizontally?`,'Setelah lepas landas, pesawat naik dalam garis lurus dengan gradien 1/5. Saat mencapai ketinggian 2000 m, berapa jarak mendatar yang ditempuh?'),
+    blanks:[{pre:'distance =',ans:10000,post:'m'}],
+    steps:[S('Rise = 2000 m, m = 1/5.','Naik = 2000 m, m = 1/5.',null,7),S('run = rise ÷ m.','mendatar = naik ÷ m.',`2000 ÷ ${f(1,5)} = 2000 × 5 = 10 000 m`,7)]},
+   {type:'fill',src:'Ex 1 · Q10',q:B('The roof of this garden shed has a gradient of 0.35. Find the height of the shed (the taller side).','Atap gudang kebun ini bergradien 0,35. Tentukan tinggi gudang (sisi yang lebih tinggi).'),fig:FIG.shed,
+    blanks:[{pre:'extra rise of roof =',ans:0.525,post:'m'},{pre:'height =',ans:2.325,post:'m'}],
+    steps:[S('The roof rises over a run of 1.5 m.','Atap naik sepanjang mendatar 1,5 m.',`${RI('rise')} = 0.35 × 1.5 = 0.525 m`,7),S('Add the short wall.','Tambahkan dinding yang pendek.','height = 1.8 + 0.525 = 2.325 m')]},
+   {type:'fill',src:'Ex 1 · Q11',q:B(`The seats at a football stadium are on a slope with gradient ${f(1,2)}. What is the height (${v('h')}) of the bottom seats?`,'Kursi di stadion sepak bola berada pada lereng bergradien 1/2. Berapa tinggi (h) kursi paling bawah?'),fig:FIG.stadium,
+    blanks:[{pre:v('h')+' =',ans:2,post:'m'}],
+    steps:[S('The slope covers a run of 20 m.','Lereng menempuh mendatar 20 m.',`${RI('rise')} = ${f(1,2)} × 20 = 10 m`,7),S('The top is 12 m high, so the bottom is 10 m lower.','Puncak setinggi 12 m, jadi bagian bawah 10 m lebih rendah.',`${v('h')} = 12 − 10 = 2 m`)]},
+   {type:'fill',src:'Ex 1* · Q6',q:B('The masts for the Millennium Dome were held up by wire ropes as shown. A is 106 m above the ground, C is vertically below A, the gradient of AB is 1 and CD is 53 m. (a) Find the gradient of AD. (b) Find the length of BD.','Tiang Millennium Dome ditahan tali kawat seperti gambar. A berada 106 m di atas tanah, C tepat di bawah A, gradien AB adalah 1 dan CD = 53 m. (a) Tentukan gradien AD. (b) Tentukan panjang BD.'),fig:FIG.masts,
+    blanks:[{pre:'(a) gradient of AD =',ans:-2},{pre:'(b) BD =',ans:159,post:'m'}],
+    steps:[S('(a) From A to D the rope goes down 106 m over 53 m across, so the gradient is negative.','(a) Dari A ke D tali turun 106 m sepanjang 53 m mendatar, jadi gradiennya negatif.',`${M} = ${f('−106','53')} = −2`,3),
+      S('(b) AB has gradient 1, so BC = rise ÷ 1 = 106 m.','(b) AB bergradien 1, jadi BC = 106 ÷ 1 = 106 m.',null,7),S('Add the two parts.','Jumlahkan kedua bagian.','BD = 106 + 53 = 159 m')]},
+   {type:'fill',src:'Ex 1* · Q8',q:B('A crane lifts a boat with wire ropes AB and AD. C is vertically below A, and BC = 5 m. (a) The gradient of AB is 0.8. How high is A above C? (b) The gradient of AD is −1.25. What is the length of the boat (BD)?','Sebuah derek mengangkat perahu dengan tali AB dan AD. C tepat di bawah A, dan BC = 5 m. (a) Gradien AB adalah 0,8. Berapa tinggi A di atas C? (b) Gradien AD adalah −1,25. Berapa panjang perahu (BD)?'),fig:FIG.crane,
+    blanks:[{pre:'(a) AC =',ans:4,post:'m'},{pre:'(b) BD =',ans:8.2,post:'m'}],
+    steps:[S('(a) rise = m × run.','(a) naik = m × mendatar.','AC = 0.8 × 5 = 4 m',7),
+      S('(b) From A to D the rope goes down 4 m. Run = rise ÷ m.','(b) Dari A ke D tali turun 4 m. Mendatar = naik ÷ m.','CD = −4 ÷ (−1.25) = 3.2 m',7),S('Length of boat.','Panjang perahu.','BD = 5 + 3.2 = 8.2 m')]},
+   {type:'fill',src:'Ex 1* · Q13',q:B(`A roller coaster drops 65 m over a horizontal distance of 65 m in two sections. The first section has gradient 3 and the second section has gradient ${f(1,2)}. How high is point A above the ground?`,'Sebuah roller coaster turun 65 m sepanjang jarak mendatar 65 m dalam dua bagian. Bagian pertama bergradien 3 dan bagian kedua bergradien 1/2. Berapa tinggi titik A di atas tanah?'),fig:FIG.coaster,
+    blanks:[{pre:'height of A =',ans:26,post:'m'}],
+    steps:[S(`Let A be ${v('h')} m high. The lower section has gradient ½, so its run is 2${v('h')}.`,'Misalkan tinggi A = h m. Bagian bawah bergradien ½, jadi mendatarnya 2h.',null,7),
+      S(`The steep section has rise 65 − ${v('h')} and run 65 − 2${v('h')}, with gradient 3.`,'Bagian curam: naik 65 − h, mendatar 65 − 2h, gradien 3.',`65 − ${v('h')} = 3(65 − 2${v('h')}) = 195 − 6${v('h')}`,6),
+      S('Solve.','Selesaikan.',`5${v('h')} = 130 &nbsp;⇒&nbsp; ${v('h')} = 26 m`,6),S('Check: lower run 52, 26 ÷ 52 = ½ ✓; steep run 13, rise 39, 39 ÷ 13 = 3 ✓','Cek: 26 ÷ 52 = ½ ✓; 39 ÷ 13 = 3 ✓')]},
+   {type:'fill',src:'Ex 1* · Q7',q:B('Antonio can cycle up a maximum gradient of 0.3 and safely descend a maximum gradient of 0.5. His map has a scale of 2 cm to 1 km, with contours every 25 m. What is the minimum distance between contours on the map (in mm, to 2 d.p.) that lets him go (a) uphill (b) downhill?','Antonio dapat bersepeda menanjak dengan gradien maksimum 0,3 dan menurun dengan aman pada gradien maksimum 0,5. Petanya berskala 2 cm : 1 km dengan garis kontur setiap 25 m. Berapa jarak minimum antar kontur di peta (dalam mm, 2 desimal) agar ia bisa (a) menanjak (b) menurun?'),
+    blanks:[{pre:'(a) uphill:',ans:5/3,tol:0.02,post:'mm'},{pre:'(b) downhill:',ans:1,tol:0.01,post:'mm'}],
+    steps:[S('Between contours the rise is 25 m. Real run = rise ÷ m.','Antar kontur, naik = 25 m. Mendatar sebenarnya = naik ÷ m.','uphill: 25 ÷ 0.3 ≈ 83.33 m &nbsp; downhill: 25 ÷ 0.5 = 50 m',7),
+      S('Map scale: 1 km = 1000 m is 2 cm = 20 mm, so 1 m on the ground is 0.02 mm on the map.','Skala: 1000 m = 20 mm, jadi 1 m di lapangan = 0,02 mm di peta.'),
+      S('Convert.','Ubah satuan.','(a) 83.33 × 0.02 ≈ 1.67 mm &nbsp; (b) 50 × 0.02 = 1 mm')]}
+  ]}
+];
+
+/* ---------- rendering ---------- */
+const TYPES={fill:'Fill in the blank · Isian',mc:'Multiple choice · Pilihan ganda',ma:'Multiple answer · Pilihan ganda kompleks',dd:'Drag and drop · Seret dan lepas'};
+let selected=null;
+const lesson=document.getElementById('lesson');
+const state={}; let allQ=[];
+
+function stepsHTML(steps){return steps.map((s,i)=>`<div class="step"><span class="n">${i+1}</span><div><p>${s.en}${s.ref?` <a class="ref" href="#t${s.ref}">T${s.ref}</a>`:''}</p><p class="tr">${s.id}</p>${s.eq?`<div class="eq">${s.eq}</div>`:''}</div></div>`).join('');}
+
+SECTIONS.forEach((sec,si)=>{
+  const el=document.createElement('section'); el.className='sec'; el.id=sec.id;
+  let h=`<div class="sechead"><span class="secnum">${String(si+1).padStart(2,'0')}</span><div><h2>${sec.title[0]}</h2><p class="tr">${sec.title[1]}</p></div></div>`;
+  h+=`<div class="card theory" id="t${si+1}">${sec.theory}</div>`;
+  if(sec.tool==='explorer')h+=`<div class="card tool" id="explorer"></div>`;
+  if(sec.tool==='activity')h+=`<div class="card tool" id="activity"></div>`;
+  sec.examples.forEach((ex,ei)=>{
+    h+=`<div class="card ex" data-ex><div class="label">Worked example ${si+1}.${ei+1} · Contoh soal ${ex.src?`<span class="tag">${ex.src}</span>`:''}</div>
+      <h3 style="font-size:19px">${ex.t[0]} <span class="tr" style="font-family:var(--f-body);font-weight:400">· ${ex.t[1]}</span></h3>
+      <div style="margin-top:8px">${ex.q}</div>${ex.fig?`<div class="fig">${ex.fig}</div>`:''}
+      <div class="sol" style="border:0;padding-top:4px"><h4>Solution · Pembahasan</h4><div class="steps">${stepsHTML(ex.steps)}</div></div>
+      <div class="btns"><button class="btn" type="button" data-next>Next step · Langkah berikutnya</button><button class="btn ghost" type="button" data-all>Show all · Tampilkan semua</button></div></div>`;
+  });
+  h+=`<div class="label" style="margin:6px 0 -6px">Practice · Latihan — use Theory ${si+1}</div>`;
+  sec.qs.forEach((q,qi)=>{const qid=`${sec.id}q${qi}`; q.qid=qid; q.sec=sec.id; allQ.push(q); state[qid]={done:false};
+    h+=`<div class="card q" id="${qid}"></div>`;});
+  el.innerHTML=h; lesson.appendChild(el);
+  sec.qs.forEach((q,qi)=>renderQ(q,`${si+1}.${qi+1}`));
+});
+
+/* worked example step reveal */
+document.querySelectorAll('[data-ex]').forEach(c=>{
+  const st=[...c.querySelectorAll('.step')]; let n=1; const nb=c.querySelector('[data-next]'),ab=c.querySelector('[data-all]');
+  const upd=()=>{st.forEach((s,i)=>s.hidden=i>=n); nb.disabled=ab.disabled=n>=st.length;};
+  nb.onclick=()=>{n++;upd()}; ab.onclick=()=>{n=st.length;upd()}; upd();
+});
+
+function renderQ(q,num){
+  const el=document.getElementById(q.qid);
+  let h=`<div class="qhead"><span class="qnum">Q ${num} ${q.src?`<span class="tag" style="font-weight:500;color:var(--muted);margin-left:6px">${q.src}</span>`:''}</span><span class="qtype">${TYPES[q.type]}</span></div>${q.q}${q.fig?`<div class="fig">${q.fig}</div>`:''}`;
+  if(q.type==='fill'){h+=`<div class="blanks">${q.blanks.map((b,i)=>`<label class="blank" for="${q.qid}b${i}"><span>${b.pre}</span><input id="${q.qid}b${i}" inputmode="text" autocomplete="off" spellcheck="false"><span>${b.post||''}</span>${b.hint?`<span class="hint-in">(${b.hint})</span>`:''}</label>`).join('')}</div>
+    <p class="hint-in" style="margin-top:6px">Fractions like 3/8 or −1/2 and decimals like 0.5 or 0,5 are accepted. · Pecahan (3/8) atau desimal (0,5) diterima.</p>`;}
+  if(q.type==='mc'||q.type==='ma'){h+=`<div class="opts ${q.type}">${q.opts.map((o,i)=>`<button type="button" class="opt" aria-pressed="false" data-i="${i}"><span class="k">${'ABCDE'[i]}</span><span>${o}</span></button>`).join('')}</div>`;
+    if(q.type==='ma')h+=`<p class="hint-in" style="margin-top:6px">Select all correct answers. · Pilih semua jawaban yang benar.</p>`;}
+  if(q.type==='dd'){h+=`<div class="dd"><div class="pool" data-bin="">${q.items.map((it,i)=>`<button type="button" class="dcard" draggable="true" data-i="${i}">${it[0]}</button>`).join('')}</div>
+    <div class="bins">${q.bins.map(b=>`<div class="bin" data-bin="${b[0]}" tabindex="0" role="button"><div class="bt">${b[1]}<div class="tr">${b[2]}</div></div><div class="zone"></div></div>`).join('')}</div>
+    <p class="hint-in">Tap a card, then tap a group (or drag it). · Ketuk kartu, lalu ketuk kelompok (atau seret).</p></div>`;}
+  h+=`<div class="btns"><button class="btn" type="button" data-check>Check · Periksa</button><button class="btn ghost" type="button" data-show>Show solution · Lihat pembahasan</button><button class="btn ghost" type="button" data-reset>Try again · Ulangi</button></div>
+    <div class="fb" hidden></div><div class="sol" hidden><h4>Solution · Pembahasan</h4><div class="steps">${stepsHTML(q.steps)}</div></div>`;
+  el.innerHTML=h;
+  const fb=el.querySelector('.fb'),sol=el.querySelector('.sol');
+  if(q.type==='mc'||q.type==='ma'){el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(q.type==='mc')el.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'&&q.type==='ma'?'false':'true');
+    el.querySelectorAll('.opt').forEach(x=>x.classList.remove('ok','bad'));});}
+  if(q.type==='dd')setupDD(el);
+  el.querySelector('[data-show]').onclick=()=>{sol.hidden=false;};
+  el.querySelector('[data-reset]').onclick=()=>{renderQ(q,num);};
+  el.querySelector('[data-check]').onclick=()=>{
+    let ok=false,msg=null;
+    if(q.type==='fill'){ok=true;q.blanks.forEach((b,i)=>{const inp=el.querySelector(`#${q.qid}b${i}`),val=parseNum(inp.value);
+      const good=val!==null&&Math.abs(val-b.ans)<=(b.tol||1e-6)+1e-9*Math.abs(b.ans);
+      inp.classList.toggle('ok',good);inp.classList.toggle('bad',!good);if(!good)ok=false;});}
+    if(q.type==='mc'||q.type==='ma'){const sel=[...el.querySelectorAll('.opt')].filter(b=>b.getAttribute('aria-pressed')==='true').map(b=>+b.dataset.i);
+      const want=q.type==='mc'?[q.ans]:q.ans;
+      if(!sel.length){msg=['Choose an answer first.','Pilih jawaban terlebih dahulu.'];}
+      else{ok=sel.length===want.length&&sel.every(i=>want.includes(i));
+        el.querySelectorAll('.opt').forEach(b=>{const i=+b.dataset.i;b.classList.remove('ok','bad');if(sel.includes(i))b.classList.add(want.includes(i)?'ok':'bad');});}}
+    if(q.type==='dd'){const cards=[...el.querySelectorAll('.dcard')];
+      if(cards.some(c=>!c.closest('.bin'))){msg=['Place every card in a group first.','Letakkan semua kartu ke dalam kelompok terlebih dahulu.'];}
+      else{ok=true;cards.forEach(c=>{const g=c.closest('.bin').dataset.bin===q.items[+c.dataset.i][1];c.classList.toggle('ok',g);c.classList.toggle('bad',!g);if(!g)ok=false;});}}
+    fb.hidden=false;
+    if(msg){fb.className='fb bad';fb.innerHTML=B(msg[0],msg[1]);return;}
+    if(ok){fb.className='fb ok';fb.innerHTML=B('Correct! Read the solution to check your method.','Benar! Baca pembahasan untuk memeriksa caramu.');sol.hidden=false;state[q.qid].done=true;el.classList.add('done');}
+    else{fb.className='fb bad';fb.innerHTML=B('Not yet. Check the signs and the order of subtraction, then try again — or open the solution.','Belum tepat. Periksa tanda dan urutan pengurangan, lalu coba lagi — atau buka pembahasan.');}
+    updateScore();
+  };
+  if(state[q.qid].done)el.classList.add('done'); else el.classList.remove('done');
+}
+function parseNum(s){
+  s=String(s).trim().replace(/[−–—]/g,'-').replace(/\s+/g,'').replace(/(mm|cm|km|m)$/i,'').replace(/,/g,'.');
+  if(!s)return null;
+  if(/^-?\d*\.?\d+\/-?\d*\.?\d+$/.test(s)){const [a,b]=s.split('/').map(Number);return b===0?null:a/b;}
+  if(/^-?\d*\.?\d+$/.test(s))return Number(s);
+  return null;
+}
+function setupDD(el){
+  const place=(card,target)=>{(target.classList.contains('bin')?target.querySelector('.zone'):target).appendChild(card);card.classList.remove('sel','ok','bad');selected=null;};
+  el.querySelectorAll('.dcard').forEach(c=>{
+    c.onclick=e=>{e.stopPropagation();
+      if(selected&&selected!==c&&el.contains(selected)){const tgt=c.closest('.bin')||c.closest('.pool');if(tgt&&!tgt.contains(selected)){place(selected,tgt);return;}}
+      if(selected===c){c.classList.remove('sel');selected=null;return;}document.querySelectorAll('.dcard.sel').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');selected=c;};
+    c.ondragstart=e=>{selected=c;e.dataTransfer.setData('text/plain','x');};
+  });
+  el.querySelectorAll('.bin,.pool').forEach(t=>{
+    t.onclick=()=>{if(selected&&el.contains(selected))place(selected,t);};
+    t.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&selected&&el.contains(selected)){e.preventDefault();place(selected,t);}};
+    t.ondragover=e=>{e.preventDefault();t.classList.add('over');};t.ondragleave=()=>t.classList.remove('over');
+    t.ondrop=e=>{e.preventDefault();t.classList.remove('over');if(selected&&el.contains(selected))place(selected,t);};
+  });
+}
+
+/* score + nav */
+const chips=document.getElementById('chips');
+function updateScore(){
+  const done=allQ.filter(q=>state[q.qid].done).length;
+  document.getElementById('score').innerHTML=`Correct · Benar: <b>${done}</b> / ${allQ.length}`;
+  document.getElementById('final').textContent=`${done} / ${allQ.length}`;
+  document.getElementById('bar').style.width=(100*done/allQ.length)+'%';
+  chips.innerHTML=SECTIONS.map((s,i)=>{const qs=s.qs,d=qs.filter(q=>state[q.qid].done).length;return `<a class="chip ${d===qs.length?'full':''}" href="#${s.id}">${i+1}. ${s.title[0]}<span class="c">${d}/${qs.length}</span></a>`}).join('')+`<a class="chip" href="#finish">Summary</a>`;
+}
+updateScore();
+document.getElementById('resetAll').onclick=()=>{allQ.forEach(q=>{state[q.qid].done=false;});SECTIONS.forEach((s,si)=>s.qs.forEach((q,qi)=>renderQ(q,`${si+1}.${qi+1}`)));updateScore();};
+
+/* ---------- gradient explorer ---------- */
+(function(){
+  const host=document.getElementById('explorer'); if(!host)return;
+  const u=30,pad=22,R=5,W=2*R*u+2*pad; const X=x=>pad+(x+R)*u,Y=y=>pad+(R-y)*u;
+  let P=[[-3,-2],[2,3]];
+  host.innerHTML=`<div class="label">Try it · Coba sendiri</div>${B('Drag the two points. Watch how the rise, the run and the gradient change.','Seret kedua titik. Perhatikan bagaimana naik, mendatar, dan gradien berubah.')}
+   <div class="fig"><svg id="exsvg" viewBox="0 0 ${W} ${W}" width="${W}" role="img" aria-label="Interactive gradient explorer"><g id="exbg"></g><g id="exg"></g></svg></div><div class="readout" id="exr"></div>`;
+  let bg='';for(let i=-R;i<=R;i++){bg+=`<line class="gl" x1="${X(i)}" y1="${pad}" x2="${X(i)}" y2="${W-pad}"/><line class="gl" x1="${pad}" y1="${Y(i)}" x2="${W-pad}" y2="${Y(i)}"/>`;
+    if(i&&i%1===0)bg+=`<text class="gt" x="${X(i)}" y="${Y(0)+13}" text-anchor="middle">${mn(i)}</text><text class="gt" x="${X(0)-5}" y="${Y(i)+4}" text-anchor="end">${mn(i)}</text>`;}
+  bg+=`<line class="ax" x1="${pad}" y1="${Y(0)}" x2="${W-pad}" y2="${Y(0)}"/><line class="ax" x1="${X(0)}" y1="${pad}" x2="${X(0)}" y2="${W-pad}"/>`;
+  document.getElementById('exbg').innerHTML=bg;
+  const svg=document.getElementById('exsvg'),g=document.getElementById('exg'),r=document.getElementById('exr');
+  const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+  function draw(){const [a,b]=P,rise=b[1]-a[1],run=b[0]-a[0];let s='';
+    if(run!==0||rise!==0){const k=30;s+=`<line class="ln" x1="${X(a[0]-k*run)}" y1="${Y(a[1]-k*rise)}" x2="${X(a[0]+k*run)}" y2="${Y(a[1]+k*rise)}" clip-path="url(#exclip)"/>`;}
+    s+=`<defs><clipPath id="exclip"><rect x="${pad}" y="${pad}" width="${2*R*u}" height="${2*R*u}"/></clipPath></defs>`;
+    s+=`<line class="rn" x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(a[1])}"/><line class="rs" x1="${X(b[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}"/>`;
+    P.forEach((p,i)=>s+=`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="14" fill="var(--accent)" opacity=".15"/><circle class="pt" cx="${X(p[0])}" cy="${Y(p[1])}" r="7"/><text class="tx" font-weight="700" x="${X(p[0])+10}" y="${Y(p[1])-10}">${'AB'[i]}(${mn(p[0])}, ${mn(p[1])})</text>`);
+    g.innerHTML=s;
+    let m; if(run===0)m='undefined'; else {const d=gcd(rise,run)||1;let n=rise/d,de=run/d;if(de<0){n=-n;de=-de;} m=de===1?mn(n):`${mn(n)}/${de}`; if(de!==1)m+=` ≈ ${mn((rise/run).toFixed(2))}`;}
+    const kind=run===0?'vertical · tegak':rise===0?'horizontal · mendatar':(rise/run>0?'positive · positif':'negative · negatif');
+    r.innerHTML=`<div><small>rise · naik</small><b class="rise">${mn(b[1])} − ${neg(a[1])} = ${mn(rise)}</b></div><div><small>run · mendatar</small><b class="run">${mn(b[0])} − ${neg(a[0])} = ${mn(run)}</b></div><div><small>gradient m</small><b>${m}</b></div><div><small>type · jenis</small><b style="font-size:14px">${kind}</b></div>`;}
+  let drag=-1;
+  const toP=e=>{const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(svg.getScreenCTM().inverse());return[(q.x-pad)/u-R,R-(q.y-pad)/u];};
+  svg.addEventListener('pointerdown',e=>{const [x,y]=toP(e);let best=-1,bd=1.2;P.forEach((p,i)=>{const d=Math.hypot(p[0]-x,p[1]-y);if(d<bd){bd=d;best=i}});if(best>=0){drag=best;svg.setPointerCapture(e.pointerId);}});
+  svg.addEventListener('pointermove',e=>{if(drag<0)return;let [x,y]=toP(e);x=Math.max(-R,Math.min(R,Math.round(x)));y=Math.max(-R,Math.min(R,Math.round(y)));
+    const o=P[1-drag];if(x===o[0]&&y===o[1])return;P[drag]=[x,y];draw();});
+  svg.addEventListener('pointerup',()=>drag=-1);svg.addEventListener('pointercancel',()=>drag=-1);
+  draw();
+})();
+
+/* ---------- Activity 1 ---------- */
+(function(){
+  const host=document.getElementById('activity'); if(!host)return;
+  const u=34,pad=24,xmax=12,ymax=3,W=xmax*u+2*pad,H=ymax*u+2*pad; const X=x=>pad+x*u,Y=y=>pad+(ymax-y)*u;
+  host.innerHTML=`<div class="label">Activity 1 · Aktivitas 1 <span class="tag">Skill: Reasoning</span></div>
+   ${B('A(1, 1), B(11, 2) and C(11, 1). Move the sliders and record the gradient of AB in the table each time.','A(1, 1), B(11, 2), dan C(11, 1). Geser slider dan catat gradien AB di tabel setiap kali.')}
+   <div class="fig"><svg id="acsvg" viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="Triangle ABC for Activity 1"></svg></div>
+   <div class="slider"><label for="acB">${B('Move B down towards C','Geser B turun mendekati C')}</label><input id="acB" type="range" min="1" max="2" step="0.05" value="2"></div>
+   <div class="slider"><label for="acA">${B('Move A right towards C','Geser A ke kanan mendekati C')}</label><input id="acA" type="range" min="1" max="11" step="0.1" value="1"></div>
+   <div class="readout" id="acr"></div>
+   <div class="btns"><button class="btn" type="button" id="acRec">Record in table · Catat</button><button class="btn ghost" type="button" id="acClr">Clear table · Hapus</button></div>
+   <div class="tablewrap"><table class="t"><thead><tr><th>A</th><th>B</th><th>${RI('rise')} BC</th><th>${RU('run')} AC</th><th>gradient AB</th></tr></thead><tbody id="actb"></tbody></table></div>`;
+  const svg=document.getElementById('acsvg'),sa=document.getElementById('acA'),sb=document.getElementById('acB'),out=document.getElementById('acr'),tb=document.getElementById('actb');
+  let bg='';for(let i=0;i<=xmax;i++)bg+=`<line class="gl" x1="${X(i)}" y1="${pad}" x2="${X(i)}" y2="${H-pad}"/><text class="gt" x="${X(i)}" y="${H-pad+14}" text-anchor="middle">${i}</text>`;
+  for(let j=0;j<=ymax;j++)bg+=`<line class="gl" x1="${pad}" y1="${Y(j)}" x2="${W-pad}" y2="${Y(j)}"/><text class="gt" x="${pad-6}" y="${Y(j)+4}" text-anchor="end">${j}</text>`;
+  const fmt=n=>(+n.toFixed(2)).toString();
+  function calc(){const ax=+sa.value,by=+sb.value,rise=by-1,run=11-ax;return{ax,by,rise,run,m:run===0?'undefined':fmt(rise/run)};}
+  function draw(){const c=calc();
+    svg.innerHTML=bg+`<polygon points="${X(c.ax)},${Y(1)} ${X(11)},${Y(c.by)} ${X(11)},${Y(1)}" fill="var(--rise)" opacity=".25"/>
+     <line class="rn" x1="${X(c.ax)}" y1="${Y(1)}" x2="${X(11)}" y2="${Y(1)}"/><line class="rs" x1="${X(11)}" y1="${Y(1)}" x2="${X(11)}" y2="${Y(c.by)}"/><line class="ln" x1="${X(c.ax)}" y1="${Y(1)}" x2="${X(11)}" y2="${Y(c.by)}"/>
+     <circle class="pt" cx="${X(c.ax)}" cy="${Y(1)}" r="5"/><circle class="pt" cx="${X(11)}" cy="${Y(c.by)}" r="5"/><circle cx="${X(11)}" cy="${Y(1)}" r="4" fill="var(--ink)"/>
+     <text class="tx" font-weight="700" x="${X(c.ax)-6}" y="${Y(1)-8}" text-anchor="end">A(${fmt(c.ax)}, 1)</text><text class="tx" font-weight="700" x="${X(11)+8}" y="${Y(c.by)-4}">B(11, ${fmt(c.by)})</text><text class="tx" font-weight="700" x="${X(11)+8}" y="${Y(1)+16}">C</text>`;
+    out.innerHTML=`<div><small>rise BC</small><b class="rise">${fmt(c.rise)}</b></div><div><small>run AC</small><b class="run">${fmt(c.run)}</b></div><div><small>gradient AB</small><b>${c.m}</b></div>`;}
+  sa.oninput=sb.oninput=draw;
+  document.getElementById('acRec').onclick=()=>{const c=calc();tb.insertAdjacentHTML('beforeend',`<tr><td>(${fmt(c.ax)}, 1)</td><td>(11, ${fmt(c.by)})</td><td>${fmt(c.rise)}</td><td>${fmt(c.run)}</td><td>${c.m}</td></tr>`);};
+  document.getElementById('acClr').onclick=()=>{tb.innerHTML='';};
+  draw();
+})();
+</script>
+
+</body></html>
