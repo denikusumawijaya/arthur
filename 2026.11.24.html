@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 7 Final Test Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;700&family=Nunito+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly, clear teacher's workbook — encouraging, never childish
+   IDEA: a squared maths exercise book with a test blueprint pinned on the cover
+   PICTURE: the exam blueprint bar (score split by question type) + chapter map
+   COLOUR and TYPE: teal ink on grid paper, tomato accent for answers, highlighter yellow; Lexend + Nunito Sans
+   LAYOUT: cover band, sticky chapter tabs with score, one calm column of cards */
+:root{color-scheme:light dark;
+--bg:light-dark(#f6faf9,#0d191b);--card:light-dark(#fff,#132427);--ink:light-dark(#12302f,#e3f0ee);--mut:light-dark(#506a68,#9cb7b4);
+--pri:light-dark(#0f6f6a,#4fd1c5);--band:light-dark(#0f6f6a,#0a4643);--acc:light-dark(#e4572e,#ff8a65);--hl:light-dark(#fff1b3,#3b3414);
+--ok:light-dark(#1b8a4c,#5fd394);--okbg:light-dark(#e5f6ec,#16352a);--no:light-dark(#c0392b,#ff7b6b);--nobg:light-dark(#fdeceb,#3a1c1a);
+--line:light-dark(#d6e5e3,#25393c);--grid:light-dark(#e6f0ee,#132326)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 "Nunito Sans",system-ui,sans-serif;overflow-x:clip;
+background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:26px 26px}
+h1,h2,h3{font-family:Lexend,system-ui,sans-serif;line-height:1.1;text-wrap:balance;margin:0}
+.band{padding:clamp(24px,4vw,56px) max(5vw,16px)}.wrap{max-width:1000px;margin:0 auto}
+header.band{background:var(--band);color:#fff;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:26px 26px}
+header h1{font-size:clamp(30px,5vw,48px)}
+header .sub{margin:10px 0 0;opacity:.9;max-width:60ch}header .sub i{display:block;font-size:.88em;opacity:.85}
+.bp{margin-top:26px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:16px}
+.bp .meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-weight:700;font-size:15px;margin-bottom:12px}
+.bar{display:flex;height:46px;border-radius:9px;overflow:hidden;gap:3px}
+.bar div{display:flex;align-items:center;justify-content:center;font:700 15px Lexend,sans-serif;color:#12302f}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px;font-size:14px;line-height:1.3}
+.legend b{display:block;font-size:15px}.legend i{opacity:.8}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--c)}
+nav{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.05)}
+nav .wrap{display:flex;align-items:center;gap:10px;padding:8px max(5vw,16px);max-width:none}
+.tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
+.tabs a{flex:none;text-decoration:none;color:var(--ink);padding:9px 14px;border-radius:999px;font:500 15px Lexend,sans-serif;min-height:42px;display:flex;align-items:center;border:1px solid var(--line)}
+.tabs a.on{background:var(--pri);color:var(--card);border-color:var(--pri)}
+.score{flex:none;font:700 15px Lexend,sans-serif;white-space:nowrap;color:var(--pri)}.score small{display:block;font:400 12px "Nunito Sans";color:var(--mut)}
+.chhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px}
+.chn{color:var(--acc);font-weight:700;font-size:15px}
+.chhead h2{font-size:clamp(28px,4vw,40px);margin-top:4px}
+.en{display:inline}.id{display:block;font-style:italic;font-size:.86em;color:var(--mut);margin-top:2px}
+h2 .id{font-family:"Nunito Sans";font-size:.5em;font-weight:400}
+h3 .id{font-family:"Nunito Sans";font-size:.62em;font-weight:400}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{border:0;background:none;color:var(--ink);font:700 16px Lexend,sans-serif;padding:8px 18px;border-radius:9px;cursor:pointer;min-height:44px;line-height:1.1}
+.seg button small{display:block;font:400 12px "Nunito Sans";color:var(--mut)}
+.seg button.on{background:var(--pri);color:var(--card)}.seg button.on small{color:inherit;opacity:.85}
+.kd{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:16px 0 22px;list-style:none}
+.kd li{background:var(--hl);padding:3px 10px;border-radius:6px;font-size:14px}
+.card,.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,26px);margin-bottom:18px}
+.card h3{font-size:22px;color:var(--pri);margin-bottom:10px}
+.card p{margin:0 0 10px}
+.key{background:var(--hl);border-radius:10px;padding:12px 14px;margin:12px 0;font-weight:700;overflow-x:auto}
+.exm{border-left:3px solid var(--acc);padding:4px 0 4px 16px;margin-top:16px}
+.lab{display:inline-block;font:700 13px Lexend,sans-serif;color:var(--acc);margin-bottom:4px}
+.steps{margin:10px 0;padding-left:22px}.steps li{margin:6px 0;padding-left:4px}.steps li::marker{color:var(--acc);font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit}
+.btn{border:0;background:var(--pri);color:var(--card);font:700 15px Lexend,sans-serif;padding:10px 16px;border-radius:10px;cursor:pointer;min-height:44px}
+.btn.ghost{background:none;color:var(--pri);border:1.5px solid var(--pri)}
+.btn:disabled{opacity:.4;cursor:default}
+button:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.qh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.qn{background:var(--pri);color:var(--card);font:700 15px Lexend,sans-serif;width:34px;height:34px;border-radius:50%;display:grid;place-items:center}
+.tag{font-size:13px;font-weight:700;background:var(--grid);padding:3px 10px;border-radius:999px}
+.pts{font-size:13px;color:var(--mut);margin-left:auto}
+.qt{margin-bottom:12px;font-weight:700}.qt .id{font-weight:400}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opts.long{grid-template-columns:minmax(0,1fr)}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;min-height:48px}
+.opt .lt{flex:none;width:28px;height:28px;border-radius:7px;display:grid;place-items:center;background:var(--card);border:1px solid var(--line);font-family:Lexend}
+.opt.multi .lt{border-radius:4px}
+.opt.sel{border-color:var(--pri);box-shadow:inset 0 0 0 1px var(--pri)}.opt.sel .lt{background:var(--pri);color:var(--card)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.ok .lt{background:var(--ok);color:var(--card)}
+.opt.no{border-color:var(--no);background:var(--nobg)}.opt.no .lt{background:var(--no);color:var(--card)}
+.opt.miss{border-style:dashed;border-color:var(--ok)}
+.q.locked .opt{cursor:default}
+.mopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.mopt{display:flex;gap:10px;align-items:center;border:1px dashed var(--line);border-radius:10px;padding:8px 12px}
+.mrow{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+select{font:700 16px Lexend,sans-serif;min-height:44px;min-width:90px;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:0 10px}
+select.ok{border-color:var(--ok);background:var(--okbg)}select.no{border-color:var(--no);background:var(--nobg)}
+textarea{width:100%;min-height:110px;font:16px/1.5 "Nunito Sans",sans-serif;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink);margin-bottom:10px;resize:vertical}
+.qf{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.fb{font-weight:700}.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.ex{margin-top:12px;background:var(--grid);border-radius:10px;padding:12px 14px}.ex p{margin:4px 0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.86em;line-height:1.15;margin:0 2px}
+.fr>i{font-style:normal;padding:0 3px;white-space:nowrap}.fr>i:first-child{border-bottom:1.5px solid currentColor}
+.nl{width:100%;max-width:320px;display:block;margin:6px 0;color:var(--ink)}
+.nl line{stroke:currentColor;stroke-width:1.5}.nl .ray{stroke:var(--acc);stroke-width:4}.nl polygon{fill:var(--acc)}
+.nl text{font:12px "Nunito Sans";text-anchor:middle;fill:currentColor}
+.nl .cl{fill:var(--acc);stroke:var(--acc);stroke-width:2.5}.nl .op{fill:var(--card);stroke:var(--acc);stroke-width:2.5}
+.mockhead{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin:16px 0 20px}
+.big{font:700 clamp(30px,5vw,44px) Lexend,sans-serif;color:var(--acc)}
+.note{font-size:14px;color:var(--mut)}
+footer{text-align:center;padding:30px 16px 50px;font-size:14px;color:var(--mut)}
+[hidden]{display:none!important}
+@media(max-width:600px){.opts,.mopts{grid-template-columns:minmax(0,1fr)}.legend{grid-template-columns:repeat(2,minmax(0,1fr))}.bar div{font-size:13px}.score small{display:none}}
+@media(prefers-reduced-motion:no-preference){.ex,.steps li:not([hidden]){animation:in .3s ease}@keyframes in{from{opacity:0;transform:translateY(4px)}}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <h1>Grade 7 Maths Final Test Prep</h1>
+  <p class="sub">Semester 1, 2026–2027 · Pearson curriculum. Read the explanation, then practise every question type that will be in the test.<i>Semester 1, 2026–2027 · Kurikulum Pearson. Baca pembahasannya, lalu latih semua tipe soal yang akan keluar di ujian.</i></p>
+  <div class="bp">
+    <div class="meta"><span>33 questions · 33 soal</span><span>120 minutes · 120 menit</span><span>Total 100 points · 100 poin</span></div>
+    <div class="bar" aria-label="Score split by question type">
+      <div style="flex:50;background:#7fe0d5">50</div><div style="flex:16;background:#ffd166">16</div><div style="flex:6;background:#ffb4a2">6</div><div style="flex:28;background:#e9f5f3">28</div>
+    </div>
+    <div class="legend">
+      <span style="--c:#7fe0d5"><b>Multiple Choice</b>1–25 · 2 pts each<i class="id" style="color:inherit">Pilihan Ganda</i></span>
+      <span style="--c:#ffd166"><b>Complex MC</b>26–29 · 4 pts each<i class="id" style="color:inherit">PG Kompleks</i></span>
+      <span style="--c:#ffb4a2"><b>Matching</b>30a–c · 2 pts each<i class="id" style="color:inherit">Menjodohkan</i></span>
+      <span style="--c:#e9f5f3"><b>Essay</b>31–33 · 28 pts<i class="id" style="color:inherit">Uraian</i></span>
+    </div>
+  </div>
+</div></header>
+<nav><div class="wrap"><div class="tabs" id="tabs"></div><div class="score" id="score">0 / 0<small>practice points</small></div></div></nav>
+<main id="main"></main>
+<footer>Math Tutoring by Deni · Final Test Prep Grade 7</footer>
+
+<script>
+{
+const CH=[
+{name:["Factors & Multiples","Faktor & Kelipatan"],
+kd:["Factors & multiples","Prime & composite","Prime factorisation","Square & cube roots","HCF + word problems","LCM + word problems"],
+learn:[
+{t:["Factors and multiples","Faktor dan kelipatan"],p:[["A factor of a number divides it exactly, with no remainder.","Faktor suatu bilangan membagi bilangan itu habis, tanpa sisa."],["A multiple of a number is the result of multiplying it by 1, 2, 3, …","Kelipatan suatu bilangan adalah hasil perkalian bilangan itu dengan 1, 2, 3, …"]],
+key:"Factors of 18: 1, 2, 3, 6, 9, 18 &nbsp;|&nbsp; Multiples of 7: 7, 14, 21, 28, …",
+ex:[{q:["List all the factors of 36 in pairs.","Tuliskan semua faktor dari 36 secara berpasangan."],s:["1 × 36, 2 × 18, 3 × 12, 4 × 9, 6 × 6",["Stop when the pairs start to repeat.","Berhenti saat pasangannya mulai berulang."],"Factors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36"]}]},
+{t:["Prime and composite numbers","Bilangan prima dan komposit"],p:[["A prime number has exactly two factors: 1 and itself.","Bilangan prima memiliki tepat dua faktor: 1 dan bilangan itu sendiri."],["A composite number has more than two factors.","Bilangan komposit memiliki lebih dari dua faktor."],["1 is neither prime nor composite, and 2 is the only even prime.","1 bukan bilangan prima maupun komposit, dan 2 adalah satu-satunya bilangan prima genap."]],
+key:"Primes under 30: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29",
+ex:[{q:["Is 91 prime or composite?","Apakah 91 bilangan prima atau komposit?"],s:[["Test the primes up to √91 ≈ 9.5: try 2, 3, 5, 7.","Uji bilangan prima sampai √91 ≈ 9.5: coba 2, 3, 5, 7."],"91 ÷ 7 = 13",["91 = 7 × 13, so 91 is composite.","91 = 7 × 13, jadi 91 adalah bilangan komposit."]]}]},
+{t:["Prime factorisation","Faktorisasi prima"],p:[["Write a number as a product of prime factors, using a factor tree or repeated division.","Tuliskan bilangan sebagai hasil kali faktor-faktor prima, dengan pohon faktor atau pembagian berulang."],["Use index notation for repeated factors.","Gunakan notasi pangkat untuk faktor yang berulang."]],
+key:"360 = 2 × 2 × 2 × 3 × 3 × 5 = 2³ × 3² × 5",
+ex:[{q:["Write 360 as a product of its prime factors.","Tuliskan 360 sebagai hasil kali faktor-faktor primanya."],s:["360 ÷ 2 = 180","180 ÷ 2 = 90","90 ÷ 2 = 45","45 ÷ 3 = 15","15 ÷ 3 = 5","5 ÷ 5 = 1",["So 360 = 2³ × 3² × 5","Jadi 360 = 2³ × 3² × 5"]]}]},
+{t:["Square roots and cube roots","Akar kuadrat dan akar pangkat tiga"],p:[["The square root √n is the number that multiplies by itself to give n.","Akar kuadrat √n adalah bilangan yang jika dikalikan dengan dirinya sendiri hasilnya n."],["The cube root ∛n is the number that, used three times in a product, gives n.","Akar pangkat tiga ∛n adalah bilangan yang jika dikalikan tiga kali hasilnya n."],["With prime factors: halve every power for √, divide every power by 3 for ∛.","Dengan faktor prima: bagi setiap pangkat dengan 2 untuk √, dan dengan 3 untuk ∛."]],
+key:"√144 = 12 &nbsp;|&nbsp; ∛125 = 5 &nbsp;|&nbsp; ∛(−8) = −2",
+ex:[{q:["Use prime factors to find √324 and ∛216.","Gunakan faktor prima untuk mencari √324 dan ∛216."],s:["324 = 2² × 3⁴ → √324 = 2 × 3² = 18","216 = 2³ × 3³ → ∛216 = 2 × 3 = 6"]}]},
+{t:["HCF and word problems","FPB dan soal cerita"],p:[["The HCF (Highest Common Factor) is the biggest number that divides all the numbers exactly.","FPB (Faktor Persekutuan Terbesar) adalah bilangan terbesar yang membagi habis semua bilangan tersebut."],["Take the common primes with the lowest powers.","Ambil faktor prima yang sama dengan pangkat terkecil."],["Key words in problems: greatest number of groups, largest size, share equally.","Kata kunci dalam soal: banyak kelompok terbanyak, ukuran terbesar, dibagi sama rata."]],
+key:"48 = 2⁴ × 3, &nbsp;72 = 2³ × 3² &nbsp;→&nbsp; HCF = 2³ × 3 = 24",
+ex:[{q:["48 red beads and 72 blue beads are packed into identical bags with none left over. What is the greatest number of bags, and what is in each bag?","48 manik merah dan 72 manik biru dimasukkan ke kantong-kantong yang isinya sama tanpa sisa. Berapa banyak kantong terbanyak, dan apa isi tiap kantong?"],s:["HCF(48, 72) = 24",["Greatest number of bags = 24.","Banyak kantong terbanyak = 24."],["Each bag: 48 ÷ 24 = 2 red, 72 ÷ 24 = 3 blue.","Tiap kantong: 48 ÷ 24 = 2 merah, 72 ÷ 24 = 3 biru."]]}]},
+{t:["LCM and word problems","KPK dan soal cerita"],p:[["The LCM (Lowest Common Multiple) is the smallest number that is a multiple of all the numbers.","KPK (Kelipatan Persekutuan Terkecil) adalah bilangan terkecil yang merupakan kelipatan semua bilangan tersebut."],["Take every prime that appears, with the highest power.","Ambil semua faktor prima yang muncul dengan pangkat terbesar."],["Key words: together again, at the same time, smallest number of items.","Kata kunci: bersama-sama lagi, pada waktu yang sama, banyak barang paling sedikit."]],
+key:"12 = 2² × 3, &nbsp;18 = 2 × 3² &nbsp;→&nbsp; LCM = 2² × 3² = 36",
+ex:[{q:["Bus A leaves every 12 minutes and bus B every 18 minutes. They leave together at 07.00. When do they next leave together?","Bus A berangkat setiap 12 menit dan bus B setiap 18 menit. Keduanya berangkat bersama pukul 07.00. Kapan mereka berangkat bersama lagi?"],s:["LCM(12, 18) = 36",["36 minutes after 07.00 → 07.36","36 menit setelah 07.00 → pukul 07.36"]]}]}
+],
+quiz:[
+{type:"mc",q:["Which of these is a prime number?","Manakah yang merupakan bilangan prima?"],o:["51","57","59","63"],a:2,e:[["51 = 3 × 17, 57 = 3 × 19, 63 = 7 × 9. Only 59 has exactly two factors.","51 = 3 × 17, 57 = 3 × 19, 63 = 7 × 9. Hanya 59 yang memiliki tepat dua faktor."]]},
+{type:"mc",q:["What is 84 written as a product of prime factors?","Bagaimana 84 ditulis sebagai hasil kali faktor-faktor prima?"],o:["2 × 3 × 7","2² × 21","2² × 3 × 7","2³ × 3 × 7"],a:2,e:["84 = 2 × 2 × 3 × 7 = 2² × 3 × 7",["2² × 21 is not fully prime, because 21 = 3 × 7.","2² × 21 belum seluruhnya prima, karena 21 = 3 × 7."]]},
+{type:"mc",q:["What is the HCF of 36 and 60?","Berapakah FPB dari 36 dan 60?"],o:["6","12","18","180"],a:1,e:["36 = 2² × 3², &nbsp;60 = 2² × 3 × 5","HCF = 2² × 3 = 12"]},
+{type:"mc",q:["What is the LCM of 8 and 12?","Berapakah KPK dari 8 dan 12?"],o:["4","24","48","96"],a:1,e:["8 = 2³, &nbsp;12 = 2² × 3","LCM = 2³ × 3 = 24"]},
+{type:"mc",q:["Given 1764 = 2² × 3² × 7², what is √1764?","Diketahui 1764 = 2² × 3² × 7², berapakah √1764?"],o:["21","42","84","882"],a:1,e:["√1764 = 2 × 3 × 7 = 42"]},
+{type:"mc",q:["What is ∛1000 − √81?","Berapakah ∛1000 − √81?"],o:["1","19","91","−1"],a:0,e:["∛1000 = 10, &nbsp;√81 = 9","10 − 9 = 1"]},
+{type:"cmc",q:["Select ALL the true statements.","Pilih SEMUA pernyataan yang benar."],o:[["1 is a prime number.","1 adalah bilangan prima."],["2 is the only even prime number.","2 adalah satu-satunya bilangan prima genap."],["91 is a composite number.","91 adalah bilangan komposit."],["Every composite number has more than two factors.","Setiap bilangan komposit memiliki lebih dari dua faktor."],["27 is a prime number.","27 adalah bilangan prima."]],a:[1,2,3],e:[["1 has only one factor, so it is not prime. 91 = 7 × 13 and 27 = 3 × 9 are composite.","1 hanya memiliki satu faktor, jadi bukan prima. 91 = 7 × 13 dan 27 = 3 × 9 adalah komposit."]]},
+{type:"cmc",q:["Select ALL the numbers that are factors of 72.","Pilih SEMUA bilangan yang merupakan faktor dari 72."],o:["8","12","16","18","27"],a:[0,1,3],e:["72 = 8 × 9 = 12 × 6 = 18 × 4",["72 ÷ 16 = 4.5 and 72 ÷ 27 = 2.67 are not whole numbers.","72 ÷ 16 = 4.5 dan 72 ÷ 27 = 2.67 bukan bilangan bulat."]]},
+{type:"match",q:["Match each number with its prime factorisation.","Pasangkan setiap bilangan dengan faktorisasi primanya."],items:["60","90","100"],opts:["2 × 3² × 5","2² × 5²","2³ × 3 × 5","2² × 3 × 5"],a:[3,0,1],e:["60 = 2² × 3 × 5, &nbsp;90 = 2 × 3² × 5, &nbsp;100 = 2² × 5²",["2³ × 3 × 5 = 120 (not used).","2³ × 3 × 5 = 120 (tidak dipakai)."]]},
+{type:"essay",q:["Pak Budi has 84 pencils and 126 erasers. He packs them into identical packs with nothing left over. (a) Find the greatest number of packs. (b) How many pencils and erasers are in each pack?","Pak Budi memiliki 84 pensil dan 126 penghapus. Ia mengemasnya ke dalam paket-paket yang isinya sama tanpa sisa. (a) Tentukan banyak paket terbanyak. (b) Berapa pensil dan penghapus di setiap paket?"],s:["84 = 2² × 3 × 7","126 = 2 × 3² × 7",["HCF = 2 × 3 × 7 = 42 → (a) 42 packs","FPB = 2 × 3 × 7 = 42 → (a) 42 paket"],["(b) 84 ÷ 42 = 2 pencils and 126 ÷ 42 = 3 erasers per pack","(b) 84 ÷ 42 = 2 pensil dan 126 ÷ 42 = 3 penghapus per paket"]]},
+{type:"essay",q:["Two lamps flash every 15 seconds and every 20 seconds. They flash together at 08.00.00. (a) When do they next flash together? (b) How many more times do they flash together up to 08.10.00?","Dua lampu berkedip setiap 15 detik dan setiap 20 detik. Keduanya berkedip bersama pukul 08.00.00. (a) Kapan mereka berkedip bersama lagi? (b) Berapa kali lagi mereka berkedip bersama sampai pukul 08.10.00?"],s:["15 = 3 × 5, &nbsp;20 = 2² × 5",["LCM = 2² × 3 × 5 = 60 seconds","KPK = 2² × 3 × 5 = 60 detik"],["(a) 60 s after 08.00.00 → 08.01.00","(a) 60 detik setelah 08.00.00 → 08.01.00"],["(b) 10 minutes = 600 s, and 600 ÷ 60 = 10 times","(b) 10 menit = 600 detik, dan 600 ÷ 60 = 10 kali"]]}
+]},
+{name:["Numbers","Bilangan"],
+kd:["Simplify fractions","Fraction ↔ decimal","+ − × ÷ fractions & decimals","Fraction problems","Integers (+ − × ÷)","BIDMAS","s.f. and d.p."],
+learn:[
+{t:["Simplifying fractions","Menyederhanakan pecahan"],p:[["Divide the numerator and the denominator by their HCF.","Bagi pembilang dan penyebut dengan FPB-nya."]],key:"[36/48] = [36 ÷ 12/48 ÷ 12] = [3/4]",
+ex:[{q:["Simplify [84/126].","Sederhanakan [84/126]."],s:["HCF(84, 126) = 42","[84/126] = [2/3]"]}]},
+{t:["Fractions and decimals","Pecahan dan desimal"],p:[["Fraction → decimal: divide the numerator by the denominator.","Pecahan → desimal: bagi pembilang dengan penyebut."],["Decimal → fraction: write it over 10, 100 or 1000, then simplify.","Desimal → pecahan: tulis per 10, 100, atau 1000, lalu sederhanakan."]],
+key:"[3/8] = 3 ÷ 8 = 0.375 &nbsp;|&nbsp; 0.45 = [45/100] = [9/20] &nbsp;|&nbsp; [2/3] = 0.666…",
+ex:[{q:["Convert [5/8] to a decimal and 0.36 to a fraction.","Ubah [5/8] menjadi desimal dan 0.36 menjadi pecahan."],s:["5 ÷ 8 = 0.625","0.36 = [36/100] = [9/25]"]}]},
+{t:["Adding and subtracting fractions","Penjumlahan dan pengurangan pecahan"],p:[["Make the denominators the same first (use the LCM).","Samakan penyebutnya dulu (gunakan KPK)."],["Change mixed numbers to improper fractions first.","Ubah pecahan campuran menjadi pecahan biasa terlebih dahulu."]],
+key:"[2/3] + [3/4] = [8/12] + [9/12] = [17/12] = 1[5/12]",
+ex:[{q:["Work out 3[1/2] − 1[2/3].","Hitunglah 3[1/2] − 1[2/3]."],s:["= [7/2] − [5/3]","= [21/6] − [10/6]","= [11/6] = 1[5/6]"]}]},
+{t:["Multiplying and dividing fractions and decimals","Perkalian dan pembagian pecahan serta desimal"],p:[["Multiply: numerator × numerator, denominator × denominator.","Kali: pembilang × pembilang, penyebut × penyebut."],["Divide: keep the first fraction, change ÷ to ×, flip the second fraction.","Bagi: tetapkan pecahan pertama, ubah ÷ menjadi ×, balik pecahan kedua."],["Decimals: multiply as whole numbers, then count the decimal places. To divide, make the divisor a whole number first.","Desimal: kalikan seperti bilangan bulat, lalu hitung banyak angka di belakang koma. Untuk membagi, jadikan pembaginya bilangan bulat dulu."]],
+key:"[3/4] ÷ [9/10] = [3/4] × [10/9] = [30/36] = [5/6]",
+ex:[{q:["Work out (a) 1[1/2] × 2[2/3] &nbsp;(b) 0.3 × 0.04 &nbsp;(c) 2.4 ÷ 0.06","Hitunglah (a) 1[1/2] × 2[2/3] &nbsp;(b) 0.3 × 0.04 &nbsp;(c) 2.4 ÷ 0.06"],s:["(a) [3/2] × [8/3] = [24/6] = 4",["(b) 3 × 4 = 12, with 3 decimal places → 0.012","(b) 3 × 4 = 12, dengan 3 angka di belakang koma → 0.012"],"(c) 2.4 ÷ 0.06 = 240 ÷ 6 = 40"]}]},
+{t:["Problems with fractions","Soal cerita pecahan"],p:[["'Of' means multiply: [3/8] of 32 = [3/8] × 32 = 12.","'Dari' berarti kali: [3/8] dari 32 = [3/8] × 32 = 12."],["For 'the remainder' problems, find what is left at each stage.","Untuk soal 'sisanya', cari bagian yang tersisa di setiap tahap."]],
+ex:[{q:["Sari reads [2/5] of a 240-page book on Monday and [1/4] of the remaining pages on Tuesday. How many pages are left?","Sari membaca [2/5] dari buku setebal 240 halaman pada hari Senin dan [1/4] dari sisa halaman pada hari Selasa. Berapa halaman yang tersisa?"],s:[["Monday: [2/5] × 240 = 96 pages, so 144 remain","Senin: [2/5] × 240 = 96 halaman, jadi sisa 144"],["Tuesday: [1/4] × 144 = 36 pages","Selasa: [1/4] × 144 = 36 halaman"],["Left: 144 − 36 = 108 pages","Sisa: 144 − 36 = 108 halaman"]]}]},
+{t:["Positive and negative integers","Bilangan bulat positif dan negatif"],p:[["Subtracting a negative is the same as adding: a − (−b) = a + b.","Mengurangi bilangan negatif sama dengan menjumlah: a − (−b) = a + b."],["For × and ÷: same signs give a positive answer, different signs give a negative answer.","Untuk × dan ÷: tanda sama hasilnya positif, tanda berbeda hasilnya negatif."]],
+key:"(−6) × (−4) = 24 &nbsp;|&nbsp; (−45) ÷ 9 = −5 &nbsp;|&nbsp; −5 − (−8) = 3",
+ex:[{q:["Work out −7 + 12 − (−3) and (−2) × 5 × (−3).","Hitunglah −7 + 12 − (−3) dan (−2) × 5 × (−3)."],s:["−7 + 12 + 3 = 8","(−2) × 5 = −10, &nbsp;(−10) × (−3) = 30"]}]},
+{t:["Order of operations (BIDMAS)","Urutan operasi hitung (BIDMAS)"],p:[["Brackets, Indices, Division and Multiplication (left to right), Addition and Subtraction (left to right).","Kurung, Pangkat, Bagi dan Kali (dari kiri ke kanan), Tambah dan Kurang (dari kiri ke kanan)."]],key:"B → I → D / M → A / S",
+ex:[{q:["Work out 20 − 3 × (4 − 6)².","Hitunglah 20 − 3 × (4 − 6)²."],s:[["Brackets: 4 − 6 = −2","Kurung: 4 − 6 = −2"],["Indices: (−2)² = 4","Pangkat: (−2)² = 4"],["Multiply: 3 × 4 = 12","Kali: 3 × 4 = 12"],["Subtract: 20 − 12 = 8","Kurang: 20 − 12 = 8"]]}]},
+{t:["Significant figures and decimal places","Angka penting dan tempat desimal"],p:[["Decimal places (d.p.) count the digits after the decimal point.","Tempat desimal (d.p.) menghitung angka setelah tanda koma."],["Significant figures (s.f.) start from the first non-zero digit. Leading zeros are not significant.","Angka penting (s.f.) dihitung mulai dari angka bukan nol pertama. Nol di depan bukan angka penting."],["Look at the next digit: 5 or more → round up; 4 or less → keep it.","Lihat angka berikutnya: 5 atau lebih → bulatkan ke atas; 4 atau kurang → tetap."]],
+key:"3.14159 → 3.14 (2 d.p.) &nbsp;|&nbsp; 0.004572 → 0.0046 (2 s.f.) &nbsp;|&nbsp; 48 652 → 48 700 (3 s.f.)",
+ex:[{q:["Round 17.0862 to (a) 2 d.p. (b) 3 s.f. Then round 0.05096 to 2 s.f.","Bulatkan 17.0862 ke (a) 2 d.p. (b) 3 s.f. Lalu bulatkan 0.05096 ke 2 s.f."],s:["(a) 17.08 | 62 → 17.09","(b) 17.0 | 862 → 17.1",["0.05096: the first significant digit is 5 → 0.050 | 96 → 0.051","0.05096: angka penting pertama adalah 5 → 0.050 | 96 → 0.051"]]}]}
+],
+quiz:[
+{type:"mc",q:["Simplify [42/56].","Sederhanakan [42/56]."],o:["[6/8]","[3/4]","[7/8]","[2/3]"],a:1,e:["HCF(42, 56) = 14 → [42/56] = [3/4]"]},
+{type:"mc",q:["Which fraction is equal to 0.625?","Pecahan manakah yang sama dengan 0.625?"],o:["[5/8]","[5/6]","[3/8]","[6/25]"],a:0,e:["0.625 = [625/1000] = [5/8]"]},
+{type:"mc",q:["Work out 2[1/3] − 1[3/4].","Hitunglah 2[1/3] − 1[3/4]."],o:["1[1/12]","[7/12]","[5/12]","1[7/12]"],a:1,e:["[7/3] − [7/4] = [28/12] − [21/12] = [7/12]"]},
+{type:"mc",q:["Work out [2/5] ÷ [4/15].","Hitunglah [2/5] ÷ [4/15]."],o:["[8/75]","[2/3]","1[1/2]","6"],a:2,e:["[2/5] × [15/4] = [30/20] = [3/2] = 1[1/2]"]},
+{type:"mc",q:["What is the value of −8 − (−3) × 4?","Berapakah nilai dari −8 − (−3) × 4?"],o:["−20","−4","4","20"],a:2,e:[["Multiply first: (−3) × 4 = −12","Kalikan dulu: (−3) × 4 = −12"],"−8 − (−12) = −8 + 12 = 4"]},
+{type:"mc",q:["Work out 5 + 4² ÷ 2 × (−3).","Hitunglah 5 + 4² ÷ 2 × (−3)."],o:["−19","−31.5","29","11"],a:0,e:["4² = 16","16 ÷ 2 = 8, &nbsp;8 × (−3) = −24","5 + (−24) = −19"]},
+{type:"mc",q:["Round 0.07059 to 3 significant figures.","Bulatkan 0.07059 ke 3 angka penting."],o:["0.070","0.0706","0.071","0.07059"],a:1,e:[["The significant figures start at 7: 7, 0, 5 | 9 → round up.","Angka penting dimulai dari 7: 7, 0, 5 | 9 → bulatkan ke atas."],"0.07059 ≈ 0.0706"]},
+{type:"mc",q:["Work out 0.6 × 0.05.","Hitunglah 0.6 × 0.05."],o:["0.3","0.03","0.003","3"],a:1,e:[["6 × 5 = 30, with 3 decimal places → 0.030 = 0.03","6 × 5 = 30, dengan 3 angka di belakang koma → 0.030 = 0.03"]]},
+{type:"cmc",q:["Select ALL the values equal to 0.75.","Pilih SEMUA nilai yang sama dengan 0.75."],o:["[3/4]","[6/8]","[7/5]","[15/20]","[3/5]"],a:[0,1,3],e:["[3/4] = [6/8] = [15/20] = 0.75","[7/5] = 1.4, &nbsp;[3/5] = 0.6"]},
+{type:"cmc",q:["Select ALL the calculations with a negative answer.","Pilih SEMUA perhitungan yang hasilnya negatif."],o:["(−3) × (−5)","(−2)³","−12 ÷ 4","−4 − (−9)","(−1) × (−2) × (−3)"],a:[1,2,4],e:["(−3) × (−5) = 15, &nbsp;(−2)³ = −8, &nbsp;−12 ÷ 4 = −3","−4 + 9 = 5, &nbsp;(−1) × (−2) × (−3) = −6"]},
+{type:"match",q:["Match each rounding of 0.03847 with its answer.","Pasangkan setiap pembulatan 0.03847 dengan hasilnya."],items:[["to 2 decimal places","ke 2 tempat desimal"],["to 2 significant figures","ke 2 angka penting"],["to 3 significant figures","ke 3 angka penting"]],opts:["0.039","0.04","0.0385","0.038"],a:[1,3,2],e:["0.03 | 847 → 0.04","0.038 | 47 → 0.038","0.0384 | 7 → 0.0385"]},
+{type:"essay",q:["Rina spends [1/4] of her money on books and [2/5] of the remaining money on food. She has Rp 54 000 left. How much money did she have at first?","Rina membelanjakan [1/4] uangnya untuk buku dan [2/5] dari sisa uangnya untuk makanan. Sisa uangnya Rp 54 000. Berapa uang Rina mula-mula?"],s:[["After the books, [3/4] is left.","Setelah membeli buku, sisanya [3/4]."],["Food: [2/5] × [3/4] = [3/10] of her money","Makanan: [2/5] × [3/4] = [3/10] dari uangnya"],["Left: [3/4] − [3/10] = [15/20] − [6/20] = [9/20]","Sisa: [3/4] − [3/10] = [15/20] − [6/20] = [9/20]"],["[9/20] of the money = Rp 54 000 → [1/20] = Rp 6 000","[9/20] uang = Rp 54 000 → [1/20] = Rp 6 000"],["At first: 20 × Rp 6 000 = Rp 120 000","Mula-mula: 20 × Rp 6 000 = Rp 120 000"]]},
+{type:"essay",q:["Work out ([3/4] − [1/6]) × 2[2/5] ÷ (−0.7). Show every step.","Hitunglah ([3/4] − [1/6]) × 2[2/5] ÷ (−0.7). Tunjukkan setiap langkah."],s:["[3/4] − [1/6] = [9/12] − [2/12] = [7/12]","[7/12] × [12/5] = [7/5]","−0.7 = −[7/10]","[7/5] ÷ (−[7/10]) = [7/5] × (−[10/7]) = −2"]}
+]},
+{name:["Algebra","Aljabar"],
+kd:["Sentences → expressions","Substitution","Collect like terms","Expand brackets","Algebraic fractions"],
+learn:[
+{t:["Writing expressions from sentences","Menulis bentuk aljabar dari kalimat"],p:[["Turn words into symbols. Use a letter for the unknown number.","Ubah kata-kata menjadi simbol. Gunakan huruf untuk bilangan yang belum diketahui."]],
+key:"sum → + &nbsp;|&nbsp; difference → − &nbsp;|&nbsp; product → × &nbsp;|&nbsp; quotient → ÷ &nbsp;|&nbsp; twice → 2 ×",
+ex:[{q:["Write expressions for: (a) 5 more than twice n (b) 3 less than the product of x and y (c) a number m divided by 4, then add 7.","Tuliskan bentuk aljabar untuk: (a) 5 lebih dari dua kali n (b) 3 kurangnya dari hasil kali x dan y (c) bilangan m dibagi 4, lalu ditambah 7."],s:["(a) 2n + 5","(b) xy − 3","(c) [m/4] + 7"]}]},
+{t:["Substitution","Substitusi"],p:[["Replace each letter with its value, then use BIDMAS.","Ganti setiap huruf dengan nilainya, lalu gunakan BIDMAS."],["Put negative values in brackets: (−2)² = 4, but −2² = −4.","Tulis nilai negatif dalam kurung: (−2)² = 4, tetapi −2² = −4."]],
+ex:[{q:["If a = 3 and b = −2, find 2a² − 3b and ab².","Jika a = 3 dan b = −2, tentukan 2a² − 3b dan ab²."],s:["2(3)² − 3(−2) = 18 + 6 = 24","3 × (−2)² = 3 × 4 = 12"]}]},
+{t:["Collecting like terms","Mengumpulkan suku sejenis"],p:[["Like terms have exactly the same letters and powers, for example 3x and −5x, or 4a² and a².","Suku sejenis memiliki huruf dan pangkat yang sama persis, misalnya 3x dan −5x, atau 4a² dan a²."],["Add or subtract only the coefficients of like terms.","Jumlahkan atau kurangkan hanya koefisien suku-suku sejenis."]],
+key:["x and x² are NOT like terms.","x dan x² BUKAN suku sejenis."],
+ex:[{q:["Simplify 5x + 3y − 2x + 7y and 4a² + 3a − a² + 5a.","Sederhanakan 5x + 3y − 2x + 7y dan 4a² + 3a − a² + 5a."],s:["5x − 2x + 3y + 7y = 3x + 10y","4a² − a² + 3a + 5a = 3a² + 8a"]}]},
+{t:["Expanding brackets","Menjabarkan bentuk kurung"],p:[["Multiply every term inside the bracket by the term outside.","Kalikan setiap suku di dalam kurung dengan suku di luar kurung."],["A negative outside changes every sign inside.","Tanda negatif di luar kurung mengubah semua tanda di dalamnya."]],
+key:"a(b + c) = ab + ac &nbsp;|&nbsp; −2(x − 4) = −2x + 8",
+ex:[{q:["Expand and simplify 4(x + 2) − 3(x − 1).","Jabarkan dan sederhanakan 4(x + 2) − 3(x − 1)."],s:["4x + 8 − 3x + 3","= x + 11"]}]},
+{t:["Algebraic fractions","Pecahan bentuk aljabar"],p:[["They work like number fractions: the same denominator to add or subtract; flip and multiply to divide.","Caranya sama seperti pecahan biasa: samakan penyebut untuk menjumlah atau mengurang; balik lalu kalikan untuk membagi."],["Put a numerator with two terms in brackets before you multiply it.","Beri kurung pada pembilang yang terdiri dari dua suku sebelum dikalikan."]],
+key:"[x/3] + [x/4] = [4x/12] + [3x/12] = [7x/12]",
+ex:[{q:["Simplify (a) [x + 1/2] + [x − 2/3] &nbsp;(b) [2a/3] ÷ [4a/9]","Sederhanakan (a) [x + 1/2] + [x − 2/3] &nbsp;(b) [2a/3] ÷ [4a/9]"],s:["(a) [3(x + 1) + 2(x − 2)/6] = [3x + 3 + 2x − 4/6] = [5x − 1/6]","(b) [2a/3] × [9/4a] = [18a/12a] = [3/2]"]}]}
+],
+quiz:[
+{type:"mc",q:["Which expression means 'subtract 4 from three times a number m'?","Bentuk manakah yang berarti 'kurangkan 4 dari tiga kali bilangan m'?"],o:["4 − 3m","3m − 4","3(m − 4)","3 + m − 4"],a:1,e:[["Three times m is 3m; subtract 4 from it: 3m − 4.","Tiga kali m adalah 3m; dikurangi 4 menjadi 3m − 4."]]},
+{type:"mc",q:["If p = −3 and q = 2, find p² − 4q.","Jika p = −3 dan q = 2, tentukan p² − 4q."],o:["1","17","−17","−1"],a:0,e:["(−3)² − 4(2) = 9 − 8 = 1"]},
+{type:"mc",q:["Simplify 7a − 3b − 2a + 5b.","Sederhanakan 7a − 3b − 2a + 5b."],o:["5a + 2b","5a − 8b","9a + 2b","7ab"],a:0,e:["7a − 2a = 5a, &nbsp;−3b + 5b = 2b"]},
+{type:"mc",q:["Expand and simplify 5(x − 2) − 2(x − 3).","Jabarkan dan sederhanakan 5(x − 2) − 2(x − 3)."],o:["3x − 16","3x − 4","3x − 13","7x − 16"],a:1,e:["5x − 10 − 2x + 6 = 3x − 4"]},
+{type:"mc",q:["Simplify [x/2] + [x/5].","Sederhanakan [x/2] + [x/5]."],o:["[x/7]","[2x/7]","[7x/10]","[x/10]"],a:2,e:["[5x/10] + [2x/10] = [7x/10]"]},
+{type:"mc",q:["Simplify [6x/5] ÷ [3x/10].","Sederhanakan [6x/5] ÷ [3x/10]."],o:["4","[18x²/50]","[1/4]","2x"],a:0,e:["[6x/5] × [10/3x] = [60x/15x] = 4"]},
+{type:"mc",q:["A pen costs p rupiah and a book costs 3 times as much as a pen. What is the total cost of 2 pens and 1 book?","Harga sebuah pena p rupiah dan harga sebuah buku 3 kali harga pena. Berapa total harga 2 pena dan 1 buku?"],o:["5p","6p","3p + 2","2p + 3"],a:0,e:["2p + 3p = 5p"]},
+{type:"cmc",q:["Select ALL the expressions equivalent to 6x − 12.","Pilih SEMUA bentuk yang setara dengan 6x − 12."],o:["6(x − 2)","3(2x − 4)","6(x − 12)","−6(2 − x)","2(3x − 4)"],a:[0,1,3],e:["−6(2 − x) = −12 + 6x ✓","6(x − 12) = 6x − 72, &nbsp;2(3x − 4) = 6x − 8"]},
+{type:"cmc",q:["a = 2 and b = −1. Select ALL the expressions with value 5.","a = 2 dan b = −1. Pilih SEMUA bentuk yang bernilai 5."],o:["a² − b","3a + b","(a + b)²","ab + 3","a − 3b"],a:[0,1,4],e:["a² − b = 4 + 1 = 5, &nbsp;3a + b = 6 − 1 = 5, &nbsp;a − 3b = 2 + 3 = 5","(a + b)² = 1, &nbsp;ab + 3 = 1"]},
+{type:"match",q:["Match each expression with its expansion.","Pasangkan setiap bentuk dengan hasil penjabarannya."],items:["2(x + 3)","−2(x − 3)","x(x + 3)"],opts:["2x − 6","x² + 3x","2x + 6","−2x + 6"],a:[2,3,1],e:["2(x + 3) = 2x + 6, &nbsp;−2(x − 3) = −2x + 6, &nbsp;x(x + 3) = x² + 3x"]},
+{type:"essay",q:["A rectangle has length (2x + 3) cm and width (x − 1) cm. (a) Write and simplify an expression for its perimeter. (b) Find the perimeter when x = 5.","Sebuah persegi panjang memiliki panjang (2x + 3) cm dan lebar (x − 1) cm. (a) Tuliskan dan sederhanakan bentuk aljabar kelilingnya. (b) Tentukan kelilingnya jika x = 5."],s:["(a) P = 2(2x + 3) + 2(x − 1)","= 4x + 6 + 2x − 2 = 6x + 4","(b) 6(5) + 4 = 34 cm"]},
+{type:"essay",q:["Simplify [x + 3/4] − [x − 1/6].","Sederhanakan [x + 3/4] − [x − 1/6]."],s:[["The LCM of 4 and 6 is 12.","KPK dari 4 dan 6 adalah 12."],"= [3(x + 3) − 2(x − 1)/12]","= [3x + 9 − 2x + 2/12]","= [x + 11/12]"]}
+]},
+{name:["Equations & Inequalities","Persamaan & Pertidaksamaan"],
+kd:["x on both sides","Negative sign outside a bracket","Word problems","Roots & powers","Inequalities + number line"],
+learn:[
+{t:["Equations with x on both sides","Persamaan dengan x di kedua ruas"],p:[["Collect the x terms on one side and the numbers on the other. Always do the same thing to both sides.","Kumpulkan suku x di satu ruas dan bilangan di ruas lain. Selalu lakukan operasi yang sama pada kedua ruas."]],
+ex:[{q:["Solve 5x − 7 = 2x + 8.","Selesaikan 5x − 7 = 2x + 8."],s:[["Subtract 2x: 3x − 7 = 8","Kurangi 2x: 3x − 7 = 8"],["Add 7: 3x = 15","Tambah 7: 3x = 15"],["Divide by 3: x = 5","Bagi 3: x = 5"],["Check: 5(5) − 7 = 18 and 2(5) + 8 = 18 ✓","Cek: 5(5) − 7 = 18 dan 2(5) + 8 = 18 ✓"]]}]},
+{t:["Negative sign outside the bracket","Tanda negatif di luar kurung"],p:[["Expand first. A minus sign in front of a bracket changes every sign inside it.","Jabarkan dulu. Tanda minus di depan kurung mengubah semua tanda di dalamnya."]],key:"−(x − 3) = −x + 3 &nbsp;|&nbsp; −2(x + 5) = −2x − 10",
+ex:[{q:["Solve 10 − (x − 3) = 2x + 1.","Selesaikan 10 − (x − 3) = 2x + 1."],s:["10 − x + 3 = 2x + 1","13 − x = 2x + 1","12 = 3x","x = 4"]}]},
+{t:["Word problems","Soal cerita"],p:[["Choose a letter for the unknown, write an equation from the words, solve it, then answer the question in words.","Pilih huruf untuk yang belum diketahui, buat persamaan dari kalimat soal, selesaikan, lalu jawab pertanyaannya dengan kalimat."]],
+ex:[{q:["A father is 4 times as old as his son. In 5 years, he will be 3 times as old as his son. Find their ages now.","Usia ayah 4 kali usia anaknya. 5 tahun lagi, usia ayah 3 kali usia anaknya. Tentukan usia mereka sekarang."],s:[["Let the son's age be s. Father = 4s.","Misalkan usia anak s. Usia ayah = 4s."],["In 5 years: 4s + 5 = 3(s + 5)","5 tahun lagi: 4s + 5 = 3(s + 5)"],"4s + 5 = 3s + 15 → s = 10",["The son is 10 years old and the father is 40.","Anak berusia 10 tahun dan ayah berusia 40 tahun."]]},
+{q:["The sum of three consecutive integers is 72. Find them.","Jumlah tiga bilangan bulat berurutan adalah 72. Tentukan bilangan-bilangan itu."],s:["n + (n + 1) + (n + 2) = 72","3n + 3 = 72 → 3n = 69 → n = 23",["The numbers are 23, 24 and 25.","Bilangan-bilangannya adalah 23, 24, dan 25."]]}]},
+{t:["Equations with roots or powers","Persamaan dengan akar atau pangkat"],p:[["Get x² (or x³, or √x) alone first, then undo it.","Sendirikan dulu x² (atau x³, atau √x), lalu balikkan operasinya."],["x² = 49 has two answers: x = 7 or x = −7. x³ = k has only one answer.","x² = 49 memiliki dua jawaban: x = 7 atau x = −7. x³ = k hanya memiliki satu jawaban."],["Square both sides to remove a √.","Kuadratkan kedua ruas untuk menghilangkan √."]],
+key:"x² = k → x = ±√k &nbsp;|&nbsp; x³ = k → x = ∛k &nbsp;|&nbsp; √x = k → x = k²",
+ex:[{q:["Solve (a) 2x² − 5 = 67 &nbsp;(b) x³ = −64 &nbsp;(c) √(x + 3) = 5","Selesaikan (a) 2x² − 5 = 67 &nbsp;(b) x³ = −64 &nbsp;(c) √(x + 3) = 5"],s:["(a) 2x² = 72 → x² = 36 → x = ±6","(b) x = ∛(−64) = −4","(c) x + 3 = 25 → x = 22"]}]},
+{t:["Inequalities and the number line","Pertidaksamaan dan garis bilangan"],p:[["Solve an inequality like an equation.","Selesaikan pertidaksamaan seperti persamaan."],["If you multiply or divide by a negative number, reverse the inequality sign.","Jika mengali atau membagi dengan bilangan negatif, balik tanda pertidaksamaannya."],["On a number line: open circle ○ for < or >, closed circle ● for ≤ or ≥.","Pada garis bilangan: bulatan kosong ○ untuk < atau >, bulatan penuh ● untuk ≤ atau ≥."]],
+key:"x < 5 {NL:5:o:l}",
+ex:[{q:["Solve −2x + 1 ≥ 9 and show it on a number line.","Selesaikan −2x + 1 ≥ 9 dan gambarkan pada garis bilangan."],s:[["Subtract 1: −2x ≥ 8","Kurangi 1: −2x ≥ 8"],["Divide by −2 and reverse the sign: x ≤ −4","Bagi −2 dan balik tandanya: x ≤ −4"],"{NL:-4:c:l}"]},
+{q:["List the integers that satisfy −2 < x ≤ 3.","Tuliskan bilangan bulat yang memenuhi −2 < x ≤ 3."],s:[["−2 is not included; 3 is included.","−2 tidak termasuk; 3 termasuk."],"−1, 0, 1, 2, 3"]}]}
+],
+quiz:[
+{type:"mc",q:["Solve 7x + 3 = 4x + 18.","Selesaikan 7x + 3 = 4x + 18."],o:["x = 3","x = 5","x = 7","x = 15"],a:1,e:["3x = 15 → x = 5"]},
+{type:"mc",q:["Solve 2(x − 3) − (x − 5) = 8.","Selesaikan 2(x − 3) − (x − 5) = 8."],o:["x = 9","x = 19","x = 7","x = −3"],a:0,e:["2x − 6 − x + 5 = 8","x − 1 = 8 → x = 9",["x = 19 comes from forgetting to change the sign of −5.","x = 19 muncul jika lupa mengubah tanda −5."]]},
+{type:"mc",q:["Solve 3x² = 75.","Selesaikan 3x² = 75."],o:["x = 5","x = ±5","x = 25","x = ±25"],a:1,e:["x² = 25 → x = ±5"]},
+{type:"mc",q:["Solve √(2x − 1) = 3.","Selesaikan √(2x − 1) = 3."],o:["x = 2","x = 5","x = 4.5","x = 10"],a:1,e:["2x − 1 = 9 → 2x = 10 → x = 5"]},
+{type:"mc",q:["Solve 5 − 3x > 17.","Selesaikan 5 − 3x > 17."],o:["x > −4","x < −4","x > 4","x < 4"],a:1,e:["−3x > 12",["Divide by −3 and reverse the sign: x < −4","Bagi −3 dan balik tandanya: x < −4"]]},
+{type:"mc",q:["Which inequality is shown on this number line? {NL:-1:c:r}","Pertidaksamaan manakah yang ditunjukkan garis bilangan ini?"],o:["x > −1","x ≥ −1","x ≤ −1","x < −1"],a:1,e:[["A closed circle at −1 means −1 is included; the arrow to the right means 'greater than'.","Bulatan penuh di −1 berarti −1 termasuk; panah ke kanan berarti 'lebih dari'."]]},
+{type:"mc",q:["When 9 is added to 3 times a number, the result is 45. Find the number.","Jika 9 ditambahkan pada 3 kali suatu bilangan, hasilnya 45. Tentukan bilangan itu."],o:["12","18","15","36"],a:0,e:["3n + 9 = 45 → 3n = 36 → n = 12"]},
+{type:"cmc",q:["Select ALL the values of x that satisfy 2x − 3 ≤ 5.","Pilih SEMUA nilai x yang memenuhi 2x − 3 ≤ 5."],o:["x = 4","x = 0","x = 4.5","x = −3","x = 6"],a:[0,1,3],e:["2x ≤ 8 → x ≤ 4"]},
+{type:"cmc",q:["Select ALL the equations that have x = 3 as a solution.","Pilih SEMUA persamaan yang memiliki penyelesaian x = 3."],o:["x² = 9","4x − 5 = 2x + 1","2(x + 1) = 10","x³ = 27","5 − (x − 2) = 6"],a:[0,1,3],e:["2(x + 1) = 10 → x = 4","5 − (x − 2) = 6 → 7 − x = 6 → x = 1"]},
+{type:"match",q:["Match each inequality with its number line.","Pasangkan setiap pertidaksamaan dengan garis bilangannya."],items:["x > 2","x ≤ 2","x ≥ 2"],opts:["{NL:2:c:r}","{NL:2:o:l}","{NL:2:o:r}","{NL:2:c:l}"],a:[2,3,0],e:[["○ = not included (< or >), ● = included (≤ or ≥).","○ = tidak termasuk (< atau >), ● = termasuk (≤ atau ≥)."]]},
+{type:"essay",q:["The width of a rectangle is x cm and its length is (x + 6) cm. The perimeter is 52 cm. (a) Form an equation and solve it. (b) Find the area of the rectangle.","Lebar sebuah persegi panjang x cm dan panjangnya (x + 6) cm. Kelilingnya 52 cm. (a) Buat persamaan dan selesaikan. (b) Tentukan luas persegi panjang itu."],s:["(a) 2(x + x + 6) = 52","4x + 12 = 52 → 4x = 40 → x = 10",["(b) Width 10 cm, length 16 cm","(b) Lebar 10 cm, panjang 16 cm"],["Area = 10 × 16 = 160 cm²","Luas = 10 × 16 = 160 cm²"]]},
+{type:"essay",q:["Solve −3(x − 2) < 2x − 9. Show the solution on a number line and write the smallest integer that satisfies it.","Selesaikan −3(x − 2) < 2x − 9. Gambarkan penyelesaiannya pada garis bilangan dan tuliskan bilangan bulat terkecil yang memenuhi."],s:["−3x + 6 < 2x − 9","15 < 5x → x > 3","{NL:3:o:r}",["Smallest integer: 4","Bilangan bulat terkecil: 4"]]}
+]},
+{name:["Percentage","Persentase"],
+kd:["Fraction ↔ percentage","Percentage of an amount","Reverse percentage","% increase / decrease","Real-life % change"],
+learn:[
+{t:["Fractions and percentages","Pecahan dan persen"],p:[["Fraction → percentage: multiply by 100%.","Pecahan → persen: kalikan dengan 100%."],["Percentage → fraction: write it over 100, then simplify.","Persen → pecahan: tulis per 100, lalu sederhanakan."]],
+key:"[3/8] × 100% = 37.5% &nbsp;|&nbsp; 45% = [45/100] = [9/20]",
+ex:[{q:["Write [7/25] as a percentage and 2.5% as a fraction.","Tuliskan [7/25] dalam persen dan 2.5% dalam pecahan."],s:["[7/25] × 100% = 28%","2.5% = [2.5/100] = [25/1000] = [1/40]"]}]},
+{t:["Finding a percentage","Mencari nilai persentase"],p:[["x% of an amount = [x/100] × amount.","x% dari suatu nilai = [x/100] × nilai."],["One quantity as a percentage of another = [part/whole] × 100%.","Satu besaran sebagai persen dari besaran lain = [bagian/keseluruhan] × 100%."]],
+ex:[{q:["Find 15% of 240. Then write 18 out of 24 as a percentage.","Tentukan 15% dari 240. Lalu nyatakan 18 dari 24 dalam persen."],s:["[15/100] × 240 = 36","[18/24] × 100% = 75%"]}]},
+{t:["Increasing and decreasing by a percentage","Menaikkan dan menurunkan dengan persen"],p:[["Use a multiplier. Increase by r%: × (1 + [r/100]). Decrease by r%: × (1 − [r/100]).","Gunakan pengali. Naik r%: × (1 + [r/100]). Turun r%: × (1 − [r/100])."]],
+key:"+12% → × 1.12 &nbsp;|&nbsp; −15% → × 0.85",
+ex:[{q:["Increase Rp 250 000 by 12%. Decrease 80 kg by 15%.","Naikkan Rp 250 000 sebesar 12%. Turunkan 80 kg sebesar 15%."],s:["Rp 250 000 × 1.12 = Rp 280 000","80 × 0.85 = 68 kg"]}]},
+{t:["Percentage change","Persentase perubahan"],p:[["Percentage change = [change/original] × 100%.","Persentase perubahan = [perubahan/nilai awal] × 100%."],["Always divide by the ORIGINAL value.","Selalu bagi dengan nilai AWAL."]],
+ex:[{q:["A price rises from Rp 40 000 to Rp 46 000. Find the percentage increase.","Harga naik dari Rp 40 000 menjadi Rp 46 000. Tentukan persentase kenaikannya."],s:[["Change = 46 000 − 40 000 = 6 000","Perubahan = 46 000 − 40 000 = 6 000"],"[6 000/40 000] × 100% = 15%"]}]},
+{t:["Reverse percentage","Persentase terbalik (mencari nilai awal)"],p:[["When you know the amount AFTER a change, divide by the multiplier to find the original.","Jika yang diketahui nilai SETELAH perubahan, bagi dengan pengalinya untuk mencari nilai awal."],["Do not take the percentage of the new amount. That is the most common mistake.","Jangan menghitung persen dari nilai baru. Itu kesalahan yang paling sering terjadi."]],
+key:["original = new value ÷ multiplier","nilai awal = nilai baru ÷ pengali"],
+ex:[{q:["After a 20% discount, a bag costs Rp 360 000. What was the original price?","Setelah diskon 20%, harga sebuah tas Rp 360 000. Berapa harga awalnya?"],s:[["20% off → multiplier 0.8","Diskon 20% → pengali 0.8"],"Rp 360 000 ÷ 0.8 = Rp 450 000",["Check: 450 000 × 0.8 = 360 000 ✓","Cek: 450 000 × 0.8 = 360 000 ✓"]]}]},
+{t:["Real-life percentage problems","Soal persentase dalam kehidupan sehari-hari"],p:[["Discounts, tax, profit and loss, and population change all use the same multipliers.","Diskon, pajak, untung dan rugi, serta perubahan jumlah penduduk semuanya memakai pengali yang sama."],["For two changes one after another, multiply by both multipliers. A 25% discount then 10% tax is NOT the same as 15% off.","Untuk dua perubahan berturut-turut, kalikan dengan kedua pengali. Diskon 25% lalu pajak 10% TIDAK sama dengan diskon 15%."]],
+ex:[{q:["A shirt costs Rp 200 000. It has a 25% discount, then 10% tax is added. Find the final price.","Harga sebuah kemeja Rp 200 000. Ada diskon 25%, lalu ditambah pajak 10%. Tentukan harga akhirnya."],s:["Rp 200 000 × 0.75 = Rp 150 000","Rp 150 000 × 1.1 = Rp 165 000",["Overall: × 0.825, which is a 17.5% decrease.","Secara keseluruhan: × 0.825, yaitu turun 17.5%."]]}]}
+],
+quiz:[
+{type:"mc",q:["Write [7/20] as a percentage.","Tuliskan [7/20] dalam persen."],o:["7%","20%","35%","70%"],a:2,e:["[7/20] × 100% = 35%"]},
+{type:"mc",q:["Write 64% as a fraction in its simplest form.","Tuliskan 64% sebagai pecahan paling sederhana."],o:["[64/100]","[32/50]","[16/25]","[8/25]"],a:2,e:["[64/100] = [16/25] &nbsp;(÷ 4)"]},
+{type:"mc",q:["Find 35% of 360.","Tentukan 35% dari 360."],o:["126","108","234","12.6"],a:0,e:["0.35 × 360 = 126"]},
+{type:"mc",q:["A town has 2 500 people. The population increases by 8%. What is the new population?","Sebuah kota berpenduduk 2 500 orang. Jumlah penduduk naik 8%. Berapa jumlah penduduk sekarang?"],o:["2 508","2 520","2 700","2 300"],a:2,e:["2 500 × 1.08 = 2 700"]},
+{type:"mc",q:["A price falls from Rp 80 000 to Rp 68 000. What is the percentage decrease?","Harga turun dari Rp 80 000 menjadi Rp 68 000. Berapa persentase penurunannya?"],o:["12%","15%","17.6%","85%"],a:1,e:["[12 000/80 000] × 100% = 15%",["17.6% is wrong because it divides by the new price.","17.6% salah karena membagi dengan harga baru."]]},
+{type:"mc",q:["After a 25% increase, a salary is Rp 3 000 000. What was the salary before?","Setelah naik 25%, gaji menjadi Rp 3 000 000. Berapa gaji sebelumnya?"],o:["Rp 2 250 000","Rp 2 400 000","Rp 2 750 000","Rp 3 750 000"],a:1,e:["Rp 3 000 000 ÷ 1.25 = Rp 2 400 000",["Rp 2 250 000 is wrong: it takes 25% off the new salary.","Rp 2 250 000 salah: itu mengurangi 25% dari gaji baru."]]},
+{type:"mc",q:["A laptop costs Rp 6 000 000. Its price decreases by 10%, then increases by 10%. What is the final price?","Harga laptop Rp 6 000 000. Harganya turun 10%, lalu naik 10%. Berapa harga akhirnya?"],o:["Rp 6 000 000","Rp 5 940 000","Rp 6 060 000","Rp 5 400 000"],a:1,e:["6 000 000 × 0.9 × 1.1 = 5 940 000"]},
+{type:"cmc",q:["Select ALL the values equal to 40%.","Pilih SEMUA nilai yang sama dengan 40%."],o:["[2/5]","0.4","0.04","[4/10]","[40/1000]"],a:[0,1,3],e:["40% = [40/100] = [2/5] = [4/10] = 0.4","0.04 = 4%, &nbsp;[40/1000] = 4%"]},
+{type:"cmc",q:["A jacket costs Rp 400 000. Select ALL the true statements.","Harga sebuah jaket Rp 400 000. Pilih SEMUA pernyataan yang benar."],o:[["With a 20% discount it costs Rp 320 000.","Dengan diskon 20% harganya Rp 320 000."],["A 20% discount then a 20% increase gives Rp 400 000 again.","Diskon 20% lalu naik 20% menghasilkan Rp 400 000 lagi."],["The multiplier for a 15% increase is 1.15.","Pengali untuk kenaikan 15% adalah 1.15."],["A 10% tax adds Rp 4 000.","Pajak 10% menambah Rp 4 000."],["With a 5% discount it costs Rp 380 000.","Dengan diskon 5% harganya Rp 380 000."]],a:[0,2,4],e:[["320 000 × 1.2 = 384 000, not 400 000.","320 000 × 1.2 = 384 000, bukan 400 000."],["10% of 400 000 is 40 000.","10% dari 400 000 adalah 40 000."]]},
+{type:"match",q:["Match each question with its answer.","Pasangkan setiap soal dengan jawabannya."],items:[["Increase 200 by 15%","Naikkan 200 sebesar 15%"],["Decrease 200 by 15%","Turunkan 200 sebesar 15%"],["After a 15% discount the price is 170. Find the original price.","Setelah diskon 15% harganya 170. Tentukan harga awalnya."]],opts:["185","230","200","170"],a:[1,3,2],e:["200 × 1.15 = 230","200 × 0.85 = 170","170 ÷ 0.85 = 200"]},
+{type:"essay",q:["A shop buys a bag for Rp 150 000 and sells it for Rp 189 000. (a) Find the percentage profit. (b) In a sale, the selling price is reduced by 10%. Find the new percentage profit.","Sebuah toko membeli tas seharga Rp 150 000 dan menjualnya Rp 189 000. (a) Tentukan persentase keuntungannya. (b) Saat obral, harga jual diturunkan 10%. Tentukan persentase keuntungan yang baru."],s:[["(a) Profit = 189 000 − 150 000 = 39 000","(a) Untung = 189 000 − 150 000 = 39 000"],"[39 000/150 000] × 100% = 26%",["(b) New selling price = 189 000 × 0.9 = 170 100","(b) Harga jual baru = 189 000 × 0.9 = 170 100"],["Profit = 170 100 − 150 000 = 20 100 → [20 100/150 000] × 100% = 13.4%","Untung = 170 100 − 150 000 = 20 100 → [20 100/150 000] × 100% = 13.4%"]]},
+{type:"essay",q:["After a 12% increase, a school has 784 students. (a) How many students were there before? (b) By how many students did it increase?","Setelah naik 12%, jumlah siswa sebuah sekolah menjadi 784. (a) Berapa jumlah siswa sebelumnya? (b) Bertambah berapa siswa?"],s:["(a) 784 ÷ 1.12 = 700","(b) 784 − 700 = 84"]}
+]}
+];
+
+const TY={mc:["Multiple Choice","Pilihan Ganda"],cmc:["Complex Multiple Choice","PG Kompleks"],match:["Matching Pairs","Menjodohkan"],essay:["Essay","Uraian"]};
+const L="ABCDE";
+const Q={},res={};
+const mode=CH.map(()=>"learn");
+
+function NL(v,c,d){v=+v;const X=k=>24+(k-v+4)*34;let s='<svg class="nl" viewBox="0 0 320 56" role="img" aria-label="number line"><line x1="6" y1="22" x2="314" y2="22"/>';
+ for(let k=v-4;k<=v+4;k++)s+=`<line x1="${X(k)}" y1="16" x2="${X(k)}" y2="28"/><text x="${X(k)}" y="47">${k<0?"−"+(-k):k}</text>`;
+ const x0=X(v),x1=d=="r"?312:8;
+ s+=`<line class="ray" x1="${x0}" y1="22" x2="${d=="r"?x1-6:x1+6}" y2="22"/><polygon points="${d=="r"?`${x1},22 ${x1-10},15 ${x1-10},29`:`${x1},22 ${x1+10},15 ${x1+10},29`}"/><circle cx="${x0}" cy="22" r="6.5" class="${c=="c"?"cl":"op"}"/></svg>`;return s}
+const m=s=>String(s).replace(/\{NL:(-?\d+):([co]):([lr])\}/g,(_,v,c,d)=>NL(v,c,d)).replace(/\[([^\[\]\/]+)\/([^\[\]]+)\]/g,'<span class="fr"><i>$1</i><i>$2</i></span>');
+const T=x=>Array.isArray(x)?`<span class="en">${m(x[0])}</span><span class="id">${m(x[1])}</span>`:m(x);
+const P=x=>`<p>${T(x)}</p>`;
+const pts=q=>q.type=="mc"?2:q.type=="cmc"?4:q.type=="match"?2*q.items.length:0;
+
+const exm=(q,lab)=>`<div class="exm"><span class="lab">${lab}</span>${q?`<div>${T(q)}</div>`:""}`;
+function stepsHTML(s){return `<ol class="steps">${s.map(x=>`<li hidden>${T(x)}</li>`).join("")}</ol><div class="row"><button class="btn nxt">Next step · Langkah berikutnya</button><button class="btn ghost all">Show all · Tampilkan semua</button></div>`}
+function card(c){return `<article class="card"><h3>${T(c.t)}</h3>${c.p.map(P).join("")}${c.key?`<div class="key">${T(c.key)}</div>`:""}${(c.ex||[]).map(e=>exm(e.q,"Example · Contoh")+stepsHTML(e.s)+"</div>").join("")}</article>`}
+
+function qHTML(q,id,n){Q[id]=q;const p=pts(q);let b="";
+ const longOpt=q.o&&q.o.some(x=>Array.isArray(x)||m(x).length>40);
+ if(q.type=="mc"||q.type=="cmc")b=`<div class="opts${longOpt?" long":""}">${q.o.map((x,i)=>`<button class="opt${q.type=="cmc"?" multi":""}" data-i="${i}" aria-pressed="false"><b class="lt">${L[i]}</b><span>${T(x)}</span></button>`).join("")}</div>`;
+ if(q.type=="match")b=`<div class="mopts">${q.opts.map((x,i)=>`<div class="mopt"><b class="lt">${L[i]}</b><span>${T(x)}</span></div>`).join("")}</div>${q.items.map((it,k)=>`<div class="mrow"><span>${"abc"[k]}. ${T(it)}</span><select data-k="${k}" aria-label="answer ${"abc"[k]}"><option value="">—</option>${q.opts.map((_,i)=>`<option value="${i}">${L[i]}</option>`).join("")}</select></div>`).join("")}`;
+ if(q.type=="essay")b=`<textarea placeholder="Write your working here… / Tulis cara pengerjaanmu di sini…"></textarea>${exm(null,"Model answer · Pembahasan")}${stepsHTML(q.s)}</div>`;
+ const foot=q.type=="essay"?"":`<div class="qf"><button class="btn chk">Check · Periksa</button><button class="btn ghost rst" hidden>Try again · Coba lagi</button><span class="fb" aria-live="polite"></span></div><div class="ex" hidden><span class="lab">Explanation · Pembahasan</span>${q.e.map(P).join("")}</div>`;
+ return `<div class="q" id="${id}"><div class="qh"><span class="qn">${n}</span><span class="tag">${TY[q.type][0]} · ${TY[q.type][1]}</span><span class="pts">${p?p+" pts":"self-check · cek sendiri"}</span></div><div class="qt">${T(q.q)}</div>${b}${foot}</div>`}
+
+function chView(c,ci){return `<section class="band view" id="v${ci}" hidden><div class="wrap">
+ <div class="chhead"><div><span class="chn">Chapter ${ci+1} · Bab ${ci+1}</span><h2>${T(c.name)}</h2></div>
+ <div class="seg" data-ci="${ci}"><button data-mode="learn" class="on">Pembahasan<small>Explanation</small></button><button data-mode="quiz">Latihan<small>Practice</small></button></div></div>
+ <ul class="kd">${c.kd.map(k=>`<li>${k}</li>`).join("")}</ul>
+ <div class="learn">${c.learn.map(card).join("")}<div class="row"><button class="btn go" data-ci="${ci}">Start practice · Mulai latihan →</button></div></div>
+ <div class="quiz" hidden><p class="note" id="cs${ci}"></p>${c.quiz.map((q,i)=>qHTML(q,`p${ci}-${i}`,i+1)).join("")}</div>
+ </div></section>`}
+
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let mockN=0;
+function buildMock(){mockN++;const all=CH.flatMap(c=>c.quiz),by=t=>all.filter(q=>q.type==t);
+ const set=[...CH.flatMap(c=>shuf(c.quiz.filter(q=>q.type=="mc")).slice(0,3)),...shuf(by("cmc")).slice(0,4),...shuf(by("match")).slice(0,1),...shuf(by("essay")).slice(0,2)];
+ for(const k in res)if(k[0]=="m")delete res[k];
+ document.getElementById("mockq").innerHTML=set.map((q,i)=>qHTML(q,`m${mockN}-${i}`,i+1)).join("");upd()}
+
+const main=document.getElementById("main");
+main.innerHTML=CH.map(chView).join("")+`<section class="band view" id="vmock" hidden><div class="wrap">
+ <div class="chhead"><div><span class="chn">All chapters · Semua bab</span><h2>${T(["Mini Mock Test","Tes Simulasi Mini"])}</h2></div></div>
+ <p>${T(["A random mix in the real test format: 15 multiple choice, 4 complex multiple choice, 1 matching set and 2 essays. Press 'New set' for different questions.","Campuran acak dengan format ujian sebenarnya: 15 pilihan ganda, 4 PG kompleks, 1 set menjodohkan, dan 2 uraian. Tekan 'Set baru' untuk soal yang berbeda."])}</p>
+ <div class="mockhead"><div><div class="big" id="mscore">0 / 52</div><span class="note">objective points (essays are self-checked) · poin objektif (uraian dicek sendiri)</span></div><button class="btn" id="newmock">New set · Set baru</button></div>
+ <div id="mockq"></div></div></section>`;
+
+const tabs=document.getElementById("tabs");
+tabs.innerHTML=CH.map((c,i)=>`<a href="#ch${i+1}" data-v="${i}">${i+1}. ${c.name[0]}</a>`).join("")+`<a href="#mock" data-v="mock">Mock Test</a>`;
+
+function show(){const h=location.hash.slice(1);let v=/^ch[1-5]$/.test(h)?String(+h[2]-1):h=="mock"?"mock":"0";
+ document.querySelectorAll(".view").forEach(s=>s.hidden=s.id!="v"+v);
+ tabs.querySelectorAll("a").forEach(a=>{a.classList.toggle("on",a.dataset.v==v);if(a.dataset.v==v)a.scrollIntoView({block:"nearest",inline:"nearest"})})}
+addEventListener("hashchange",()=>{show();scrollTo({top:document.querySelector("nav").offsetTop})});
+
+function setMode(ci,md){const s=document.getElementById("v"+ci);mode[ci]=md;
+ s.querySelector(".learn").hidden=md!="learn";s.querySelector(".quiz").hidden=md!="quiz";
+ s.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("on",b.dataset.mode==md))}
+
+function upd(){let g=0,t=0,mg=0;const cg=CH.map(()=>[0,0]);
+ for(const k in res){const r=res[k];if(k[0]=="p"){g+=r.got;t+=r.max;const c=cg[+k.slice(1).split("-")[0]];c[0]+=r.got;c[1]+=r.max}else mg+=r.got}
+ document.getElementById("score").innerHTML=`${g} / ${t}<small>practice points · poin latihan</small>`;
+ CH.forEach((c,i)=>{const tot=c.quiz.reduce((a,q)=>a+pts(q),0);document.getElementById("cs"+i).textContent=`Checked: ${cg[i][0]} / ${cg[i][1]} points (out of ${tot} in this chapter) · Diperiksa: ${cg[i][0]} / ${cg[i][1]} poin (dari ${tot} di bab ini)`});
+ const ms=document.getElementById("mscore");if(ms)ms.textContent=`${mg} / 52`}
+
+function check(el){const q=Q[el.id],fb=el.querySelector(".fb");let got=0;
+ if(q.type=="mc"||q.type=="cmc"){const op=[...el.querySelectorAll(".opt")],sel=op.map(o=>o.classList.contains("sel"));
+  if(!sel.some(Boolean)){fb.className="fb no";fb.textContent="Choose an answer first · Pilih jawaban dulu";return}
+  const A=q.type=="mc"?[q.a]:q.a;let exact=true;
+  op.forEach((o,i)=>{const c=A.includes(i);if(c&&sel[i])o.classList.add("ok");else if(!c&&sel[i]){o.classList.add("no");exact=false}else if(c){o.classList.add("miss");exact=false}});
+  got=exact?pts(q):0}
+ if(q.type=="match"){const ss=[...el.querySelectorAll("select")];if(ss.some(s=>s.value==="")){fb.className="fb no";fb.textContent="Answer every part first · Jawab semua bagian dulu";return}
+  ss.forEach((s,k)=>{const c=+s.value==q.a[k];s.classList.add(c?"ok":"no");if(c)got+=2;s.disabled=true})}
+ const max=pts(q);res[el.id]={got,max};el.classList.add("locked");
+ fb.className="fb "+(got==max?"ok":"no");
+ fb.textContent=got==max?`Correct! +${got} · Benar!`:q.type=="match"&&got?`${got} / ${max} points · poin`:q.type=="match"?`0 / ${max} — see the explanation · lihat pembahasan`:`Not quite — see the explanation · Belum tepat, lihat pembahasan`;
+ if(q.type=="match"&&got<max)el.querySelectorAll("select").forEach((s,k)=>{if(s.classList.contains("no"))s.insertAdjacentHTML("afterend",`<b class="fix" style="color:var(--ok)"> → ${L[q.a[k]]}</b>`)});
+ el.querySelector(".chk").hidden=true;el.querySelector(".rst").hidden=false;el.querySelector(".ex").hidden=false;upd()}
+
+function reset(el){el.classList.remove("locked");el.querySelectorAll(".opt").forEach(o=>{o.className=o.className.replace(/ (sel|ok|no|miss)/g,"");o.setAttribute("aria-pressed","false")});
+ el.querySelectorAll("select").forEach(s=>{s.className="";s.disabled=false;s.value=""});el.querySelectorAll(".fix").forEach(f=>f.remove());
+ const fb=el.querySelector(".fb");fb.textContent="";el.querySelector(".chk").hidden=false;el.querySelector(".rst").hidden=true;el.querySelector(".ex").hidden=true;delete res[el.id];upd()}
+
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
+ if(t.classList.contains("opt")){const el=t.closest(".q");if(el.classList.contains("locked"))return;
+  if(!t.classList.contains("multi"))el.querySelectorAll(".opt").forEach(o=>{o.classList.remove("sel");o.setAttribute("aria-pressed","false")});
+  t.classList.toggle("sel");t.setAttribute("aria-pressed",t.classList.contains("sel"));el.querySelector(".fb").textContent="";return}
+ if(t.classList.contains("chk"))return check(t.closest(".q"));
+ if(t.classList.contains("rst"))return reset(t.closest(".q"));
+ if(t.classList.contains("nxt")||t.classList.contains("all")){const box=t.closest(".exm"),h=[...box.querySelectorAll(".steps li[hidden]")];
+  (t.classList.contains("all")?h:h.slice(0,1)).forEach(li=>li.hidden=false);
+  if(box.querySelectorAll(".steps li[hidden]").length==0)box.querySelectorAll(".nxt,.all").forEach(b=>b.disabled=true);return}
+ if(t.dataset.mode){setMode(+t.parentNode.dataset.ci,t.dataset.mode);return}
+ if(t.classList.contains("go")){setMode(+t.dataset.ci,"quiz");scrollTo({top:document.querySelector("nav").offsetTop});return}
+ if(t.id=="newmock")buildMock()});
+
+buildMock();show();upd();
+}
+</script>
+</body>
+</html>
